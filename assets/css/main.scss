@@ -53,3 +53,14 @@ $selection-background-color: unquote("{{ site.selection.background_color }}");
 }
 
 @import "yat";
+
+
+.site-header {
+  background-color: #A0C7BF;
+  color: #ffffff;
+}
+
+.site-footer {
+  background-color: #A0C7BF;
+  color: #ffffff;
+}
