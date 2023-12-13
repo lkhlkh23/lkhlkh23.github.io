@@ -65,11 +65,11 @@ $selection-background-color: unquote("{{ site.selection.background_color }}");
   color: #ffffff;
 }
 
-.site-nav {
+.site-nav .page-link{
   color: #ffffff;
 }
 
-.site-brand {
+.site-brand .site-brand-inner {
   color: #ffffff;
 }
 
