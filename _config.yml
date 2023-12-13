@@ -151,7 +151,7 @@ night_mode: "off"
 header_pages:
   - index.html
   - categories.html
-  - about.md
+  - about.html
 
 # Page default value
 # defaults:
