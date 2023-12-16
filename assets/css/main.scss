@@ -69,8 +69,8 @@ $selection-background-color: unquote("{{ site.selection.background_color }}");
   color: #ffffff;
 }
 
-.site-brand .site-brand-inner {
-  color: #ffffff;
+.site-brand .site-brand-inner, .site-brand .site-brand-inner:visited {
+    color: #ffffff;
 }
 
 
