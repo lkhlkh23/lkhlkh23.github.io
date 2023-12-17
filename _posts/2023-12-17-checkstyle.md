@@ -2,7 +2,7 @@
 layout: post
 title: checkstyle 필요성 및 간단한 커스텀
 subtitle: chekstyle 따르겠사옵니다!
-excerpt_image: https://github.com/jeffreytse/jekyll-theme-yat/assets/9413601/2ed22d49-90b1-4f7e-8e8f-b77b21dee505
+excerpt_image: https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/banner.png
 categories: java
 tags: [checkstyle] [intellij]
 top: 2
@@ -61,8 +61,25 @@ checkstyle 통해서 개발 부서의 코딩 표준을 정의할 수 있고, 개
 개인적으로 [naver checkstyle](https://github.com/naver/hackday-conventions-java/blob/master/rule-config/naver-intellij-formatter.xml) 적용 후, 간단한 커스텀을 진행하여 사용하고 있다.
 
 아래 코드는 checkstyle 이 적용되지 않는 상태이다. 내가 개인적으로 정말 선호하지 않는 스타일의 코드이다.
+![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/0.png)
 
-1. plugin 설치 및 save action 설정
-2. checkstyle 적용
-3. method argument 수정
-4. chain method calls 수정
+plugin 설치 및 save action 설정
+
+![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/1.png)
+![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/2.png)
+
+checkstyle 적용
+![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/3.png)
+
+method argument 수정 및 적용 결과
+![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/4.png)
+![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/5.png)
+
+chain method calls 수정 및 적용 결과
+![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/6.png)
+![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/7.png)
+
+### checkstyle 결론
+checkstyle 은 개발자가 초기 설정만 투자한다면 코드 가독성을 향상시키는데 많은 도움을 준다고 생각한다.
+개발자가 비지니스 로직에만 집중할 수 있도록 지원해주기 때문에 특별한 사유가 없다면 적용하는 것이 좋다고 생각한다.
+만약 checkstyle 이 없다면, 코드 입력한 숫자보다 스페이스키와 엔터키를 더 많이 누르게 될 것이다.
