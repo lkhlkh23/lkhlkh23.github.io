@@ -3,8 +3,8 @@ layout: post
 title: Checkstyle 
 subtitle: Checkstyle
 excerpt_image: https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/banner.png
-categories: java
-tags: [checkstyle, intellij]
+categories: jekyll
+tags: jekyll theme yat
 ---
 
 ![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/banner.png)
