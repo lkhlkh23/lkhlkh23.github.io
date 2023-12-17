@@ -4,7 +4,7 @@ title: Checkstyle 필요성과 간단한 커스텀
 subtitle: Checkstyle 적용하기까지...
 excerpt_image: https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/banner.png
 categories: markdown
-tags: [example]
+tags: [java, intellij]
 ---
 
 ![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/banner.png)
