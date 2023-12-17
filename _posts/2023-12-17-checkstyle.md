@@ -9,8 +9,6 @@ tags: [checkstyle] [intellij]
 
 ![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/banner.png)
 
-# Checkstyle
-
 개발자들은 코드의 가독성을 높이기 위해 많은 시간을 투자하여 노력을 한다. 명확한 의미전달을 할 수 있도록 네이밍을 고려하기도 하고, 역할과 책임에 맞게 코드를 설계하기도 한다.
 
 그럼에도 불구하고 가장 간단하게 코드의 가독성을 향상시킬 수 있는 방법을 하나 정리하려고 한다.
@@ -64,20 +62,23 @@ checkstyle 통해서 개발 부서의 코딩 표준을 정의할 수 있고, 개
 아래 코드는 checkstyle 이 적용되지 않는 상태이다. 내가 개인적으로 정말 선호하지 않는 스타일의 코드이다.
 ![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/0.png)
 
-plugin 설치 및 save action 설정
+**plugin 설치 및 save action 설정**
 
 ![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/1.png)
+
 ![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/2.png)
 
-checkstyle 적용
+**checkstyle 적용**
 ![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/3.png)
 
-method argument 수정 및 적용 결과
+**method argument 수정 및 적용 결과**
 ![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/4.png)
+
 ![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/5.png)
 
-chain method calls 수정 및 적용 결과
+**chain method calls 수정 및 적용 결과**
 ![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/6.png)
+
 ![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/7.png)
 
 ### checkstyle 결론
