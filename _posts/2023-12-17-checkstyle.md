@@ -3,8 +3,8 @@ layout: post
 title: checkstyle 필요성 및 간단한 커스텀
 subtitle: chekstyle 따르겠사옵니다!
 excerpt_image: https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/banner.png
-categories: markdown
-tags: [example] 
+categories: java
+tags: [checkstyle] [intellij]
 ---
 
 ![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/banner.png)
