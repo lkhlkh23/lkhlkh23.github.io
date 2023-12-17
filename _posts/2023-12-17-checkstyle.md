@@ -1,8 +1,11 @@
 ---
 layout: post
-title: Checkstyle 
-subtitle: Checkstyle
+title: Quick markdown example
+subtitle: This is a quick markdown example
 excerpt_image: https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/banner.png
+categories: markdown
+tags: [example]
+top: 2
 ---
 
 ![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/banner.png)
