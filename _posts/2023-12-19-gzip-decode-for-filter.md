@@ -1,15 +1,13 @@
 ---
 layout: post
-title: Checkstyle 필요성과 간단한 커스텀
-subtitle: Checkstyle 적용하기까지...
+title: gzip 압축된 post method payload 처리
+subtitle: content-encoding gzip, filter
 excerpt_image: https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-19/banner.png
 categories: java
-tags: [java, intellij]
+tags: [java, spring]
 ---
 
 ![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-19/banner.png)
-
-# gzip
 
 최근에 ‘D회사’ 로부터 전달받은 데이터를 DB 에 저장하는 API 를 개발했다.
 ‘D회사’ 에서는 아래와 같은 curl 을 통해 API 를 호출했다.
