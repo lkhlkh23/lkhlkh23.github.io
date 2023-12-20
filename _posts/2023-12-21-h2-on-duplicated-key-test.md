@@ -2,7 +2,7 @@
 layout: post
 title: H2 ON DUPLICATED KEY 테스트
 subtitle: MODE=MYSQL 로 DBMS 명시
-excerpt_image: https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-19/banner.png
+excerpt_image: https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-21/banner.png
 categories: jpa
 tags: [jpa, h2]
 ---
