@@ -16,11 +16,7 @@ H2 환경에서 MYSQL ‘ON DUPLICATE KEY’ 쿼리를 테스트할 수 있을�
 
 MYSQL 에서 아래와 같은 문법을 사용하고 있다. H2 환경에서 테스트를 진행하려고 할 때 오류가 발생했다.
 
-[오류 내용]
-
-```sql
-쿼리
-```
+![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-21/1.png)
 
 ### 원인
 
@@ -49,11 +45,7 @@ spring:
 
 ### 결과
 
-```java
-
-```
-
-[성공사진]
+![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-21/2.png)
 
 시간이 지날수록 실력이 늘어야하는데, 이제는 알고 있는 내용도 계속 잊어버리니…
 
