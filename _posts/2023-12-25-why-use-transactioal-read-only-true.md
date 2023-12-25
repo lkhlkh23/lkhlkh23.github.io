@@ -4,7 +4,7 @@ title: Transaction read only true 왜 써야할까?!
 subtitle: Transaction read only true 는 필수일까?!
 excerpt_image: https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-25/banner.jpeg
 categories: jpa
-tags: [jpa, h2]
+tags: [jpa, transaction]
 ---
 
 ![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-25/banner.jpeg)
