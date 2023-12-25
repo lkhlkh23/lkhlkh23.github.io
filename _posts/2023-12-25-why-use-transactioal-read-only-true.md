@@ -45,3 +45,5 @@ MySql Master DB 와 Replication DB 사이의 데이터 동기화 방식
 3. SQL Thread 에서는 Relay Log 를 읽어서 Slave DB 에 쿼리 수행하여 동기화 진행
 
 다음 포스팅에서는 Master DB 와 Replication DB 에 대한 트래픽 분산을 어떻게 수행하는지에 대해서 간단한 코딩을 통해 알아보려고 한다.
+
+크리스마스에 쿠키로 내집 마련하였다. 위에 있는 배너 이미지가 내가 만든 쿠키집이다!
