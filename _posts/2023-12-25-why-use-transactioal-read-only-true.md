@@ -2,12 +2,12 @@
 layout: post
 title: Transaction read only true 왜 써야할까?!
 subtitle: Transaction read only true 는 필수일까?!
-excerpt_image: https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-25/banner.png
+excerpt_image: https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-25/banner.jpeg
 categories: jpa
 tags: [jpa, h2]
 ---
 
-![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-25/banner.png)
+![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-25/banner.jpeg)
 
 최근에 Pull Request 에 `@Transaction (readonly=true)` 를 적용했으면 좋겠다고 피드백을 남겼다. 이번에는 `@Transaction (readonly=true)` 적용했을 때, 장점을 간단하게 정리해보려고 한다.
 
@@ -16,7 +16,7 @@ tags: [jpa, h2]
 대다수의 개발자들이 메소드 네이밍에 진심이기 때문에 메소드명으로만으로 충분히 메소드의 역할을 파악할 수 있다. 조회만 수행하는 메소드인지, 삽입을 수행하는 메소드인지 충분히 파악이 가능하다.  
 하지만, `@Transaction (readonly=true)` 를 통해 메소드의 역할을 확실히 파악할 수 있다.
 
-### **성능 효율**
+### 성능 효율
 
 성능 효율전에 `변경감지, Dirty Checking` 을 먼저 이야기 하려고 한다.
 
