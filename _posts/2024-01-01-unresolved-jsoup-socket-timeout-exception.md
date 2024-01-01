@@ -169,4 +169,4 @@ final Document document = Jsoup.connect(url)
 | local | success | success |
 | aws | SocketTimeoutException | success |
 
-정답을 아시는분이 있다면 메일 부탁드립니다. (lkhlkh09@gmail.com)
+정답을 아시는분이 있다면 메일 부탁드립니다!! (lkhlkh09@gmail.com)
