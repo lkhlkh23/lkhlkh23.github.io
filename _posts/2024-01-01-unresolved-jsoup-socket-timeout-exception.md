@@ -33,7 +33,7 @@ Java **Jsoup** 라이브러리를 사용하면 손쉽게 크롤링할 수 있다
 
 다른 'Z 쇼핑몰' 과 'C 쇼핑몰' 크롤링은 정상적으로 수행되었지만, 'B 쇼핑몰' 크롤링하는 과정에서 아래와 같은 오류가 발생했다. 하지만, local 에서는 'B 쇼핑몰' 도 정상적으로 수행되었지만, AWS EC2 배포한 서비스에서만 아래와 같은 오류가 발생했다.
 
-```java
+```
 java.net.SocketTimeoutException: Read timed out
         at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:288)
         at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:314)
@@ -42,7 +42,7 @@ java.net.SocketTimeoutException: Read timed out
 
 문제가 되는 코드는 아래 로직이다. 디버깅을 해보니 'B 쇼핑몰' 에서 get() 과정에서 오류가 발생했다.
 
-```java
+```
 final String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 final Document document = Jsoup.connect(url)
                                 .userAgent(userAgent)
@@ -63,7 +63,7 @@ timeout 시간은 default 가 3000ms 라서, timeout 시간을 5000ms 로 조정
 
 참고로 timeout 을 0 으로 설정하면 무한으로 설정할 수 있다.
 
-```java
+```
 final String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 final Document document = Jsoup.connect(url)
                                .userAgent(userAgent)
@@ -91,7 +91,7 @@ server:
 
 header, referrer, cookie, userAgent 를 추가해서 사용자의 접근과 비슷하게 보이도록 설정했다.
 
-```java
+```
 final String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 final Document document = Jsoup.connect(url)
                                .userAgent(userAgent)
@@ -134,7 +134,7 @@ Jsoup Issue 게시판을 검색해서 다음과 같은 [질문](https://github.c
 - to-be
   - WhatsApp/2.19.81 A
 
-```java
+```
 final String userAgent = "WhatsApp/2.19.81 A";
 final Document document = Jsoup.connect(url)
                                .userAgent(userAgent)
