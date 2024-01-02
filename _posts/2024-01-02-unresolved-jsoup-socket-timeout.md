@@ -51,7 +51,7 @@ final Document document = Jsoup.connect(url)
 
 **시도-1**
 
-Jsoup Issue 게시판을 검색해서 다음과 같은 [질문](https://github.com/jhy/jsoup/issues/1165)을 찾았다. 하지만 inbound, outbound 규칙 모두 확인했을 때, 제약없이 열려있었다. 그렇다면 더더욱 local 환경과 차이가 없을 것이다.
+Jsoup Issue 게시판을 검색해서 다음과 같은 무을 찾았다. 하지만 inbound, outbound 규칙 모두 확인했을 때, 제약없이 열려있었다. 그렇다면 더더욱 local 환경과 차이가 없을 것이다.
 
 결국 이것은 시도해볼것도 없이 **실패**했다.
 
@@ -123,7 +123,7 @@ private Map<String, String> getCookies() {
 
 **시도-4**
 
-Jsoup Issue 게시판을 검색해서 다음과 같은 [질문](https://github.com/jhy/jsoup/issues/1740)을 찾았다. userAgent 를 변경해보라고 한다!
+Jsoup Issue 게시판을 검색해서 다음과 같은 을 찾았다. userAgent 를 변경해보라고 한다!
 
 - as-is
   - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
