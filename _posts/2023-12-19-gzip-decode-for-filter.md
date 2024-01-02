@@ -57,7 +57,7 @@ Filter 와 Interceptor 의 가장 큰 차이는 Request 와 Response 에 대한 
 결국은, Request 를 변경할 수 있는 Filter 를 이용해야 한다. gzip decode 처리한 데이터를 가지고 있는 새로운 Request 를 전달하는 방식으로 문제를 해결해야 한다.
 
 ### 해결 코드
-```java
+```
 class GzipBodyDecodeFilter implements Filter {
 	@Override
 	public void doFilter(final ServletRequest servletRequest,
