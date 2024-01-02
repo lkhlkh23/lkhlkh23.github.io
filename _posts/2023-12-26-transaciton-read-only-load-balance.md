@@ -13,7 +13,7 @@ tags: [jpa, transaction]
 
 Master DB 와 Replication DB 를 다음과 같이 설정을 했다.
 
-```java
+```yaml
 spring:
   datasource:
     master:
@@ -92,7 +92,7 @@ public class DataSourceConfig {
 
 AbstractRoutingDataSource 에서 Map 에 등록된 DataSource 중에서 원하는 DataSource 를 찾는 로직은 아래와 같이 구현되있다.
 
-```java
+```
 protected DataSource determineTargetDataSource() {
 		Assert.notNull(this.resolvedDataSources, "DataSource router not initialized");
 		Object lookupKey = determineCurrentLookupKey();
