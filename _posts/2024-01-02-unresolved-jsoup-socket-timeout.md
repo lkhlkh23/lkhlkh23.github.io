@@ -24,8 +24,10 @@ Java **Jsoup** 라이브러리를 사용하면 손쉽게 크롤링할 수 있다
 
 참고하면 될 것 같다. 그럼에도 불구하고 한줄로 요약하자면 아래와 같다.
 
+<aside>
 Java 로 HTML 파싱하여 특정 정보를 조회하고, 조작할 수 있는 강력한 기능을 제공하는 라이브러리
 
+</aside>
 
 ### 발생 오류
 
@@ -51,7 +53,7 @@ final Document document = Jsoup.connect(url)
 
 **시도-1**
 
-Jsoup Issue 게시판을 검색해서 다음과 같은 무을 찾았다. 하지만 inbound, outbound 규칙 모두 확인했을 때, 제약없이 열려있었다. 그렇다면 더더욱 local 환경과 차이가 없을 것이다.
+Jsoup Issue 게시판을 검색해서 다음과 같은 [질문](https://github.com/jhy/jsoup/issues/1165)을 찾았다. 하지만 inbound, outbound 규칙 모두 확인했을 때, 제약없이 열려있었다. 그렇다면 더더욱 local 환경과 차이가 없을 것이다.
 
 결국 이것은 시도해볼것도 없이 **실패**했다.
 
@@ -113,7 +115,7 @@ final Document document = Jsoup.connect(url)
 
 private Map<String, String> getCookies() {
 	final Map<String, String> cookies = new HashMap<>();
-	cookies.put("_evga_0c2d", "{%22uuid%22:%2........}");
+	cookies.put("_evga_0c2d", "2uui22:%2.......");
 
         return cookies;
 }
@@ -123,7 +125,7 @@ private Map<String, String> getCookies() {
 
 **시도-4**
 
-Jsoup Issue 게시판을 검색해서 다음과 같은 을 찾았다. userAgent 를 변경해보라고 한다!
+Jsoup Issue 게시판을 검색해서 다음과 같은 [질문](https://github.com/jhy/jsoup/issues/1740)을 찾았다. userAgent 를 변경해보라고 한다!
 
 - as-is
   - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
