@@ -7,7 +7,7 @@ categories: jpa
 tags: [jpa, transaction]
 ---
 
-![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-26/banner.png)
+![banner](_config.ymlhttps://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-26/banner.png)
 
 `@Transaction (readonly=true)` 설정만 있다면, 짠! 하고 내부적으로 Replication DB 로 리디렉션 처리해줄 것으로 생각했다. 하지만, 내부적인 개발 설정이 별도로 필요하다. 관련된 코드는 [github](https://github.com/lkhlkh23/practice-transaction-route) 를 통해 확인 가능하다. 참고로 DB 는 Docker 를 이용했다.
 
