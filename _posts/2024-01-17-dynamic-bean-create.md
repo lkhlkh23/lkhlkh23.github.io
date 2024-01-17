@@ -133,12 +133,16 @@ class BeanApplicationTests {
 }
 ```
 
-Bean 들이 모두 정의된 ApplicationContext 에 동적으로 생성한 Bean 이름이 있는지 확인하는 방식으로 검증했다.  코드는 아래 git repository 를 참고해라!
+Bean 들이 모두 정의된 ApplicationContext 에 동적으로 생성한 Bean 이름이 있는지 확인하는 방식으로 검증했다. 코드는 아래 git repository 를 참고해라!
 
-- https://github.com/lkhlkh23/dynamic-bean-creator
+- [dynamic-bean-creator-git](https://github.com/lkhlkh23/dynamic-bean-creator)
 
 연말정산을 해야한다. 작년에는 할머니, 할아버지를 나의 부양가족으로 넣어서 만족스러운 환급을 받았다. 그러나 오늘 집에 가는 길에 엄마와 통화하면서 알게되었다. 막내삼촌이 할머니를 뺴앗았다.
 
 한번 맛본 자본의 맛을 뺏긴 것에 대한 분노로 하마터면 부천으로 달려갈뻔 했다.
 
+![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-17/1.png)
+
 참고로 나는 물욕이 없다.
+
+
