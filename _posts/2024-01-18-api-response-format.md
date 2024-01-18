@@ -167,3 +167,6 @@ public class RestControllerExceptionHandler {
 `fail` 에 대해서는 오류 메세지에 대한 JSON Body 만을 제공하고, log.warn 를 통해 예외 이유를 남긴다. (`Only JSON Body`)
 
 이렇게 선택한 이유는 발생한 예외가 비지니스 로직 문제가 발생했고, 이 문제로 인해 수정이 필요한지 필요하지 않는지를 구분하기 위해서다. 결국은 `운영의 편의성` 때문이다.
+내가 B/E 개발자라서, B/E 에서 예외처리가 싫어서가 아니다! 그러하다!
+
+![5.png](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-18/5.png)
