@@ -4,7 +4,7 @@ title: API 응답값 형에 대한 고민-1
 subtitle: HttpStatus + JSON Body vs Only JSON Body (JSend)
 excerpt_image: https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-18/banner.png
 categories: spring
-tags: [java, spring, rest]
+tags: [java, spring, rest, jsend]
 ---
 
 ![banner](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-18/banner.png)
