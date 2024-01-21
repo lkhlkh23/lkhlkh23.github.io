@@ -36,10 +36,15 @@ Secrets Manager 를 사용하면 application.yaml 파일 또는 코드 내부에
 아래 이미지 순서대로 진행하면 보안암호 생성이 가능하다.
 
 ![1](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-21/1.png)
+
 ![2](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-21/2.png)
+
 ![3](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-21/3.png)
+
 ![4](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-21/4.png)
+
 ![5](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-21/5.png)
+
 ### Secrets Manager 개발
 
 Secrets Manager 에서 교체주기를 설정해서 RDS 암호를 4시간 마다 교체할 수 있도록 설정했다.
