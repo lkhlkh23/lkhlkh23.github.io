@@ -33,9 +33,9 @@ public class SwaggerConfig {
 	public GroupedOpenApi openApi() {
 		final String[] paths = {"/v1/**"};
 		return GroupedOpenApi.builder()
-							 .group("Practice API v1")
-							 .pathsToMatch(paths)
-							 .build();
+                                     .group("Practice API v1")
+                                     .pathsToMatch(paths)
+                                     .build();
 
 	}
 }
@@ -136,10 +136,9 @@ public class PersonController {
     		final String[] paths = {"/v1/**"};
     
     		return GroupedOpenApi.builder()
-    							 .group("Practice API v1")
-    							 .pathsToMatch(paths)
-    							 .addOperationCustomizer(customize())
-    							 .build();
+                                         .group("Practice API v1")
+                                         .pathsToMatch(paths)
+                                         .build();
     
     	}
     
