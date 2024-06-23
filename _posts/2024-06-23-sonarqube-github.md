@@ -3,8 +3,8 @@ layout: post
 title: SonarQube 와 Github 연동 (with PR Decoration)
 subtitle: SonarQube to Github with PR Decoration
 excerpt_image: https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-06-23/banner.png
-categories: spring
-tags: [springbatch, scdf]
+categories: sonarqube
+tags: [sonarqube, github, pr, decoration]
 ---
 
 현 조직에서 개발 관련된 KPI 에서 높은 점수를 취득하기 위해서는 SonarQube 정적분석 결과 ALL GREEN 을 달성해야 한다. 결국은 SonarQube 를 이용한 코드 품질을 개선하기 위한 목표라고 생각한다.
