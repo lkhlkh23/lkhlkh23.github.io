@@ -200,7 +200,7 @@ sudo docker-compose up
 
 **Step.5 콘솔 접속**
 
-`3.38.153.177:9000` 으로 접속 후, 패스워드 변경한다. 초기 계정 정보는 아래와 같다.
+`3.38.152.172:9000` 으로 접속 후, 패스워드 변경한다. 초기 계정 정보는 아래와 같다.
 
 - id : admin
 - pwd : admin
@@ -219,7 +219,7 @@ github → settings → developer settings → github apps 화면이동해라!
     → app id, client id, client secret, private key 정보 확인 가능
     - github app name : practice-sonarqube
     - homepage url : https://github.com/lkhlkh23
-    - callback url : http://3.38.153.177:9000
+    - callback url : http://3.38.152.172:9000
       - 사용자가 GitHub App 에 권한을 부여한 후 리디렉션될 URL
       - [참고 문서](https://docs.github.com/ko/apps/creating-github-apps/registering-a-github-app/about-the-user-authorization-callback-url)
     - permissions
