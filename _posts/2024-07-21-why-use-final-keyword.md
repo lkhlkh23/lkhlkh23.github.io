@@ -4,9 +4,8 @@ title: 자바에서 final 사용해야 하는 이유
 subtitle: final 사용해야 하는 이유
 excerpt_image: https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-07-21/banner.png
 categories: java
-tags: [java, final,]
+tags: [java, final]
 ---
-
 팀원의 코드 리뷰를 하는 과정에서 `final 키워드를 습관적으로 작성하면 좋을 것 같다!` 라고 피드백을 주었다. 그리고 그 이유에 대해서는 명확하게 설명하지 못했다. 왜냐하면 내가 가장 좋아했던 개발자분의 코드에는 항상 `final` 있었기 때문에 나는 그 방식이 좋은 방식이라고 맹신했기 때문이다.
 
 ![0.png](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-07-21/0.png)
