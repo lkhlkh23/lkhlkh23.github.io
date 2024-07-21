@@ -154,22 +154,7 @@ public class Account {
 
 }
 ```
-```java
-@Service
-public class WithdrawService {
 
-	private final UserAccountRepository userAccountRepository;
-	private final UserAccountHistoryRepository userAccountHistoryRepository;
-
-	@Transactional
-	public void withdraw(final Account account, final int amount) {
-		account.withdraw(amount);
-		userAccountRepository.withdraw(amount);
-		userAccountHistoryRepository.addHistory(account, amount);
-	}
-
-}
-```
 
 UserAccountHistoryRepository 작업하는 과정에서 예외가 발생했을 때, UserAccountRepository 는 트랜잭션을 통해 원복될 수 있지만, Account 객체의 상태는 원복되지 않는다. 이 코드는 실패 원자적이지 못한다.
 
