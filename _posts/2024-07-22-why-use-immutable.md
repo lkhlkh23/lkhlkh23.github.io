@@ -1,14 +1,12 @@
 ---
 layout: post
-title: 불변객체를 사용해야 하는 이유
+title: 불변객체를 사용해야 하는 이유 (이펙티브 자바 아이템 17)
 subtitle: 변경 가능성을 최소화 해라
 excerpt_image: https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-07-22/banner.png
 categories: java
 tags: [java, immutable]
 ---
-final 을 써야하는 이유에 대해 포스팅을 하다가, 불변객체를 써야하는 이유까지 다시 복습하게 되었다. 
-다시 이펙티브 자바를 읽었다. 이 책은 정말 매력적이다. 읽을때마다 항상 새롭다. 
-늘 뇌가 리셋되었다고 할까?! 나의 뇌를 순수하게 만든다고 할까?!
+final 을 써야하는 이유에 대해 포스팅을 하다가, 불변객체를 써야하는 이유까지 다시 복습하게 되었다. 다시 이펙티브 자바를 읽었다. 이 책은 정말 매력적이다. 읽을때마다 항상 새롭다. 늘 뇌가 리셋되었다고 할까?! 나의 뇌를 순수하게 만든다고 할까?!
 
 
 ### What is Immutable Class
