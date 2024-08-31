@@ -266,7 +266,7 @@ sonar {
 }
 ```
 
-그리고나서 pr decoration 을 위해서 `Step.8` 을 진행하면 끝! 위와 같이 진행하면 `soanrqube + github action + github` 구성이 완료된다!
+그리고나서 pr decoration 을 위해서 `Step.8` 을 진행하면 끝! 위와 같이 진행하면 `soanrqube + github action + github` 구성이 완료된다! 끝!
 
 ### 회고
 
