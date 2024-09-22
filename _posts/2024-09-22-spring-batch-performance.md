@@ -1,7 +1,7 @@
 ---
 layout: post
-title: 스프링배치 성능 최적화 (by ifKakao 2022)
-subtitle: if Kakao 2022 “Batch Performance 극한으로 끌어올리기 - 1억 건 데이터 처리를 위한 노력
+title: 스프링배치 성능 최적화
+subtitle: if Kakao 2022 Batch Performance 극한으로 끌어올리기 - 1억 건 데이터 처리를 위한 노력
 excerpt_image: https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-22/banner.png
 categories: springbatch
 tags: [springbatch, performance, kakao-2022]
