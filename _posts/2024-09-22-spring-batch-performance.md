@@ -36,10 +36,10 @@ Chunk Oriented Processing 에서 데이터를 조회하기 위해서 `PagingItem
 
 먼저 `PagingItemReader` 는 주로 `JpaPaginItemReader` 와 `RepositoryItemReader` 구현체를 사용한다. 이 두 가지 Reader는 페이징 방식으로 데이터를 읽어오지만, 데이터 양이 많아질수록 `LIMIT + OFFSET` 을 사용하는 쿼리 때문에 성능 저하가 발생할 수 있다.
 
-> LIMIT + OFFSET 성능 저하 이유
-
-페이징을 구현할 때 LIMIT 과 OFFSET 을 사용하면, 데이터베이스는 요청된 페이지를 가져오기 전에 이전의 모든 레코드를 스캔한다. 즉, OFFSET 값이 클수록 데이터베이스는 더 많은 데이터를 스캔해야 하고, 이로 인해 성능이 저하된다.
->
+> **LIMIT + OFFSET 성능 저하 이유**  
+> 
+> 페이징을 구현할 때 LIMIT 과 OFFSET 을 사용하면, 데이터베이스는 요청된 페이지를 가져오기 전에 이전의 모든 레코드를 스캔한다. 즉, OFFSET 값이 클수록 데이터베이스는 더 많은 데이터를 스캔해야 하고, 이로 인해 성능이 저하된다.
+> 
 
 이를 해결하기 위해서 OFFSET 을 항상 0으로 유지하는, ZERO OFFSET 을 사용한다. `QuerydslZeroOffsetItemReader` 를 아래와 같이 커스텀하게 구현할 수 있다.
 
