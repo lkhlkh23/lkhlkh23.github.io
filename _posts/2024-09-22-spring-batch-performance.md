@@ -247,4 +247,4 @@ Update 를 할 때, 데이터는 Lock 이 걸리는데, 불필요한 컬럼을 �
 
 이제 알겠냐?! 내가 왜 과거 컨퍼런스 영상만 보고있는지?! 내 선택은 틀리지 않았어!
 
-![3.png](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-22/3.png)
+![3.jpeg](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-22/3.jpeg)
