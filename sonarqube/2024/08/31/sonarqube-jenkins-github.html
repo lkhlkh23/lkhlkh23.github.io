@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>SonarQube + Jenkins + Github 연동 (with PR Decoration) | Code Chronicles</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="SonarQube + Jenkins + Github 연동 (with PR Decoration)">
+<meta name="author" content="lkhlkh23">
+<meta property="og:locale" content="ko">
+<meta name="description" content="이전 포스팅에서 soanrqube + github action + github 구조를 이용해서 pull request 를 했을 때, 정적분석 결과를 pull request 에 decoration 을 하는 작업을 정리했다.">
+<meta property="og:description" content="이전 포스팅에서 soanrqube + github action + github 구조를 이용해서 pull request 를 했을 때, 정적분석 결과를 pull request 에 decoration 을 하는 작업을 정리했다.">
+<link rel="canonical" href="https://lkhlkh23.github.io/jekyll-theme-yat/sonarqube/2024/08/31/sonarqube-jenkins-github.html">
+<meta property="og:url" content="https://lkhlkh23.github.io/jekyll-theme-yat/sonarqube/2024/08/31/sonarqube-jenkins-github.html">
+<meta property="og:site_name" content="Code Chronicles">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-08-31T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="SonarQube + Jenkins + Github 연동 (with PR Decoration)">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"lkhlkh23"},"dateModified":"2024-08-31T00:00:00+00:00","datePublished":"2024-08-31T00:00:00+00:00","description":"이전 포스팅에서 soanrqube + github action + github 구조를 이용해서 pull request 를 했을 때, 정적분석 결과를 pull request 에 decoration 을 하는 작업을 정리했다.","headline":"SonarQube + Jenkins + Github 연동 (with PR Decoration)","mainEntityOfPage":{"@type":"WebPage","@id":"https://lkhlkh23.github.io/jekyll-theme-yat/sonarqube/2024/08/31/sonarqube-jenkins-github.html"},"url":"https://lkhlkh23.github.io/jekyll-theme-yat/sonarqube/2024/08/31/sonarqube-jenkins-github.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="">
+  <link rel="canonical" href="https://lkhlkh23.github.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://lkhlkh23.github.io/jekyll-theme-yat/feed.xml" title="Code Chronicles">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Code Chronicles" src="" onerror="this.style.display='none'">
+  Code Chronicles
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">CODE CHRONICLES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a>
+
+
+
+
+
+
+
+
+
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">SonarQube + Jenkins + Github 연동 (with PR Decoration)</h1>
+  <h2 class="post-subtitle">SonarQube + Jenkins + Github</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2024-08-31T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Aug 31, 2024
+    </time>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 27 mins</span>
+  </div>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#sonarqube">#sonarqube</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#github">#github</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#pr">#pr</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#decoration">#decoration</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#jenkins">#jenkins</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p><a href="https://lkhlkh23.github.io/sonarqube/2024/06/23/sonarqube-github.html">이전 포스팅</a>에서 <code class="language-plaintext highlighter-rouge">soanrqube + github action + github</code> 구조를 이용해서 pull request 를 했을 때, 정적분석 결과를 pull request 에 decoration 을 하는 작업을 정리했다.</p>
+
+<p>폐쇠망에서 github enterprise 를 사용하는 조직이기 때문에 네트워크 방화벽으로 인해서 github action 과  통신할 수 없었다. 그래서 내부의 jenkins 를 활용할 수 밖에 없었다. 그러나 내부의 jenkins 도 여러 네트워크 이슈로 머가리가 많이 아팠다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-08-31/0.png" alt="0.png"></p>
+
+<p>그래서 이번에는 빌드 도구를 github action 이 아닌, jenkins 를 활용하려고 한다. 결국은, <code class="language-plaintext highlighter-rouge">soanrqube + jenkins + github</code>  구조로 정적분석 결과를 pull request 에 decoration 을 하는 작업을 포스팅하겠다.</p>
+
+<h3 id="sonarqube-flow">sonarqube flow</h3>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-08-31/1.png" alt="1.png"></p>
+
+<ol>
+  <li>
+<code class="language-plaintext highlighter-rouge">github</code> 에서 event 가 발생하면, <code class="language-plaintext highlighter-rouge">webhook</code> 를 통해 jenkins 호출</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">jenkins</code> 는 트리거에 의해 설정한 job 실행</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">jenkins job</code> 에서 <code class="language-plaintext highlighter-rouge">github checkout → build → sonarqube 정적분석 요청</code>  순서로 실행</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">soanrqube</code> 에서 정적분석 완료 후, 결과를 github 에 전달</li>
+</ol>
+
+<h3 id="step1-github-setting">Step.1 github setting</h3>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-08-31/2.png" alt="2.png"></p>
+
+<p><code class="language-plaintext highlighter-rouge">github project → settings → Hooks → Add webhook</code> 를 클릭해서 위와 같은 화면으로 진입</p>
+
+<ul>
+  <li>Payload URL 입력
+    <ul>
+      <li>http:// <code class="language-plaintext highlighter-rouge">sonarqube-url</code> /generic-webhook-trigger/invoke?token= <code class="language-plaintext highlighter-rouge">token</code>
+        <ul>
+          <li>jenkins 에서 generic webhook trigger 플러그인을 이용해서 github 의 webhook 를 감지</li>
+          <li>token 은 webhook 발생 시, jenkins 의 job 중에서 실행할 job 을 식별하기 위한 고유값</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Content type 선택
+    <ul>
+      <li>application/json</li>
+    </ul>
+  </li>
+  <li>Let me select individual events 선택
+    <ul>
+      <li>Pull requests, Pushes 선택
+        <ul>
+          <li>webhook 를 발생시킬 이벤트 선택</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Add webhook</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-08-31/3.png" alt="3.png"></p>
+
+<p>이벤트 발생으로 인한 webhook 의 결과를 <code class="language-plaintext highlighter-rouge">Webhooks → Manage webhook</code> 에서 확인이 가능하다. Payload 를 보면 jenkins 에 이벤트와 관련된 정보를 전달하고 있다.</p>
+
+<ul>
+  <li>ref : push 당하는 브랜치 (pull request 이벤트 시, payload (X))</li>
+  <li>pull_request.head.ref : pull request 요청 브랜치</li>
+  <li>pull_request.number : pull request 번호</li>
+  <li>pull_request.base.ref : pull request 에서 merge 당할 브랜치</li>
+</ul>
+
+<h3 id="jenkins-setting">jenkins setting</h3>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-08-31/4.png" alt="4.png"></p>
+
+<p>github 에서 이벤트로 발생한 webhook 에 의해 jenkins 에서 job 을 실행하기 위해서는 플러그인이 필요하다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Dashboard → Manage Jenkins → Plugins → Available plugins</code> 메뉴에서 아래 2개의 플러그인을 설치하자.</p>
+
+<ul>
+  <li>Generic Webhook Trigger</li>
+  <li>Github</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-08-31/5.png" alt="5.png"></p>
+
+<p>다음으로는 job 을 생성하자! <code class="language-plaintext highlighter-rouge">Dashboard → New Item</code> 을 클릭한다! job 의 이름을 입력하고, <code class="language-plaintext highlighter-rouge">Pipeline</code> 을 선택후, 생성한다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-08-31/6.png" alt="6.png"></p>
+
+<ul>
+  <li>Description
+    <ul>
+      <li>job 에 대한 설명을 간략하게 입력</li>
+    </ul>
+  </li>
+  <li>Github project
+    <ul>
+      <li>github repository url 입력 (예 : https://github.com/lkhlkh23/jenkins-webhook.git)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-08-31/7.png" alt="7.png"></p>
+
+<p>Build Trigger 에서 <code class="language-plaintext highlighter-rouge">Generic Webhook Trigger</code> 선택한다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-08-31/8.png" alt="8.png"></p>
+
+<p>Post content parameter 에서 정의한 파라미터들은 Pipeline 스크립트에서 사용할 예정이다. 여기서 정의하는 파라미터의 값은 <code class="language-plaintext highlighter-rouge">Webhook Payload</code> 이다. 아래 4개의 파라미터를 정의하자!</p>
+
+<ul>
+  <li>push 와 pull request 를 구분하기 위한 파라미터
+    <ul>
+      <li>Variable (Pipeline 스크립트에서 식별하기 위한 변수명)
+        <ul>
+          <li>ref</li>
+        </ul>
+      </li>
+      <li>Expression
+        <ul>
+          <li>$.ref</li>
+        </ul>
+      </li>
+      <li>Default value
+        <ul>
+          <li>none</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>pull request 를 요청하는 브랜치
+    <ul>
+      <li>Variable
+        <ul>
+          <li>prBranch</li>
+        </ul>
+      </li>
+      <li>Expression
+        <ul>
+          <li>$pull_request.head.ref</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>pull request 의 번호
+    <ul>
+      <li>Variable
+        <ul>
+          <li>pullRequestNo</li>
+        </ul>
+      </li>
+      <li>Expression
+        <ul>
+          <li>$pull_request.number</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>pull request 에서 merge 당할 브랜치
+    <ul>
+      <li>Variable
+        <ul>
+          <li>prTarger</li>
+        </ul>
+      </li>
+      <li>Expression
+        <ul>
+          <li>$pull_request.base.ref</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-08-31/9.png" alt="9.png"></p>
+
+<p>Token 에는 github 의 <code class="language-plaintext highlighter-rouge">Payload URL 에 정의한 token</code> 의 값을 입력하면 된다. token 은 많은 Jenkins 의 job 중에서 webhook 의해서 트리거될 job 을 식별하기 위해 필요하다.</p>
+
+<p>마지막으로는 webhook 에 의해 job 이 트리거되었을 때, 실행할 Pipeline 스크립트를 작성하면 된다. 코드는 아래와 같다</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pipeline</span> <span class="o">{</span>
+    <span class="n">agent</span> <span class="n">any</span>
+    <span class="n">environment</span> <span class="o">{</span>
+        <span class="n">JAVA_HOME</span> <span class="o">=</span> <span class="s1">'/usr/lib/jvm/java-21-amazon-corretto.x86_64'</span>
+        <span class="n">PATH</span> <span class="o">=</span> <span class="s2">"${env.JAVA_HOME}/bin:${env.PATH}"</span>
+    <span class="o">}</span>
+    <span class="n">stages</span> <span class="o">{</span>
+        <span class="n">stage</span><span class="o">(</span><span class="s1">'Checkout'</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">steps</span> <span class="o">{</span>
+                <span class="n">script</span> <span class="o">{</span>
+                    <span class="kt">def</span> <span class="n">branch</span> <span class="o">=</span> <span class="n">getBranch</span><span class="o">()</span>
+                    <span class="n">echo</span> <span class="s2">"Checking out branch: $branch"</span>
+                    <span class="n">git</span> <span class="nl">branch:</span> <span class="n">branch</span><span class="o">,</span> <span class="nl">credentialsId:</span> <span class="s1">'github-credentialsId'</span><span class="o">,</span> <span class="nl">url:</span> <span class="s1">'https://github.enterprise.com/platform-dev/eplat-authentication-api.git'</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">stage</span><span class="o">(</span><span class="s1">'Build'</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">steps</span> <span class="o">{</span>
+                <span class="n">sh</span> <span class="s1">'''
+                    ./gradlew clean
+                    ./gradlew build -x test --refresh-dependencies
+                '''</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">stage</span><span class="o">(</span><span class="s1">'SonarQube analysis'</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">steps</span> <span class="o">{</span>
+                <span class="n">script</span> <span class="o">{</span>
+                    <span class="kt">def</span> <span class="n">branch</span> <span class="o">=</span> <span class="n">getBranch</span><span class="o">()</span>
+                    <span class="kt">def</span> <span class="n">parameters</span> <span class="o">=</span> <span class="n">getSonarQubeParameters</span><span class="o">(</span><span class="n">branch</span><span class="o">)</span>
+                    <span class="n">echo</span> <span class="s2">"$parameters"</span>
+
+                    <span class="n">sh</span> <span class="s2">"""
+                        ./gradlew sonar \
+                          -Dsonar.token=squ_314f69a9bbd43cda678aeb2e19xxxxxxxxxxx \
+                          -Dsonar.projectKey=platform-dev_eplat-authentication-api_xxxx \
+                          -Dsonar.projectName=eplat-authentication-api \
+                          -Dsonar.host.url=http://10.47.198.116:9000/sonar \
+                          -Dsonar.sources=src/main/java \
+                          ${parameters} \
+                          -Dsonar.java.binaries=build/classes/java/main
+                    """</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kt">def</span> <span class="nf">getBranch</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="o">(</span><span class="s2">"$ref"</span> <span class="o">==</span> <span class="s1">'none'</span><span class="o">)</span> <span class="o">?</span> <span class="s2">"$prBranch"</span> <span class="o">:</span> <span class="s2">"$ref"</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s1">'refs/heads/'</span><span class="o">)[</span><span class="mi">1</span><span class="o">]</span>
+<span class="o">}</span>
+
+<span class="kt">def</span> <span class="nf">getSonarQubeParameters</span><span class="o">(</span><span class="n">branch</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">def</span> <span class="n">parameters</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="k">if</span> <span class="o">(</span><span class="s2">"$ref"</span> <span class="o">==</span> <span class="s1">'none'</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">parameters</span> <span class="o">+=</span> <span class="s2">"-Dsonar.pullrequest.key=${pullRequestNo} "</span>
+        <span class="n">parameters</span> <span class="o">+=</span> <span class="s2">"-Dsonar.pullrequest.branch=${branch} "</span>
+        <span class="n">parameters</span> <span class="o">+=</span> <span class="s2">"-Dsonar.pullrequest.base=${prTarget} "</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="n">parameters</span> <span class="o">+=</span> <span class="s2">"-Dsonar.branch.name=${branch} "</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">parameters</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>Pipeline 스크립트는 3단계가 순차적으로 진행된다.</p>
+
+<ul>
+  <li>stage(’Checkout’)
+    <ul>
+      <li>
+        <p>github repository 에서 브랜치의 코드 checkout</p>
+
+        <div class="language-groovy highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="n">git</span> <span class="nl">branch:</span> <span class="n">branch</span><span class="o">,</span> <span class="nl">credentialsId:</span> <span class="s1">'github-credentialsId'</span><span class="o">,</span> <span class="nl">url:</span> <span class="s1">'https://github.enterprise.com/platform-dev/eplat-authentication-api.git'</span>
+</code></pre></div>        </div>
+      </li>
+      <li>credentialsId
+        <ul>
+          <li>github 에서 생성한 token
+            <ul>
+              <li>
+<code class="language-plaintext highlighter-rouge">github → Settings → Developer settings → Personal access tokens → Generate new token</code> 클릭</li>
+              <li>scope
+                <ul>
+                  <li>repo 전체 선택</li>
+                  <li>admin:repo_hook 전체 선택</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>url
+        <ul>
+          <li>checkout 할 github url</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>stage(’Build’)
+    <ul>
+      <li>checkout 한 코드 빌드</li>
+    </ul>
+  </li>
+  <li>stage(’Sonarqube analysis)
+    <ul>
+      <li>
+        <p>빌드한 코드를 Sonarqube 에게 정적분석 의뢰</p>
+
+        <div class="language-groovy highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="n">script</span> <span class="o">{</span>
+    <span class="kt">def</span> <span class="n">branch</span> <span class="o">=</span> <span class="n">getBranch</span><span class="o">()</span>
+    <span class="kt">def</span> <span class="n">parameters</span> <span class="o">=</span> <span class="n">getSonarQubeParameters</span><span class="o">(</span><span class="n">branch</span><span class="o">)</span>
+    <span class="n">echo</span> <span class="s2">"$parameters"</span>
+    
+    <span class="n">sh</span> <span class="s2">"""
+        ./gradlew sonar \
+          -Dsonar.token=squ_314f69a9bbd43cda678aeb2e19xxxxxxxxxxx \
+          -Dsonar.projectKey=platform-dev_eplat-authentication-api_xxxx \
+          -Dsonar.projectName=eplat-authentication-api \
+          -Dsonar.host.url=http://10.47.198.116:9000/sonar \
+          -Dsonar.sources=src/main/java \
+          ${parameters} \
+          -Dsonar.java.binaries=build/classes/java/main
+    """</span>
+<span class="o">}</span>
+      
+<span class="kt">def</span> <span class="nf">getBranch</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="o">(</span><span class="s2">"$ref"</span> <span class="o">==</span> <span class="s1">'none'</span><span class="o">)</span> <span class="o">?</span> <span class="s2">"$prBranch"</span> <span class="o">:</span> <span class="s2">"$ref"</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s1">'refs/heads/'</span><span class="o">)[</span><span class="mi">1</span><span class="o">]</span>
+<span class="o">}</span>
+    
+<span class="kt">def</span> <span class="nf">getSonarQubeParameters</span><span class="o">(</span><span class="n">branch</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">def</span> <span class="n">parameters</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="k">if</span> <span class="o">(</span><span class="s2">"$ref"</span> <span class="o">==</span> <span class="s1">'none'</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">parameters</span> <span class="o">+=</span> <span class="s2">"-Dsonar.pullrequest.key=${pullRequestNo} "</span>
+        <span class="n">parameters</span> <span class="o">+=</span> <span class="s2">"-Dsonar.pullrequest.branch=${branch} "</span>
+        <span class="n">parameters</span> <span class="o">+=</span> <span class="s2">"-Dsonar.pullrequest.base=${prTarget} "</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="n">parameters</span> <span class="o">+=</span> <span class="s2">"-Dsonar.branch.name=${branch} "</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">parameters</span>
+<span class="o">}</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+<code class="language-plaintext highlighter-rouge">getSonarQubeParameters</code> 함수는 push 이벤트와 pull_request 이벤트일 때, soanrqube 에 전달할 파라미터가 다르기 때문에 분기처리 필요
+        <ul>
+          <li>$ref == none → pull request 이벤트</li>
+          <li>$ref ≠ none → push 이벤트</li>
+        </ul>
+      </li>
+      <li>Dsonar.token : sonarqube 에서 생성한 token</li>
+      <li>Dsonar.projectKey : sonarqube 프로젝트 생성 시, 발급되는 키</li>
+      <li>Dsonar.projectName : github repository 이름</li>
+      <li>Dsonar.pullrequest.key : pull request 를 식별하기 위한 목적으로 pull request 번호</li>
+      <li>Dsonar.pullrequest.branch : pull request 하는 브랜치명</li>
+      <li>Dsonar.pullrequest.base : merge 당하는 브랜치명</li>
+      <li>Dsonar.branch.name : push 하는 브랜치명</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="sonarqube-setting--pr-decoration">sonarqube setting + pr decoration</h3>
+
+<p>sonarqube 설정과 github pr decoration 은 이전 포스팅에서 수행해야할 Step 목록만 정의해줄테니, 이전 포스팅을 참고해라! 중복제거!</p>
+
+<ul>
+  <li><a href="https://lkhlkh23.github.io/sonarqube/2024/06/23/sonarqube-github.html"><strong>SonarQube 와 Github 연동 (with PR Decoration)</strong></a></li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">Step.0 ~ 6</code> 를 순차적으로 수행한다. 그리고 빌드 도구로 github action 이 아닌 jenkins 를 사용할 예정이기 때문에 <code class="language-plaintext highlighter-rouge">Step.7</code> 에서는 github action 에 대한 설정은 제외하고, build.gradle 에 대해서만 아래와 같이 정의한다.</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plugins</span> <span class="o">{</span>
+	<span class="n">id</span> <span class="s1">'java'</span>
+	<span class="n">id</span> <span class="s1">'org.springframework.boot'</span> <span class="n">version</span> <span class="s1">'3.3.0'</span>
+	<span class="n">id</span> <span class="s1">'io.spring.dependency-management'</span> <span class="n">version</span> <span class="s1">'1.1.5'</span>
+	<span class="n">id</span> <span class="s2">"org.sonarqube"</span> <span class="n">version</span> <span class="s2">"5.0.0.4638"</span>
+<span class="o">}</span>
+
+<span class="n">sonar</span> <span class="o">{</span>
+	<span class="n">properties</span> <span class="o">{</span>
+		<span class="n">property</span> <span class="s2">"sonar.projectKey"</span><span class="o">,</span> <span class="s2">"soanrqube project 추가하는 과정에서 발급받은 키"</span>
+		<span class="n">property</span> <span class="s2">"sonar.projectName"</span><span class="o">,</span> <span class="s2">"프로젝트명"</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>그리고나서 pr decoration 을 위해서 <code class="language-plaintext highlighter-rouge">Step.8</code> 을 진행하면 끝! 위와 같이 진행하면 <code class="language-plaintext highlighter-rouge">soanrqube + github action + github</code> 구성이 완료된다! 끝!</p>
+
+<h3 id="회고">회고</h3>
+
+<p>그 누구도 시키지 않았지만, sonarqube 를 도입하게된 이유는 아래와 같다.</p>
+
+<p>개발과 연관된 KPI 의 평가기준에 sonarqube 의 정적분석 결과가 지표가 되었다. 그러다보니 평소와 같이 개발 하고 평가 직전에 local 에 설치된 sonarqube 정적 분석 결과를 바탕으로 수정하는 경우가 발생했다. 이런 프로세스는 마치 개학 전날에 밀린 일기를 한꺼번에 작성하는 것과 같다고 생각한다. 결국은 코드의 품질에 전혀 도움이 되지 않는다.</p>
+
+<p>그렇다고 pr 을 할때마다 개발자가 local 에 설치된 sonarqube 로 정적 분석을 실행하는 것도 매우 번거롭게 귀찮은 일이다. 그렇기 때문에 이러한 과정을 자동으로 지원해주는 기능이 필요하다고 생각했다. 그래서 도입을 하게되었다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-08-31/10.png" alt="10.png"></p>
+
+<p>하지만 … 진짜 이유는 업무 개선을 하고, 그에 따른 보상금을 GET 하기 위한 것이다! 기달려라! 20만원!</p>
+
+
+
+    </div>
+
+</article>
+</section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --></section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2024 lkhlkh23</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
