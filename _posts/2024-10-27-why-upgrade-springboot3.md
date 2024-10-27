@@ -72,6 +72,12 @@ SpringBoot 2.x 에서는 더이상 업데이트가 되지 않는 서비스가 �
 
 아직도 SpringBoot 3.x 전환이 고민된다면…?! 내가 만약 3년이내 퇴사가 예정되있다면, 그냥 SpringBoot 2.x 를 계속 사용해라!
 
+최근 리프레시를 위해서 워케이션과 동행자를 찾고 있다! 하지만, 주변에 재택이 가능한 개발자들이 멸종했다. 혼자가면 방컨디션이 다운그레이드가 되서 걱정이 된다! 이제 나에게 남은 희망은 한명이다!
+
+![1.png](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-27/1.png)
+
+나를 실망시키지 말아라! 하지만, 우선 허락을 구하는게 1순위겠지?!
+
 ### References
 
 - [SpringBoot 3.x 전환 가이드](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Migration-Guide)
