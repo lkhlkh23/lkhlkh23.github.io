@@ -4,7 +4,7 @@ title: SpringBoot 3.x 마이그레이션
 subtitle: SpringBoot 3.x 마이그레이션을 하면서...
 excerpt_image: https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-11-21/banner.png
 categories: springboot
-tags: [springboot, migration, 3.x]
+tags: [springboot, migration]
 ---
 SpringBoot 3.x 마이그레이션 작업을 진행하고 있다. [이전 포스팅](https://lkhlkh23.github.io/springboot/2024/10/27/why-upgrade-springboot3.html)에서 3년이내 회사를 퇴사하지 않을 예정이라면 마이그레이션을 권장한다고 글을 작성했다. 그럼 난 마이그레이션 작업을 해야하는것일까?!
 
