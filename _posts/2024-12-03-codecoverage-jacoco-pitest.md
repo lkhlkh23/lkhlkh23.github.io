@@ -20,9 +20,7 @@ Code coverage 는 정량적인 지표를 제공하기 때문에 테스트되지 
 
 `Test coverage` 는 테스트가 애플리케이션의 기능을 얼마나 포괄하는지를 측정하는데 사용하는 매커니즘이다. Test coverage 는 엔드 유저 관점에서 QA 에 의해 계산된다. Test coverage 를 측정하기 위해서는 일반적으로 [Selenium](https://www.baeldung.com/selenium-webdriver-page-object), [Playwright](https://playwright.dev/), [Cypress](https://www.cypress.io/) 와 같은 도구를 활용한다.
 
-수동으로 진행하는 테스트 같은 경우, 전문적인 지식이 필요하지 않고, 구현하기가 쉽다는 장점을 가지고 있다.
-
-그리고, Test coverage 는 Code coverage 와 달리 품질적이므로 정량화하기가 어렵다.
+수동으로 진행하는 테스트 같은 경우, 전문적인 지식이 필요하지 않고, 구현하기가 쉽다는 장점을 가지고 있다. 그리고, Test coverage 는 Code coverage 와 달리 품질적이므로 정량화하기가 어렵다.
 
 ### What is Jacoco..?!
 
@@ -109,6 +107,7 @@ tasks.named('test') {
 ```
 
 그리고 개발 코드와 테스트 코드를 아래과 같이 작성했다.
+
 
 ```java
 public class Calculator {
