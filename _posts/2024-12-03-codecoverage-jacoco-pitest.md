@@ -58,8 +58,6 @@ Jacoco 에서 제공하는 _COVERED 지표에서는 테스트 코드가 존재�
 
 이러한 단점을 보완하기 위해서는 전체 코드에 대해서 Mutation Test 를 하는것이 아닌, 특정 코드에 대해서만 선별적으로 진행하는 것을 권장한다. 외부 API 호출이나 비동기 작업에 대해 Mock을 사용하여 한계점을 극복하는 것이 좋다.
 
-### How is PITest Performed..?!
-
 PITest 를 위해서 build.gradle 의 설정을 아래와 같이 작성한다.
 
 ```groovy
@@ -113,20 +111,84 @@ tasks.named('test') {
 그리고 개발 코드와 테스트 코드를 아래과 같이 작성했다.
 
 ```java
-<개발코드>
+public class Calculator {
+
+	public int calculate(final int num1, final int num2, final char operand) throws Exception {
+		if (operand == '+') {
+			return sum(num1, num2);
+		}
+
+		if (operand == '-') {
+			return subtract(num1, num2);
+		}
+
+		if (operand == '*') {
+			return multiply(num1, num2);
+		}
+
+		throw new Exception("존재하지 않는 연산자 입니다.");
+	}
+
+	public int sum(final int num1, final int num2) {
+		return num1 + num2;
+	}
+
+	public int multiply(final int num1, final int num2) {
+		return num1 * num2;
+	}
+
+	public int subtract(final int num1, final int num2) {
+		return num1 - num2;
+	}
+
+}
 ```
 
 ```java
-<테스트코드>
+class CalculatorTest {
+
+	@Test
+	void test_calculate_1() throws Exception {
+		// given
+		final Calculator calculator = new Calculator();
+
+		// when
+		final int result = calculator.calculate(1, 2, '-');
+
+		// then
+		assertEquals(-1, result);
+	}
+
+	@Test
+	void test_calculate_2() throws Exception {
+		// given
+		final Calculator calculator = new Calculator();
+
+		// when
+		final int result = calculator.calculate(1, 2, '*');
+
+		// then
+		assertEquals(2, result);
+	}
+
+}
 ```
 
-그리고나서, PITest 를 실행하고 결과를 확인했다.
+그리고나서, PITest 를 실행하고 결과를 확인하자! 결과 레포트는 `build/reports/pitest/index.html` 에서 확인할 수 있다.
 
 ```bash
-<./gradlew> 
+./gradlew pitest
 ```
 
-<결과 화면 및 소개>
+레포트를 보면, 테스트 클래스의 Line coverage, Mutation coverage, Test strength 를 확인할 수 있다. `Mutation coverage` 가 높다는 것은 테스트 코드의 변형에 잘 반응하고 있다는 것을 의미한다. 결국은, 테스트 코드를 명확하게 잘 작성했다는 것으로 해석하면 편하다. 
+
+`Test strength` 는 테스트 코드 실행되었는지 유무를 넘어서, 다양한 경로 및 예외적인 조건을 얼마나 충족했는지를 의미한다. 
+
+![2.png](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-04/2.png)
+
+![3.png](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-04/3.png)
+
+![4.png](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-04/4.png)
 
 ### And I am ..
 
