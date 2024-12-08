@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Code Coverage - Jacoco + PITest | Code Chronicles</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Code Coverage - Jacoco + PITest">
+<meta name="author" content="lkhlkh23">
+<meta property="og:locale" content="ko">
+<meta name="description" content="2025년 코드의 품질을 향상시키는 작업을 계획하고 있다. 작업을 위한 학습이다. 실은 뭐라도 하지 않으면 안될것 같다. 생각이 복잡하다.">
+<meta property="og:description" content="2025년 코드의 품질을 향상시키는 작업을 계획하고 있다. 작업을 위한 학습이다. 실은 뭐라도 하지 않으면 안될것 같다. 생각이 복잡하다.">
+<link rel="canonical" href="https://lkhlkh23.github.io/jekyll-theme-yat/java/2024/12/03/codecoverage-jacoco-pitest.html">
+<meta property="og:url" content="https://lkhlkh23.github.io/jekyll-theme-yat/java/2024/12/03/codecoverage-jacoco-pitest.html">
+<meta property="og:site_name" content="Code Chronicles">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-12-03T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Code Coverage - Jacoco + PITest">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"lkhlkh23"},"dateModified":"2024-12-03T00:00:00+00:00","datePublished":"2024-12-03T00:00:00+00:00","description":"2025년 코드의 품질을 향상시키는 작업을 계획하고 있다. 작업을 위한 학습이다. 실은 뭐라도 하지 않으면 안될것 같다. 생각이 복잡하다.","headline":"Code Coverage - Jacoco + PITest","mainEntityOfPage":{"@type":"WebPage","@id":"https://lkhlkh23.github.io/jekyll-theme-yat/java/2024/12/03/codecoverage-jacoco-pitest.html"},"url":"https://lkhlkh23.github.io/jekyll-theme-yat/java/2024/12/03/codecoverage-jacoco-pitest.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="">
+  <link rel="canonical" href="https://lkhlkh23.github.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://lkhlkh23.github.io/jekyll-theme-yat/feed.xml" title="Code Chronicles">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Code Chronicles" src="" onerror="this.style.display='none'">
+  Code Chronicles
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">CODE CHRONICLES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a>
+
+
+
+
+
+
+
+
+
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Code Coverage - Jacoco + PITest</h1>
+  <h2 class="post-subtitle">Jacoco + PITest (Mutation Test)</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2024-12-03T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Dec 03, 2024
+    </time>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 17 mins</span>
+  </div>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#quality">#quality</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#jacoco">#jacoco</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#test">#test</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#pitest">#pitest</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#mutation">#mutation</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p>2025년 코드의 품질을 향상시키는 작업을 계획하고 있다. 작업을 위한 학습이다. 실은 뭐라도 하지 않으면 안될것 같다. 생각이 복잡하다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-04/0.png" alt="0.png"></p>
+
+<h3 id="what-is-difference-between-code-coverage-and-test-coverage">What is Difference Between Code coverage and Test coverage..?!</h3>
+
+<p><code class="language-plaintext highlighter-rouge">Code coverage</code> 는 개발 코드에서 테스트가 적용된 코드의 비율을 측정하는 메커니즘이다. Code coverage 를 측정하기 위해서 일반적으로 <a href="https://www.baeldung.com/jacoco">Jacoco</a> 또는 <a href="https://www.baeldung.com/cobertura">Cobertura</a> 와 같은 도구를 활용한다.</p>
+
+<p>Code coverage 는 정량적인 지표를 제공하기 때문에 테스트되지 않는 코드 영역, 미사용 코드 영역을 쉽게 파악할 수 있다.</p>
+
+<p>하지만, Code coverage 는 코드 영역에 대한 테스트 유무를 파악할 수 있지만, 해당 테스트에 대한 유효성과 정확성까지는 보장하지 않는다. 그리고 Code coverage 를 강제로 늘리기 위해 불필요하고 쓸모없는 테스트가 대량 생산될 수 있다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Test coverage</code> 는 테스트가 애플리케이션의 기능을 얼마나 포괄하는지를 측정하는데 사용하는 매커니즘이다. Test coverage 는 엔드 유저 관점에서 QA 에 의해 계산된다. Test coverage 를 측정하기 위해서는 일반적으로 <a href="https://www.baeldung.com/selenium-webdriver-page-object">Selenium</a>, <a href="https://playwright.dev/">Playwright</a>, <a href="https://www.cypress.io/">Cypress</a> 와 같은 도구를 활용한다.</p>
+
+<p>수동으로 진행하는 테스트 같은 경우, 전문적인 지식이 필요하지 않고, 구현하기가 쉽다는 장점을 가지고 있다. 그리고, Test coverage 는 Code coverage 와 달리 품질적이므로 정량화하기가 어렵다.</p>
+
+<h3 id="what-is-jacoco">What is Jacoco..?!</h3>
+
+<p>Jacoco 는 Java Code coverage 를 측정하기 위해 사용되는 오픈소스 도구이다. 코드 품질 및 완전성을 평가하는데 도움을 준다. Jacoco 는 Java 에이전트로 동작하여, JVM 바이트코드를 조작해 코드 실행 경로를 추적한다. 그리고, Jenkins, Gradle 등 다양한 빌드도구 및 CI/CD 와 쉽게 통합이 가능하다. 그리고 html, xml, csv 와 같은 다양한 형식의 리포트를 제공한다.</p>
+
+<h3 id="what-is-jacoco-metrics-and-limitations">What is Jacoco Metrics and Limitations..?!</h3>
+
+<p>Jacoco 는 csv, xml 과 같은 다양한 형식의 보고서를 생성할 수 있는데, 해당 보고서에서는 아래와 같은 지표들을 보여주고 있다. 여기서 <code class="language-plaintext highlighter-rouge">_COVERED</code> 는 실행된 코드를 의미한다. 실행되었다는 것은 테스트 코드에 의해 호출이 되었거나, 프로덕션 코드에서 호출이 되었다는 것을 의미한다. 반대로 <code class="language-plaintext highlighter-rouge">_MISSED</code> 는 전혀 실행되지 않는 코드를 의미한다.</p>
+
+<ul>
+  <li>GROUP : 코드 분석 대상의 최상위 그룹</li>
+  <li>PACKAGE : Java 패키지 수준에서 커버리지</li>
+  <li>CLASS : Java 클래스 수준에서 커버리지</li>
+  <li>INSTRUCTION_MISSED : 실행되지 않은 바이트코드 명령어 수</li>
+  <li>INSTRUCTION_COVERED : 실행된 바이트코드 명령어 수</li>
+  <li>BRANCH_MISSED : 실행되지 않은 분기 수 (조건문에서 발생할 수 있는 모든 경로 중 실행되지 않은 경로)</li>
+  <li>BRANCH_COVERED : 실행된 분기 수</li>
+  <li>LINE_MISSED : 실행되지 않은 소스 코드 라인의 수</li>
+  <li>LINE_COVERED : 실행된 소스 코드 라인의 수</li>
+  <li>COMPLEXITY_MISSED : 실행되지 않은 코드의 복잡도</li>
+  <li>COMPLEXITY_COVERED : 실행된 코드의 복잡도</li>
+  <li>METHOD_MISSED : 실행되지 않은 메서드의 수</li>
+  <li>METHOD_COVERED : 실행된. 메서드의. 수</li>
+</ul>
+
+<p>Jacoco 에서 제공하는 _COVERED 지표에서는 테스트 코드가 존재할지라도 해당 테스트 코드가 유효하고 신뢰할만한 테스트라고 보장하기가 어렵다. Jacoco 가 개발 코드에 대한 정량적인 품질 지표라고 한다면, 이제 소개할 테스트 방법과 도구는 테스트 코드에 대한 품질 지표라고 보면 된다.</p>
+
+<h3 id="what-is-mutation-and-pitest">What is Mutation and PITest..?!</h3>
+
+<p><code class="language-plaintext highlighter-rouge">Mutating</code> 은 코드를 약간 변형하여 원래 코드와 다른 결과를 만들어내는 작업을 말한다. 변경된 코드는 “Mutant(돌연변이)”라고 부른다. (예 : if (a &gt; b) → if (a ≥ b) 로 변형)</p>
+
+<p><code class="language-plaintext highlighter-rouge">Mutation Test</code> 는 Mutant 코드가 실패되는지를 평가하는 테스트 기법이다. Mutation Test 는 테스트의 강도를 평가하기 위해 사용된다.  Mutation Test 는 테스트의 강도를 평가해서, 약한 테스트를 식별 및 보완할 수 있도록 도움을 준다. 그리고 PITest 와 Stryker 도구를 이용해서 자동화활 수 있다.</p>
+
+<p>그러나, Mutant 를 생성하고 테스트를 수행하는데 많은 시간이 소요된다는 단점이 있다. 그리고 특정 코드에 대해서는 Mutant 를 생성하고 테스트하기 어려울 수 있다. 예를들어, 외부 API 호출, 데이터베이스에 의존적인 코드와 같이 3rd Party 와 연관된 코드에 대해서는 테스트의 한계가 있다.</p>
+
+<p>이러한 단점을 보완하기 위해서는 전체 코드에 대해서 Mutation Test 를 하는것이 아닌, 특정 코드에 대해서만 선별적으로 진행하는 것을 권장한다. 외부 API 호출이나 비동기 작업에 대해 Mock을 사용하여 한계점을 극복하는 것이 좋다.</p>
+
+<p>PITest 를 위해서 build.gradle 의 설정을 아래와 같이 작성한다.</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plugins</span> <span class="o">{</span>
+	<span class="n">id</span> <span class="s1">'java'</span>
+	<span class="n">id</span> <span class="s1">'org.springframework.boot'</span> <span class="n">version</span> <span class="s1">'3.4.0'</span>
+	<span class="n">id</span> <span class="s1">'io.spring.dependency-management'</span> <span class="n">version</span> <span class="s1">'1.1.6'</span>
+	<span class="n">id</span> <span class="s1">'info.solidsoft.pitest'</span> <span class="n">version</span> <span class="s1">'1.15.0'</span>
+<span class="o">}</span>
+
+<span class="n">group</span> <span class="o">=</span> <span class="s1">'test'</span>
+<span class="n">version</span> <span class="o">=</span> <span class="s1">'0.0.1-SNAPSHOT'</span>
+
+<span class="n">pitest</span> <span class="o">{</span>
+	<span class="n">junit5PluginVersion</span> <span class="o">=</span> <span class="s1">'1.2.1'</span>
+	<span class="n">pitestVersion</span> <span class="o">=</span> <span class="s1">'1.15.2'</span>
+<span class="o">}</span>
+
+<span class="n">java</span> <span class="o">{</span>
+	<span class="n">toolchain</span> <span class="o">{</span>
+		<span class="n">languageVersion</span> <span class="o">=</span> <span class="n">JavaLanguageVersion</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">21</span><span class="o">)</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+<span class="n">configurations</span> <span class="o">{</span>
+	<span class="n">compileOnly</span> <span class="o">{</span>
+		<span class="n">extendsFrom</span> <span class="n">annotationProcessor</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+<span class="n">repositories</span> <span class="o">{</span>
+	<span class="n">mavenCentral</span><span class="o">()</span>
+<span class="o">}</span>
+
+<span class="n">dependencies</span> <span class="o">{</span>
+	<span class="n">implementation</span> <span class="s1">'org.springframework.boot:spring-boot-starter'</span>
+	<span class="n">compileOnly</span> <span class="s1">'org.projectlombok:lombok'</span>
+	<span class="n">annotationProcessor</span> <span class="s1">'org.projectlombok:lombok'</span>
+	<span class="n">testImplementation</span> <span class="s1">'org.springframework.boot:spring-boot-starter-test'</span>
+	<span class="n">testRuntimeOnly</span> <span class="s1">'org.junit.platform:junit-platform-launcher'</span>
+
+	<span class="n">implementation</span> <span class="nl">group:</span> <span class="s1">'org.pitest'</span><span class="o">,</span> <span class="nl">name:</span> <span class="s1">'pitest-parent'</span><span class="o">,</span> <span class="nl">version:</span> <span class="s1">'1.15.0'</span><span class="o">,</span> <span class="nl">ext:</span> <span class="s1">'pom'</span>
+<span class="o">}</span>
+
+<span class="n">tasks</span><span class="o">.</span><span class="na">named</span><span class="o">(</span><span class="s1">'test'</span><span class="o">)</span> <span class="o">{</span>
+	<span class="n">useJUnitPlatform</span><span class="o">()</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>그리고 개발 코드와 테스트 코드를 아래과 같이 작성했다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Calculator</span> <span class="o">{</span>
+
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">calculate</span><span class="o">(</span><span class="kd">final</span> <span class="kt">int</span> <span class="n">num1</span><span class="o">,</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">num2</span><span class="o">,</span> <span class="kd">final</span> <span class="kt">char</span> <span class="n">operand</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">operand</span> <span class="o">==</span> <span class="sc">'+'</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="nf">sum</span><span class="o">(</span><span class="n">num1</span><span class="o">,</span> <span class="n">num2</span><span class="o">);</span>
+		<span class="o">}</span>
+
+		<span class="k">if</span> <span class="o">(</span><span class="n">operand</span> <span class="o">==</span> <span class="sc">'-'</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="nf">subtract</span><span class="o">(</span><span class="n">num1</span><span class="o">,</span> <span class="n">num2</span><span class="o">);</span>
+		<span class="o">}</span>
+
+		<span class="k">if</span> <span class="o">(</span><span class="n">operand</span> <span class="o">==</span> <span class="sc">'*'</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="nf">multiply</span><span class="o">(</span><span class="n">num1</span><span class="o">,</span> <span class="n">num2</span><span class="o">);</span>
+		<span class="o">}</span>
+
+		<span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="o">(</span><span class="s">"존재하지 않는 연산자 입니다."</span><span class="o">);</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">sum</span><span class="o">(</span><span class="kd">final</span> <span class="kt">int</span> <span class="n">num1</span><span class="o">,</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">num2</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">num1</span> <span class="o">+</span> <span class="n">num2</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">multiply</span><span class="o">(</span><span class="kd">final</span> <span class="kt">int</span> <span class="n">num1</span><span class="o">,</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">num2</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">num1</span> <span class="o">*</span> <span class="n">num2</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">subtract</span><span class="o">(</span><span class="kd">final</span> <span class="kt">int</span> <span class="n">num1</span><span class="o">,</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">num2</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">num1</span> <span class="o">-</span> <span class="n">num2</span><span class="o">;</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">CalculatorTest</span> <span class="o">{</span>
+
+	<span class="nd">@Test</span>
+	<span class="kt">void</span> <span class="nf">test_calculate_1</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+		<span class="c1">// given</span>
+		<span class="kd">final</span> <span class="nc">Calculator</span> <span class="n">calculator</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Calculator</span><span class="o">();</span>
+
+		<span class="c1">// when</span>
+		<span class="kd">final</span> <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="na">calculate</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="sc">'-'</span><span class="o">);</span>
+
+		<span class="c1">// then</span>
+		<span class="n">assertEquals</span><span class="o">(-</span><span class="mi">1</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+	<span class="o">}</span>
+
+	<span class="nd">@Test</span>
+	<span class="kt">void</span> <span class="nf">test_calculate_2</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+		<span class="c1">// given</span>
+		<span class="kd">final</span> <span class="nc">Calculator</span> <span class="n">calculator</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Calculator</span><span class="o">();</span>
+
+		<span class="c1">// when</span>
+		<span class="kd">final</span> <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="na">calculate</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="sc">'*'</span><span class="o">);</span>
+
+		<span class="c1">// then</span>
+		<span class="n">assertEquals</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>그리고나서, PITest 를 실행하고 결과를 확인하자! 결과 레포트는 <code class="language-plaintext highlighter-rouge">build/reports/pitest/index.html</code> 에서 확인할 수 있다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./gradlew pitest
+</code></pre></div></div>
+
+<p>레포트를 보면, 테스트 클래스의 Line coverage, Mutation coverage, Test strength 를 확인할 수 있다. <code class="language-plaintext highlighter-rouge">Mutation coverage</code> 가 높다는 것은 테스트 코드의 변형에 잘 반응하고 있다는 것을 의미한다. 결국은, 테스트 코드를 명확하게 잘 작성했다는 것으로 해석하면 편하다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Test strength</code> 는 테스트 코드 실행되었는지 유무를 넘어서, 다양한 경로 및 예외적인 조건을 얼마나 충족했는지를 의미한다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-04/2.png" alt="2.png"></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-04/3.png" alt="3.png"></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-04/4.png" alt="4.png"></p>
+
+<h3 id="and-i-am-">And I am ..</h3>
+
+<p>최근에 <del>조직개판</del>이 아닌, 조직개편이 있었다. 어쩌다보니 팀에서 파트가 방출되었다. 개발의 효율성에 맞게 조직이동을 할 수 있다고 생각할 수 있다. 처음에 나도 그렇게 생각했다. 하지만, 최근에 방출이라는 느낌을 받았다. 이런것을 환승이별의 기분이 이런것일까?!</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-04/1.png" alt="1.png"></p>
+
+
+    </div>
+
+</article>
+</section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --></section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2024 lkhlkh23</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

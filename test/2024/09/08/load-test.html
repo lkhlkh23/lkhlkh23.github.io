@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>성능 테스트 준비/실행 | Code Chronicles</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="성능 테스트 준비/실행">
+<meta name="author" content="lkhlkh23">
+<meta property="og:locale" content="ko">
+<meta name="description" content="What is background..?">
+<meta property="og:description" content="What is background..?">
+<link rel="canonical" href="https://lkhlkh23.github.io/jekyll-theme-yat/test/2024/09/08/load-test.html">
+<meta property="og:url" content="https://lkhlkh23.github.io/jekyll-theme-yat/test/2024/09/08/load-test.html">
+<meta property="og:site_name" content="Code Chronicles">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-09-08T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="성능 테스트 준비/실행">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"lkhlkh23"},"dateModified":"2024-09-08T00:00:00+00:00","datePublished":"2024-09-08T00:00:00+00:00","description":"What is background..?","headline":"성능 테스트 준비/실행","mainEntityOfPage":{"@type":"WebPage","@id":"https://lkhlkh23.github.io/jekyll-theme-yat/test/2024/09/08/load-test.html"},"url":"https://lkhlkh23.github.io/jekyll-theme-yat/test/2024/09/08/load-test.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="">
+  <link rel="canonical" href="https://lkhlkh23.github.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://lkhlkh23.github.io/jekyll-theme-yat/feed.xml" title="Code Chronicles">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Code Chronicles" src="" onerror="this.style.display='none'">
+  Code Chronicles
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">CODE CHRONICLES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a>
+
+
+
+
+
+
+
+
+
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">성능 테스트 준비/실행</h1>
+  <h2 class="post-subtitle">nGrinder 이용해서 성능 테스트 준비</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2024-09-08T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 08, 2024
+    </time>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 16 mins</span>
+  </div>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#test">#test</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#performance">#performance</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h3 id="what-is-background">What is background..?</h3>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-08/0.png" alt="0.png"></p>
+
+<p>최근 시스템의 구조가 변경하는 과정에서 이슈가 발생했다. 사전에 서비스 점검을 공지한 후, 서비스를 중지한 상태에서 진행했다. 작업이 완료되고 서비스 오픈을 앞두고 API 의 속도가 많이 감소되었다. 급하게 PostgreSQL 을 Spec Up 해서 다시 원복했다.</p>
+
+<ul>
+  <li>용도에 맞는 DB 의 이원화 (Dynamo DB 추가)</li>
+  <li>PostgreSQL Spec Down</li>
+</ul>
+
+<p>상용과 유사한 환경에서 충분한 성능 테스트없이 진행하지 않는 것이 문제의 원인이라고 생각한다. 그리고 곧, PostgreSQL 의 Spec Down 작업이 진행될 예정이다. 성능 테스트를 어떻게 하면 좋을지에 대해 나의 간단한 생각을 간단하게 정리해보려고 한다. 참고로 나는 QA 도 SRE 도 아닌, B/E Developer 이기 때문에 전문적이지 않다!</p>
+
+<h3 id="how-to-test">How to test..?</h3>
+
+<p>현재 상황을 보면 서비스 중지없이 상용 서비스에서 PostgreSQL Spec Down 진행 후, 간단한 성능 테스트를 수행할 것 같다. 단, 사용자의 유입이 가장 적은 새벽 시간에 작업이 예정될 것 같다. 그래서 서비스의 중지없이 사용자의 서비스 이용 경험에 최대한 영향을 주지 않는 테스트 구조를 고민했다.</p>
+
+<p><strong>상용과 비슷한 환경에서 검증</strong></p>
+
+<p>이전 작업을 교훈삼아 PostgreSQL Spec Down 작업 이전에 상용과 유사한 환경을 구축하고 성능 테스트를 진행하는 것이 좋다고 생각한다. 하지만 리소스를 포함한 다양한 이유로 위와 같이 진행되지 않을 것 같다.</p>
+
+<p><strong>카나리 테스트</strong></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-08/1.png" alt="1.png"></p>
+
+<p>API 가 1EA 이상이기 때문에 1EA 만 Spec Down PostgreSQL 을 이용해서 조회하고, 나머지 API 는 기존 PostgreSQL 을 이용해서 조회하는 구조이다. 앞에서 제시한 방법보다 적은 리소스를 사용할 수 있다. 그리고 부하를 점진적으로 발생시켜서 부하테스트와 내구테스트를 진행할 수 있다고 생각한다. 하지만, replica DB 구축이 되지 않는 구조로 들었던것 같다. 이 방법으로도 진행되지 않을 것 같다.</p>
+
+<p>replica DB 만 구축이 된다면, 카나리 테스트가 최소한의 리소스로 진행할 수 있는 가장 합리적인 방법이라고 생각한다. 만약 둘다 되지 않는다면, 새벽에 정화수 떠놓고 기도하면서 작업할 수 밖에 없을 것 같다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-08/2.png" alt="2.png"></p>
+
+<p>그러나 시니어 개발자들이라면 내가 생각하지 못한 많은 아이디어들이 있을 것이라고 생각한다.</p>
+
+<h3 id="what-type-of-test-will-you-conduct">What type of test will you conduct..?</h3>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-08/3.png" alt="3.png"></p>
+
+<p>위 이미지는 <a href="https://www.youtube.com/watch?v=3cTn53dtzJI&t=527s">“우아한 테크 10분 테코톡”</a> 강의에 있는 이미지이다. 성능 테스트에 대해서 쉽게 잘 정리되있었다. 요즘 친구들은 실력이 많이 좋은 것 같다고 생각한다.</p>
+
+<ul>
+  <li>
+<strong>스모크 테스트</strong>
+    <ul>
+      <li>최소한의 부하를 주어 시스템이 정상적으로 동작하는지 확인</li>
+      <li>테스트 스크립트의 정상동작 확인</li>
+    </ul>
+  </li>
+  <li>
+<strong>스파이크 테스트</strong>
+    <ul>
+      <li>사용량이 급증하는 상항에서 시스템의 내구성과 성능 이슈 확인</li>
+    </ul>
+  </li>
+  <li>
+<strong>부하 테스트</strong>
+    <ul>
+      <li>묵표값이 해당되는 부하를 견딜 수 있는지 확인</li>
+    </ul>
+  </li>
+  <li>
+<strong>스트레스 테스트</strong>
+    <ul>
+      <li>시스템의 최대치에 해당되는 부하를 받았을 때, 시스템의 정상 동작 확인</li>
+      <li>부하테스트 선진행 필수</li>
+    </ul>
+  </li>
+  <li>
+<strong>내구 테스트 (흡수 테스트)</strong>
+    <ul>
+      <li>평균 사용률로 일정 부하를 지속적으로 주며, 시스템이 문제되는 지점 확인</li>
+    </ul>
+  </li>
+  <li>
+<strong>중단점 테스트</strong>
+    <ul>
+      <li>임계지점을 발견하기 위해 점진적으로 증가시켜서 시스템의 한계 지점 확인</li>
+    </ul>
+  </li>
+</ul>
+
+<p>상용 서비스에서 테스트를 진행한다고 가정을 한다면, <code class="language-plaintext highlighter-rouge">스모크 테스트</code>, <code class="language-plaintext highlighter-rouge">부하 테스트</code> 그리고 <code class="language-plaintext highlighter-rouge">내구 테스트</code>만 진행 할 수 있을 것 같다. 그외 다른 테스트는 상용 서비스를 사용하는 사용자의 이용경험에 영향을 줄 수 있을 것 같다.</p>
+
+<h3 id="what-is-the-goal-of-the-test">What is the goal of the test..?</h3>
+
+<p>성능 테스트의 지표로는 <code class="language-plaintext highlighter-rouge">처리량</code>과 <code class="language-plaintext highlighter-rouge">응답시간</code>이 있다. 처리량과 응답시간은 PostgreSQL 의 최근 2주 요청을 기준으로 선정했다. 그리고 대상 API 는 호출양이 많고, 응답시간이 큰 API 를 대상으로만 진행될 예정이다.</p>
+
+<ul>
+  <li>처리량
+    <ul>
+      <li>초당 처리하는 작업의 수 (RPS)</li>
+    </ul>
+  </li>
+  <li>응답시간
+    <ul>
+      <li>시스템의 요청 처리시간</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="lets-perform-the-test"><strong>Let’s perform the test..!</strong></h3>
+
+<p>이번 성능 테스트를 진행할 때, API 의 파라미터를 다양하게 설정해서 진행이 필요하다고 생각한다. 동일한 파라미터에 대한 API 의 호출은 DB 의 캐시 매커니즘으로 인해서 테스트의 신뢰성을 감소시킬 수 있다고 생각한다.</p>
+
+<p>일단 개인적인 연습이기 때문에 테스트 대상 및 목표는 다음과 같다! 그리고 평소 서비스를 이용하는 사용자의 수를 300명이라고 가정했다.</p>
+
+<ul>
+  <li>API : GET https://jsonplaceholder.typicode.com/posts/{id}</li>
+  <li>처리량 : 300RPS</li>
+  <li>응답시간 : 1초</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">nGrinder</code> 를 이용해서 다양한 파라미터의 API 를 호출할 수 있도록 스크립트를 작성해보겠다. <code class="language-plaintext highlighter-rouge">getRandomId()</code>  이용해서 최대한 캐시 매커니즘의 영향을 받지 않도록 작성했다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import static net.grinder.script.Grinder.grinder
+import static org.junit.Assert.<span class="k">*</span>
+import static org.hamcrest.Matchers.<span class="k">*</span>
+import net.grinder.script.GTest
+import net.grinder.script.Grinder
+import net.grinder.scriptengine.groovy.junit.GrinderRunner
+import net.grinder.scriptengine.groovy.junit.annotation.BeforeProcess
+import net.grinder.scriptengine.groovy.junit.annotation.BeforeThread
+import org.junit.Before
+import org.junit.BeforeClass
+import org.junit.Test
+import org.junit.runner.RunWith
+
+import java.util.Date
+import java.util.List
+import java.util.ArrayList
+import java.util.Random
+
+import net.grinder.plugin.http.HTTPRequest
+import net.grinder.plugin.http.HTTPPluginControl
+
+import HTTPClient.Cookie
+import HTTPClient.CookieModule
+import HTTPClient.HTTPResponse
+import HTTPClient.NVPair
+
+/<span class="k">**</span>
+ <span class="k">*</span> A simple example using the HTTP plugin that shows the retrieval of a
+ <span class="k">*</span> single page via HTTP.
+ <span class="k">*</span>
+ <span class="k">*</span> This script is automatically generated by ngrinder.
+ <span class="k">*</span>
+ <span class="k">*</span> @author admin
+ <span class="k">*</span>/
+@RunWith<span class="o">(</span>GrinderRunner<span class="o">)</span>
+class TestRunner <span class="o">{</span>
+
+	public static GTest <span class="nb">test
+	</span>public static HTTPRequest request
+	public static NVPair[] headers <span class="o">=</span> <span class="o">[]</span>
+	public static NVPair[] params <span class="o">=</span> <span class="o">[]</span>
+	public static Cookie[] cookies <span class="o">=</span> <span class="o">[]</span>
+	public static Random random <span class="o">=</span> new Random<span class="o">()</span>
+
+	@BeforeProcess
+	public static void beforeProcess<span class="o">()</span> <span class="o">{</span>
+		HTTPPluginControl.getConnectionDefaults<span class="o">()</span>.timeout <span class="o">=</span> 6000
+		<span class="nb">test</span> <span class="o">=</span> new GTest<span class="o">(</span>1, <span class="s2">"jsonplaceholder.typicode.com"</span><span class="o">)</span>
+		request <span class="o">=</span> new HTTPRequest<span class="o">()</span>
+		grinder.logger.info<span class="o">(</span><span class="s2">"before process."</span><span class="o">)</span><span class="p">;</span>
+	<span class="o">}</span>
+
+	@BeforeThread
+	public void beforeThread<span class="o">()</span> <span class="o">{</span>
+		test.record<span class="o">(</span>this, <span class="s2">"test"</span><span class="o">)</span>
+		grinder.statistics.delayReports<span class="o">=</span><span class="nb">true</span><span class="p">;</span>
+		grinder.logger.info<span class="o">(</span><span class="s2">"before thread."</span><span class="o">)</span><span class="p">;</span>
+	<span class="o">}</span>
+
+	@Before
+	public void before<span class="o">()</span> <span class="o">{</span>
+		request.setHeaders<span class="o">(</span>headers<span class="o">)</span>
+		cookies.each <span class="o">{</span> CookieModule.addCookie<span class="o">(</span>it, HTTPPluginControl.getThreadHTTPClientContext<span class="o">())</span> <span class="o">}</span>
+		grinder.logger.info<span class="o">(</span><span class="s2">"before. init headers and cookies"</span><span class="o">)</span><span class="p">;</span>
+	<span class="o">}</span>
+
+	@Test
+	public void <span class="nb">test</span><span class="o">(){</span>
+		HTTPResponse result <span class="o">=</span> request.GET<span class="o">(</span><span class="s2">"http://jsonplaceholder.typicode.com/posts/"</span> + getRandomId<span class="o">()</span>, params<span class="o">)</span>
+
+		<span class="k">if</span> <span class="o">(</span>result.statusCode <span class="o">==</span> 301 <span class="o">||</span> result.statusCode <span class="o">==</span> 302<span class="o">)</span> <span class="o">{</span>
+			grinder.logger.warn<span class="o">(</span><span class="s2">"Warning. The response may not be correct. The response code was {}."</span>, result.statusCode<span class="o">)</span><span class="p">;</span>
+		<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+			assertThat<span class="o">(</span>result.statusCode, is<span class="o">(</span>200<span class="o">))</span><span class="p">;</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+	
+	private int getRandomId<span class="o">()</span> <span class="o">{</span>
+        <span class="k">return </span>random.nextInt<span class="o">(</span>100<span class="o">)</span> + 1
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>nGrinder 에서 제공하는 <code class="language-plaintext highlighter-rouge">Ramb-Up</code> 을 사용해서 점진적으로 가상 사용자를 증가시킬 예정이다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-08/4.png" alt="4.png"></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-08/5.png" alt="5.png"></p>
+
+<p>가상 사용자를 조절하면서 테스트를 진행하면 될 것 같다.</p>
+
+<h3 id="i-think-">I think …</h3>
+
+<p>이전 회사에서 서비스 오픈 전 또는 프로모션 전에 성능 테스트를 진행했다. 성능 테스트 요청서만 작성했을 뿐, 성능 테스트에 대한 고민을 해본적이 없었다. 그때 프로세스 및 테스트 방식에 대해 더 많이 관심을 가졌다면, 지금보다 더 좋은 방식을 고안할 수 있었을텐데 …</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-08/6.png" alt="6.png"></p>
+
+<p>이번 성능 테스트를 진행하는 과정에서 (내가 참여하지는 않았지만) 제일 아쉬운점은 테스트의 목표 및 일정에 대해서만 논의가 될뿐, 어떤 시나리오로 테스트를 할지에 대해서는 논의가 되지 않는다는 점이다.</p>
+
+<p>그리고 서비스 중지없이 상용 서비스에서 테스트를 한다는점이 가장 아쉽다.</p>
+
+<p>오늘 노을이 너무 이뻣다. 마치 피로 물든것 마냥 …</p>
+
+
+    </div>
+
+</article>
+</section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --></section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2024 lkhlkh23</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

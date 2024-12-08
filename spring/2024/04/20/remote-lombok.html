@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>lombok 제거 By Record + 객체지향 | Code Chronicles</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="lombok 제거 By Record + 객체지향">
+<meta name="author" content="lkhlkh23">
+<meta property="og:locale" content="ko">
+<meta name="description" content="java 17 기반으로 작성된 프로젝트를 java 21 로 버전으로 변경하면서 lombok 도 함께 제거하기로 결정을 했다. 대부분 클래스에 lombok 을 사용하고 있기 때문에 공수가 많이 발생할지라도 안전하게 제거하는 것을 목표로 진행하려고 한다.">
+<meta property="og:description" content="java 17 기반으로 작성된 프로젝트를 java 21 로 버전으로 변경하면서 lombok 도 함께 제거하기로 결정을 했다. 대부분 클래스에 lombok 을 사용하고 있기 때문에 공수가 많이 발생할지라도 안전하게 제거하는 것을 목표로 진행하려고 한다.">
+<link rel="canonical" href="https://lkhlkh23.github.io/jekyll-theme-yat/spring/2024/04/20/remote-lombok.html">
+<meta property="og:url" content="https://lkhlkh23.github.io/jekyll-theme-yat/spring/2024/04/20/remote-lombok.html">
+<meta property="og:site_name" content="Code Chronicles">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-04-20T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="lombok 제거 By Record + 객체지향">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"lkhlkh23"},"dateModified":"2024-04-20T00:00:00+00:00","datePublished":"2024-04-20T00:00:00+00:00","description":"java 17 기반으로 작성된 프로젝트를 java 21 로 버전으로 변경하면서 lombok 도 함께 제거하기로 결정을 했다. 대부분 클래스에 lombok 을 사용하고 있기 때문에 공수가 많이 발생할지라도 안전하게 제거하는 것을 목표로 진행하려고 한다.","headline":"lombok 제거 By Record + 객체지향","mainEntityOfPage":{"@type":"WebPage","@id":"https://lkhlkh23.github.io/jekyll-theme-yat/spring/2024/04/20/remote-lombok.html"},"url":"https://lkhlkh23.github.io/jekyll-theme-yat/spring/2024/04/20/remote-lombok.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="">
+  <link rel="canonical" href="https://lkhlkh23.github.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://lkhlkh23.github.io/jekyll-theme-yat/feed.xml" title="Code Chronicles">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Code Chronicles" src="" onerror="this.style.display='none'">
+  Code Chronicles
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">CODE CHRONICLES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a>
+
+
+
+
+
+
+
+
+
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">lombok 제거 By Record + 객체지향</h1>
+  <h2 class="post-subtitle">lombok 제거하는 과정</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2024-04-20T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Apr 20, 2024
+    </time>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 25 mins</span>
+  </div>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#record">#record</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#lombok">#lombok</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p>java 17 기반으로 작성된 프로젝트를 java 21 로 버전으로 변경하면서 lombok 도 함께 제거하기로 결정을 했다.
+대부분 클래스에 lombok 을 사용하고 있기 때문에 공수가 많이 발생할지라도 안전하게 제거하는 것을 목표로 진행하려고 한다.</p>
+
+<p>그래서 안전하게 lombok 을 제거하는 절차에 대해 간단하게 작성하려고 한다. 아래에 있는 방식은 대중적으로 많이 언급되는 방식들을 이곳 저곳에서 참조해서 만들었다.</p>
+
+<h3 id="record-의-특징">Record 의 특징</h3>
+
+<p>자바 14부터 도입된 Record 는 불변 데이터를 간단하게 정의하는데 사용되는 특별한 종류의 클래스이다. Record 는 주로 데이터 전달에 사용된다. 데이터만 포함하는 단순한 객체를 표현할 때 유용하다.</p>
+
+<p><strong>불변성</strong></p>
+
+<p>Record 는 <strong>불변 객체</strong>로서 생성 후에는 필드를 변경할 수 없다. 불변객체는 <strong>Thread Safe</strong> 하다. 불변 객체는 수정할 수 없기 때문에 여러 스레드에서 동시에 접근해도 안전하다. 따라서 동기화 작업을 할 필요가 없기 때문에 복잡성을 줄일 수 있다. 또한, 불변 객체는 상태가 변하지 않기 때문에 <strong>코드의 예측성과 신뢰성</strong>을 보장한다.</p>
+
+<p><strong>간결성</strong></p>
+
+<p>Record 를 정의할 때, <strong>allArgsConstructor, getter equals, hashCode, toString</strong> 메소드를 자동으로 생성해주기 때문에 코드가 간결해진다.</p>
+
+<h3 id="프로젝트에서-lombok-제거에-영향을-주는-경우">프로젝트에서 lombok 제거에 영향을 주는 경우</h3>
+
+<ol>
+  <li>DTO</li>
+  <li>Mapstruct</li>
+  <li>Domain</li>
+  <li>Entity</li>
+</ol>
+
+<h3 id="case1-dto-에서-lombok-제거-절차">Case.1 DTO 에서 lombok 제거 절차</h3>
+
+<p><strong>Step.0 수정 대상</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Getter</span>
+<span class="nd">@Setter</span>
+<span class="nd">@NoArgsConstructor</span>
+<span class="nd">@AllArgsConstructor</span>
+<span class="nd">@ToString</span>
+<span class="nd">@EqualsAndHashCode</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="o">{</span>
+
+	<span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="nc">String</span> <span class="n">location</span><span class="o">;</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>Step.1 테스트 코드 작성</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">PersonTest</span> <span class="o">{</span>
+
+	<span class="nd">@Test</span>
+	<span class="kt">void</span> <span class="nf">test_person</span><span class="o">()</span> <span class="o">{</span>
+		<span class="c1">// given</span>
+		<span class="kd">final</span> <span class="nc">Person</span> <span class="n">person</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Person</span><span class="o">(</span><span class="s">"LEE"</span><span class="o">,</span> <span class="mi">33</span><span class="o">,</span> <span class="s">"ilsan"</span><span class="o">);</span>
+
+		<span class="c1">// when</span>
+		<span class="n">person</span><span class="o">.</span><span class="na">setLocation</span><span class="o">(</span><span class="s">"seoul"</span><span class="o">);</span>
+
+		<span class="c1">// then</span>
+		<span class="n">assertEquals</span><span class="o">(</span><span class="s">"LEE"</span><span class="o">,</span> <span class="n">person</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+		<span class="n">assertNotNull</span><span class="o">(</span><span class="n">person</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+		<span class="n">assertNotNull</span><span class="o">(</span><span class="n">person</span><span class="o">.</span><span class="na">hashCode</span><span class="o">());</span>
+		<span class="n">assertTrue</span><span class="o">(</span><span class="n">person</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">person</span><span class="o">));</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>Step.2 lombok 어노테이션을 제거</strong></p>
+
+<p>마우스 우클릭 → Delombok → All lombok annotations 를 선택하면 lombok 어노테이션이 제거되고, 아래와 같이 변환된다.
+<img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-04-20/2.png" alt="2.png"></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="o">{</span>
+
+	<span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="nc">String</span> <span class="n">location</span><span class="o">;</span>
+
+	<span class="kd">public</span> <span class="nf">Person</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">,</span> <span class="kt">int</span> <span class="n">age</span><span class="o">,</span> <span class="nc">String</span> <span class="n">location</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">location</span> <span class="o">=</span> <span class="n">location</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="nf">Person</span><span class="o">()</span> <span class="o">{</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">name</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">getAge</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">age</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">getLocation</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">location</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setAge</span><span class="o">(</span><span class="kt">int</span> <span class="n">age</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setLocation</span><span class="o">(</span><span class="nc">String</span> <span class="n">location</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">location</span> <span class="o">=</span> <span class="n">location</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Object</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">o</span> <span class="o">==</span> <span class="k">this</span><span class="o">)</span>
+			<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+		<span class="k">if</span> <span class="o">(!(</span><span class="n">o</span> <span class="k">instanceof</span> <span class="nc">Person</span><span class="o">))</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+		<span class="kd">final</span> <span class="nc">Person</span> <span class="n">other</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Person</span><span class="o">)</span><span class="n">o</span><span class="o">;</span>
+		<span class="k">if</span> <span class="o">(!</span><span class="n">other</span><span class="o">.</span><span class="na">canEqual</span><span class="o">((</span><span class="nc">Object</span><span class="o">)</span><span class="k">this</span><span class="o">))</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+		<span class="kd">final</span> <span class="nc">Object</span> <span class="k">this</span><span class="n">$name</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+		<span class="kd">final</span> <span class="nc">Object</span> <span class="n">other$name</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+		<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="n">$name</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">other$name</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">:</span> <span class="o">!</span><span class="k">this</span><span class="n">$name</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">other$name</span><span class="o">))</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+		<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">getAge</span><span class="o">()</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="na">getAge</span><span class="o">())</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+		<span class="kd">final</span> <span class="nc">Object</span> <span class="k">this</span><span class="n">$location</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getLocation</span><span class="o">();</span>
+		<span class="kd">final</span> <span class="nc">Object</span> <span class="n">other$location</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="na">getLocation</span><span class="o">();</span>
+		<span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="n">$location</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="n">other$location</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">:</span> <span class="o">!</span><span class="k">this</span><span class="n">$location</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">other$location</span><span class="o">))</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+		<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">protected</span> <span class="kt">boolean</span> <span class="nf">canEqual</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Object</span> <span class="n">other</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">other</span> <span class="k">instanceof</span> <span class="nc">Person</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">hashCode</span><span class="o">()</span> <span class="o">{</span>
+		<span class="kd">final</span> <span class="kt">int</span> <span class="no">PRIME</span> <span class="o">=</span> <span class="mi">59</span><span class="o">;</span>
+		<span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+		<span class="kd">final</span> <span class="nc">Object</span> <span class="n">$name</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+		<span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">*</span> <span class="no">PRIME</span> <span class="o">+</span> <span class="o">(</span><span class="n">$name</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="mi">43</span> <span class="o">:</span> <span class="n">$name</span><span class="o">.</span><span class="na">hashCode</span><span class="o">());</span>
+		<span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">*</span> <span class="no">PRIME</span> <span class="o">+</span> <span class="k">this</span><span class="o">.</span><span class="na">getAge</span><span class="o">();</span>
+		<span class="kd">final</span> <span class="nc">Object</span> <span class="n">$location</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getLocation</span><span class="o">();</span>
+		<span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">*</span> <span class="no">PRIME</span> <span class="o">+</span> <span class="o">(</span><span class="n">$location</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">?</span> <span class="mi">43</span> <span class="o">:</span> <span class="n">$location</span><span class="o">.</span><span class="na">hashCode</span><span class="o">());</span>
+		<span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="s">"Person(name="</span> <span class="o">+</span> <span class="k">this</span><span class="o">.</span><span class="na">getName</span><span class="o">()</span> <span class="o">+</span> <span class="s">", age="</span> <span class="o">+</span> <span class="k">this</span><span class="o">.</span><span class="na">getAge</span><span class="o">()</span> <span class="o">+</span> <span class="s">", location="</span> <span class="o">+</span> <span class="k">this</span><span class="o">.</span><span class="na">getLocation</span><span class="o">()</span> <span class="o">+</span> <span class="s">")"</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>Step.3 getter 이름 변경</strong></p>
+
+<p>Record 에서는 lombok 과는 다르게 필드명으로 getter 를 자동으로 생성한다. (getAge() → age())</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">String</span> <span class="nf">name</span><span class="o">()</span> <span class="o">{</span>
+	<span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">name</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">int</span> <span class="nf">age</span><span class="o">()</span> <span class="o">{</span>
+	<span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">age</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="nc">String</span> <span class="nf">location</span><span class="o">()</span> <span class="o">{</span>
+	<span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">location</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>Step.4 불필요 setter 제거 및 setter 수정</strong></p>
+
+<p>먼저 사용하지 않는 setter 를 제거한다. Record 는 불변객체이기 때문에 setter 를 이용해서 객체의 필드를 변경해서는 안된다. 그렇기 때문에 신규로 객체를 생성하는 방법이 옳다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">Person</span> <span class="nf">withLocation</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Person</span> <span class="n">person</span><span class="o">,</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">location</span><span class="o">)</span> <span class="o">{</span>
+	<span class="k">return</span> <span class="k">new</span> <span class="nf">Person</span><span class="o">(</span><span class="n">person</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="n">person</span><span class="o">.</span><span class="na">age</span><span class="o">,</span> <span class="n">location</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>Step.5 객체의 필드를 final 로 변경</strong></p>
+
+<p><strong>Step6. Record 에서 기본적으로 제공해주는 메소드를 제거하고, Record 로 변경</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="n">record</span> <span class="nf">Person</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">,</span> <span class="kt">int</span> <span class="n">age</span><span class="o">,</span> <span class="nc">String</span> <span class="n">location</span><span class="o">)</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="nc">Person</span> <span class="nf">withLocation</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Person</span> <span class="n">person</span><span class="o">,</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">location</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nf">Person</span><span class="o">(</span><span class="n">person</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="n">person</span><span class="o">.</span><span class="na">age</span><span class="o">,</span> <span class="n">location</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>테스트 코드를 Step 이 동작할 때마다 실행을 시키면서 안전하게 Record 로 변경해보자.</p>
+
+<h3 id="case2-mapstruct">Case.2 Mapstruct</h3>
+
+<p>Record 는 불변객체이기 때문에 setter 를 지원하지 않는다. 그렇기 때문에 Mapstruct 가 정상적으로 동작하지 않을 것이라고 생각했다. 하지만 Mapstuct 가 아래와 같이 변경되었다. setter 가 아닌 생성자를 이용했다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Generated</span><span class="o">(</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="s">"org.mapstruct.ap.MappingProcessor"</span><span class="o">,</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="s">"2024-04-20T14:49:50+0900"</span><span class="o">,</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="s">"version: 1.4.1.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.7.jar, environment: Java 17.0.8 (Oracle Corporation)"</span>
+<span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">PersonMapperImpl</span> <span class="kd">implements</span> <span class="nc">PersonMapper</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">Person</span> <span class="nf">toDomain</span><span class="o">(</span><span class="nc">PersonV1</span> <span class="n">domain</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span> <span class="n">domain</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="nc">String</span> <span class="n">location</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">name</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+
+        <span class="n">location</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="na">address</span><span class="o">();</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="na">name</span><span class="o">();</span>
+        <span class="n">age</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="na">age</span><span class="o">();</span>
+
+        <span class="nc">Person</span> <span class="n">person</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Person</span><span class="o">(</span> <span class="n">name</span><span class="o">,</span> <span class="n">age</span><span class="o">,</span> <span class="n">location</span> <span class="o">);</span>
+
+        <span class="k">return</span> <span class="n">person</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="case3-domain">Case.3 Domain</h3>
+
+<p>Calculator 코드를 보면 Price 와 Receipt 는 필드를 가져와서 다시 Receipt 필드에 값을 수정하고 있다. 조금은 억지스러운 코드일 수 있다. 하지만 이렇게 작성하는 사람 주변에 한명쯤 있을걸?!</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@AllArgsConstructor</span>
+<span class="nd">@Getter</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Price</span> <span class="o">{</span>
+
+	<span class="kd">private</span> <span class="nc">String</span> <span class="n">subject</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="kt">int</span> <span class="n">fee</span><span class="o">;</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Setter</span>
+<span class="nd">@Getter</span>
+<span class="nd">@AllArgsConstructor</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Receipt</span> <span class="o">{</span>
+
+	<span class="kd">private</span> <span class="kt">int</span> <span class="n">total</span><span class="o">;</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Calculator</span> <span class="o">{</span>
+
+	<span class="kd">public</span> <span class="nc">Receipt</span> <span class="nf">calculate</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Price</span> <span class="n">price1</span><span class="o">,</span> <span class="kd">final</span> <span class="nc">Price</span> <span class="n">price2</span><span class="o">)</span> <span class="o">{</span>
+		<span class="kd">final</span> <span class="nc">Receipt</span> <span class="n">receipt</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Receipt</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+		<span class="n">receipt</span><span class="o">.</span><span class="na">setTotal</span><span class="o">(</span><span class="n">receipt</span><span class="o">.</span><span class="na">getTotal</span><span class="o">()</span> <span class="o">+</span> <span class="n">price1</span><span class="o">.</span><span class="na">getFee</span><span class="o">()</span> <span class="o">+</span> <span class="n">price2</span><span class="o">.</span><span class="na">getFee</span><span class="o">());</span>
+
+		<span class="k">return</span> <span class="n">receipt</span><span class="o">;</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Calculator 에서 필드의 값들을 가져와서 변경하는 방식이 아닌, Receipt 에 메세지를 전달해서 처리하는 방식으로 수정해서 lombok 을 제거했다. 책임을 수행하는 객체들이 메세지를 통한 자유로운 협력을 통해 애플리케이션을 구축하는 방법으로 개발하려고 한다. 이러한 방법을 객체지향이라고 생각한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Price</span> <span class="o">{</span>
+
+	<span class="kd">private</span> <span class="nc">String</span> <span class="n">subject</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="kt">int</span> <span class="n">fee</span><span class="o">;</span>
+
+	<span class="kd">public</span> <span class="kd">static</span> <span class="nc">Price</span> <span class="nf">of</span><span class="o">(</span><span class="kd">final</span> <span class="nc">String</span> <span class="n">subject</span><span class="o">,</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">fee</span><span class="o">)</span> <span class="o">{</span>
+		<span class="kd">final</span> <span class="nc">Price</span> <span class="n">price</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Price</span><span class="o">();</span>
+		<span class="n">price</span><span class="o">.</span><span class="na">subject</span> <span class="o">=</span> <span class="n">subject</span><span class="o">;</span>
+		<span class="n">price</span><span class="o">.</span><span class="na">fee</span> <span class="o">=</span> <span class="n">fee</span><span class="o">;</span>
+
+		<span class="k">return</span> <span class="n">price</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">getFee</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">fee</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Receipt</span> <span class="o">{</span>
+
+	<span class="kd">private</span> <span class="kt">int</span> <span class="n">total</span><span class="o">;</span>
+
+	<span class="kd">public</span> <span class="nf">Receipt</span><span class="o">(</span><span class="kd">final</span> <span class="kt">int</span> <span class="n">total</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">total</span> <span class="o">=</span> <span class="n">total</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">calculate</span><span class="o">(</span><span class="kd">final</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Price</span><span class="o">&gt;</span> <span class="n">prices</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">for</span> <span class="o">(</span><span class="kd">final</span> <span class="nc">Price</span> <span class="n">price</span> <span class="o">:</span> <span class="n">prices</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">this</span><span class="o">.</span><span class="na">total</span> <span class="o">+=</span> <span class="n">price</span><span class="o">.</span><span class="na">getFee</span><span class="o">();</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Calculator</span> <span class="o">{</span>
+
+	<span class="kd">public</span> <span class="nc">Receipt</span> <span class="nf">calculate</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Price</span> <span class="n">price1</span><span class="o">,</span> <span class="kd">final</span> <span class="nc">Price</span> <span class="n">price2</span><span class="o">)</span> <span class="o">{</span>
+		<span class="kd">final</span> <span class="nc">Receipt</span> <span class="n">receipt</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Receipt</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+		<span class="n">receipt</span><span class="o">.</span><span class="na">calculate</span><span class="o">(</span><span class="nc">List</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">price1</span><span class="o">,</span> <span class="n">price2</span><span class="o">));</span>
+
+		<span class="k">return</span> <span class="n">receipt</span><span class="o">;</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>위와 같이 작성을 하면 불필요한 getter/setter 메소드도 제거할 수 있고, 테스트 코드를 작성하기도 쉽다는 장점 또한 가지고 있다.</p>
+
+<h3 id="case4-entity">Case4. Entity</h3>
+
+<p>Entity 에서는 Record 가 적합하지는 않다. Record 는 불변하므로 JPA 의 특성과 잘 맞지 않다. JPA 는 Entity 를 관리하고 상태를 변경하는 것을 지원하는데, Record 는 불변이므로 변경이 어렵다. 또한, JPA Entity 는 기본 생성자를 가져야 하며, Record 의 생성자와는 다르기 때문에 문제가 발생한다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"student"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="n">record</span> <span class="nf">Student</span><span class="o">(</span><span class="nd">@Id</span> <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"id"</span><span class="o">)</span> <span class="nc">String</span> <span class="n">id</span><span class="o">,</span>
+					  <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"name"</span><span class="o">)</span> <span class="nc">String</span> <span class="n">name</span><span class="o">,</span>
+					  <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"grade"</span><span class="o">)</span> <span class="nc">String</span> <span class="n">grade</span><span class="o">)</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-04-20/0.png" alt="0.png"></p>
+
+<p>요약을 하자면 Record 는 DTO 에는 적합하지만, JPA Entity 에는 적합하지 않는다.</p>
+
+<p>lombok 을 제거하는 방법에 대해 간단하게 정리를 했다. 대부분의 개발자라면 기본적으로 인지하고 있는 내용이기 때문에 가볍게 읽었을 것이다. 요즘 공부를 소홀히 했는데, 다시 자극을 받게되었다. 하늘은 참 부지런도 하는 것이… 정말 내가 마음 편하게 쉬는 것을 보지 못하는것 같다.
+<img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-04-20/1.png" alt="0.png"></p>
+
+
+
+    </div>
+
+</article>
+</section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --></section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2024 lkhlkh23</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
