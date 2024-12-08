@@ -20,9 +20,7 @@ Code coverage 는 정량적인 지표를 제공하기 때문에 테스트되지 
 
 `Test coverage` 는 테스트가 애플리케이션의 기능을 얼마나 포괄하는지를 측정하는데 사용하는 매커니즘이다. Test coverage 는 엔드 유저 관점에서 QA 에 의해 계산된다. Test coverage 를 측정하기 위해서는 일반적으로 [Selenium](https://www.baeldung.com/selenium-webdriver-page-object), [Playwright](https://playwright.dev/), [Cypress](https://www.cypress.io/) 와 같은 도구를 활용한다.
 
-수동으로 진행하는 테스트 같은 경우, 전문적인 지식이 필요하지 않고, 구현하기가 쉽다는 장점을 가지고 있다.
-
-그리고, Test coverage 는 Code coverage 와 달리 품질적이므로 정량화하기가 어렵다.
+수동으로 진행하는 테스트 같은 경우, 전문적인 지식이 필요하지 않고, 구현하기가 쉽다는 장점을 가지고 있다. 그리고, Test coverage 는 Code coverage 와 달리 품질적이므로 정량화하기가 어렵다.
 
 ### What is Jacoco..?!
 
@@ -57,8 +55,6 @@ Jacoco 에서 제공하는 _COVERED 지표에서는 테스트 코드가 존재�
 그러나, Mutant 를 생성하고 테스트를 수행하는데 많은 시간이 소요된다는 단점이 있다. 그리고 특정 코드에 대해서는 Mutant 를 생성하고 테스트하기 어려울 수 있다. 예를들어, 외부 API 호출, 데이터베이스에 의존적인 코드와 같이 3rd Party 와 연관된 코드에 대해서는 테스트의 한계가 있다.
 
 이러한 단점을 보완하기 위해서는 전체 코드에 대해서 Mutation Test 를 하는것이 아닌, 특정 코드에 대해서만 선별적으로 진행하는 것을 권장한다. 외부 API 호출이나 비동기 작업에 대해 Mock을 사용하여 한계점을 극복하는 것이 좋다.
-
-### How is PITest Performed..?!
 
 PITest 를 위해서 build.gradle 의 설정을 아래와 같이 작성한다.
 
@@ -112,24 +108,89 @@ tasks.named('test') {
 
 그리고 개발 코드와 테스트 코드를 아래과 같이 작성했다.
 
+
 ```java
-<개발코드>
+public class Calculator {
+
+	public int calculate(final int num1, final int num2, final char operand) throws Exception {
+		if (operand == '+') {
+			return sum(num1, num2);
+		}
+
+		if (operand == '-') {
+			return subtract(num1, num2);
+		}
+
+		if (operand == '*') {
+			return multiply(num1, num2);
+		}
+
+		throw new Exception("존재하지 않는 연산자 입니다.");
+	}
+
+	public int sum(final int num1, final int num2) {
+		return num1 + num2;
+	}
+
+	public int multiply(final int num1, final int num2) {
+		return num1 * num2;
+	}
+
+	public int subtract(final int num1, final int num2) {
+		return num1 - num2;
+	}
+
+}
 ```
 
 ```java
-<테스트코드>
+class CalculatorTest {
+
+	@Test
+	void test_calculate_1() throws Exception {
+		// given
+		final Calculator calculator = new Calculator();
+
+		// when
+		final int result = calculator.calculate(1, 2, '-');
+
+		// then
+		assertEquals(-1, result);
+	}
+
+	@Test
+	void test_calculate_2() throws Exception {
+		// given
+		final Calculator calculator = new Calculator();
+
+		// when
+		final int result = calculator.calculate(1, 2, '*');
+
+		// then
+		assertEquals(2, result);
+	}
+
+}
 ```
 
-그리고나서, PITest 를 실행하고 결과를 확인했다.
+그리고나서, PITest 를 실행하고 결과를 확인하자! 결과 레포트는 `build/reports/pitest/index.html` 에서 확인할 수 있다.
 
 ```bash
-<./gradlew> 
+./gradlew pitest
 ```
 
-<결과 화면 및 소개>
+레포트를 보면, 테스트 클래스의 Line coverage, Mutation coverage, Test strength 를 확인할 수 있다. `Mutation coverage` 가 높다는 것은 테스트 코드의 변형에 잘 반응하고 있다는 것을 의미한다. 결국은, 테스트 코드를 명확하게 잘 작성했다는 것으로 해석하면 편하다. 
+
+`Test strength` 는 테스트 코드 실행되었는지 유무를 넘어서, 다양한 경로 및 예외적인 조건을 얼마나 충족했는지를 의미한다. 
+
+![2.png](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-04/2.png)
+
+![3.png](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-04/3.png)
+
+![4.png](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-04/4.png)
 
 ### And I am ..
 
-최근에 ~~조직개판~~이 아닌, 조직개편이 있었다. 어쩌다보니 팀에서 파트가 방출되었다. 개발의 효율성에 맞게 조직이동을 할 수 있다고 생각할 수 있다. 처음에 나도 그렇게 생각했다. 하지만, 최근에 방출이라는 느낌을 받았다. 현재 조직에서의 회고 및 안녕도 하기전에 새로운 팀원들과 계속해서 미팅을 하시는 과정에서 묘한 쓸쓸함을 느꼈다. 이런것을 환승연애라고 하는것인가?!
+최근에 ~~조직개판~~이 아닌, 조직개편이 있었다. 어쩌다보니 팀에서 파트가 방출되었다. 개발의 효율성에 맞게 조직이동을 할 수 있다고 생각할 수 있다. 처음에 나도 그렇게 생각했다. 하지만, 최근에 방출이라는 느낌을 받았다. 이런것을 환승이별의 기분이 이런것일까?!
 
 ![1.png](https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-04/1.png)
