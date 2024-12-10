@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Jsoup SocketTimeoutException 에 대해서 | Code Chronicles</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Jsoup SocketTimeoutException 에 대해서">
+<meta name="author" content="lkhlkh23">
+<meta property="og:locale" content="ko">
+<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+<meta property="og:description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+<link rel="canonical" href="https://lkhlkh23.github.io/jekyll-theme-yat/java/2024/01/02/unresolved-jsoup-socket-timeout.html">
+<meta property="og:url" content="https://lkhlkh23.github.io/jekyll-theme-yat/java/2024/01/02/unresolved-jsoup-socket-timeout.html">
+<meta property="og:site_name" content="Code Chronicles">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-01-02T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Jsoup SocketTimeoutException 에 대해서">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"lkhlkh23"},"dateModified":"2024-01-02T00:00:00+00:00","datePublished":"2024-01-02T00:00:00+00:00","description":"Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","headline":"Jsoup SocketTimeoutException 에 대해서","mainEntityOfPage":{"@type":"WebPage","@id":"https://lkhlkh23.github.io/jekyll-theme-yat/java/2024/01/02/unresolved-jsoup-socket-timeout.html"},"url":"https://lkhlkh23.github.io/jekyll-theme-yat/java/2024/01/02/unresolved-jsoup-socket-timeout.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="">
+  <link rel="canonical" href="https://lkhlkh23.github.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://lkhlkh23.github.io/jekyll-theme-yat/feed.xml" title="Code Chronicles">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Code Chronicles" src="" onerror="this.style.display='none'">
+  Code Chronicles
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">CODE CHRONICLES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a>
+
+
+
+
+
+
+
+
+
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Jsoup SocketTimeoutException 에 대해서</h1>
+  <h2 class="post-subtitle">해결되지 않는 SocketTimeoutException 에 대해서 나의 시도들</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2024-01-02T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jan 02, 2024
+    </time>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 16 mins</span>
+  </div>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#jsoup">#jsoup</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#crawling">#crawling</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#socketTimeoutException">#socketTimeoutException</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-02/banner.png" alt="banner"></p>
+
+<p>최근 VIP 에게 쇼핑몰 상품 이미지를 자동으로 다운받을 수 있는 기능을 개발해달라는 요청을 받았다.</p>
+
+<p>Java <strong>Jsoup</strong> 라이브러리를 사용하면 손쉽게 크롤링할 수 있다고 생각해서 진행을 했다.
+물론, 로컬 환경까지 너무나도 쉽게 크롤링이 완료되었고, 마침내 AWS 에 서비스를 배포했다.</p>
+
+<p>하지만, ‘Z 쇼핑몰’ 과 ‘C 쇼핑몰’ 크롤링은 정상적으로 수행되었지만, ‘B 쇼핑몰’ 은 실패했다.</p>
+
+<p>나의 불행의 시작은 지금부터 시작되었다.</p>
+
+<h3 id="jsoup-소개">Jsoup 소개</h3>
+
+<p><a href="https://jsoup.org/">Jsoup 라이브러리 소개</a> 링크로 들어가면 Jsoup 에 대한 소개 및 사용법에 대해 자세하게 나와있다.</p>
+
+<p>참고하면 될 것 같다. 그럼에도 불구하고 한줄로 요약하자면 아래와 같다.</p>
+
+<aside>
+Java 로 HTML 파싱하여 특정 정보를 조회하고, 조작할 수 있는 강력한 기능을 제공하는 라이브러리
+
+</aside>
+
+<h3 id="발생-오류">발생 오류</h3>
+
+<p>다른 ‘Z 쇼핑몰’ 과 ‘C 쇼핑몰’ 크롤링은 정상적으로 수행되었지만, ‘B 쇼핑몰’ 크롤링하는 과정에서 아래와 같은 오류가 발생했다. 하지만, local 에서는 ‘B 쇼핑몰’ 도 정상적으로 수행되었지만, AWS EC2 배포한 서비스에서만 아래와 같은 오류가 발생했다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java.net.SocketTimeoutException: Read timed out
+        at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:288)
+        at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:314)
+        at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:355)
+</code></pre></div></div>
+
+<p>문제가 되는 코드는 아래 로직이다. 디버깅을 해보니 ‘B 쇼핑몰’ 에서 get() 과정에서 오류가 발생했다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>final String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+final Document document = Jsoup.connect(url)
+                                .userAgent(userAgent)
+                                .get();
+</code></pre></div></div>
+
+<h3 id="오류-해결">오류 해결</h3>
+
+<p><strong>시도-1</strong></p>
+
+<p>Jsoup Issue 게시판을 검색해서 다음과 같은 <a href="https://github.com/jhy/jsoup/issues/1165">질문</a>을 찾았다. 하지만 inbound, outbound 규칙 모두 확인했을 때, 제약없이 열려있었다. 그렇다면 더더욱 local 환경과 차이가 없을 것이다.</p>
+
+<p>결국 이것은 시도해볼것도 없이 <strong>실패</strong>했다.</p>
+
+<p><strong>시도-2</strong></p>
+
+<p>timeout 시간은 default 가 3000ms 라서, timeout 시간을 5000ms 로 조정했다.</p>
+
+<p>참고로 timeout 을 0 으로 설정하면 무한으로 설정할 수 있다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>final String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+final Document document = Jsoup.connect(url)
+                               .userAgent(userAgent)
+                               .timeout(5 * 1000)
+                               .get();
+</code></pre></div></div>
+
+<p>하지만, 결과는 동일하였고, <strong>실패</strong>했다.</p>
+
+<p><strong>시도-3</strong></p>
+
+<p>tomcat 의 connection-timeout 설정을 변경했다. 혹시 tomcat connection timeout 이 문제일까?! 라는 의문을 가졌다.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">server</span><span class="pi">:</span>
+  <span class="na">port</span><span class="pi">:</span> <span class="m">8080</span>
+  <span class="na">connection-timeout</span><span class="pi">:</span> <span class="m">1800000</span>
+</code></pre></div></div>
+
+<p>하지만, 결과는 동일하였고, <strong>실패</strong>했다.</p>
+
+<p><strong>시도-3</strong></p>
+
+<p>‘B 쇼핑몰’ 에서 프로그램을 통해 악의적인 크롤링을 하는 것으로 인지하고, 차단하는 것이라고 생각했다.</p>
+
+<p>header, referrer, cookie, userAgent 를 추가해서 사용자의 접근과 비슷하게 보이도록 설정했다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>final String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+final Document document = Jsoup.connect(url)
+                               .userAgent(userAgent)
+                               .method(Connection.Method.GET)
+                               .ignoreContentType(true)
+                               .referrer("http://www.google.com")
+                               .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
+                               .header("Accept-Encoding", "gzip, deflate, br")
+                               .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
+                               .header("Cache-Control", "max-age=0")
+                               .header("Sec-Ch-Ua-Mobile", "?0")
+                               .header("Sec-Fetch-Dest", "document")
+                               .header("Sec-Fetch-Mode", "navigate")
+                               .header("Sec-Fetch-Site", "none")
+                               .header("Sec-Fetch-User", "?1")
+                               .header("Upgrade-Insecure-Requests", "1")
+                               .cookies(getCookies())
+                               .timeout(1000 * 30)
+                               .get();
+
+
+private Map&lt;String, String&gt; getCookies() {
+	final Map&lt;String, String&gt; cookies = new HashMap&lt;&gt;();
+	cookies.put("_evga_0c2d", "2uui22:%2.......");
+
+        return cookies;
+}
+</code></pre></div></div>
+
+<p>하지만, 결과는 동일하였고, <strong>실패</strong>했다.</p>
+
+<p><strong>시도-4</strong></p>
+
+<p>Jsoup Issue 게시판을 검색해서 다음과 같은 <a href="https://github.com/jhy/jsoup/issues/1740">질문</a>을 찾았다. userAgent 를 변경해보라고 한다!</p>
+
+<ul>
+  <li>as-is
+    <ul>
+      <li>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36</li>
+    </ul>
+  </li>
+  <li>to-be
+    <ul>
+      <li>WhatsApp/2.19.81 A</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>final String userAgent = "WhatsApp/2.19.81 A";
+final Document document = Jsoup.connect(url)
+                               .userAgent(userAgent)
+                               .method(Connection.Method.GET)
+                               .ignoreContentType(true)
+                               .referrer("http://www.google.com")
+                               .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
+                               .header("Accept-Encoding", "gzip, deflate, br")
+                               .header("Accept-Language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7")
+                               .header("Cache-Control", "max-age=0")
+                               .header("Sec-Ch-Ua-Mobile", "?0")
+                               .header("Sec-Fetch-Dest", "document")
+                               .header("Sec-Fetch-Mode", "navigate")
+                               .header("Sec-Fetch-Site", "none")
+                               .header("Sec-Fetch-User", "?1")
+                               .header("Upgrade-Insecure-Requests", "1")
+                               .cookies(getCookies())
+                               .timeout(1000 * 30)
+                               .get();
+</code></pre></div></div>
+
+<p>하지만, 결과는 동일하였고, <strong>실패</strong>했다.</p>
+
+<h3 id="결론">결론</h3>
+
+<p>해결하지 못했다. Jsoup get() 은 결국 HttpClient 와 같은 라이브러리로 통신을 해서 응답을 받고, 응답된 문서를 HTML 파싱하는 순서로 동작을 할 것이다. 그런데, 계속해서 실패하고 있다. local 아니기 때문에 디버깅에도 한계가 있고… 정말 야마가.. 돈다…</p>
+
+<p>왜 그런것일까?!</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>enviroment</th>
+      <th>B 쇼핑몰</th>
+      <th>Z 쇼핑몰</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>local</td>
+      <td>success</td>
+      <td>success</td>
+    </tr>
+    <tr>
+      <td>aws</td>
+      <td>SocketTimeoutException</td>
+      <td>success</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>정답을 아시는분이 있다면 메일 부탁드립니다!! (lkhlkh09@gmail.com)</p>
+
+
+    </div>
+
+</article>
+</section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --></section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2024 lkhlkh23</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

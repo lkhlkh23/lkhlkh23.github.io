@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>SpringBoot 3.x 로 왜 전환해야 하는가?! | Code Chronicles</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="SpringBoot 3.x 로 왜 전환해야 하는가?!">
+<meta name="author" content="lkhlkh23">
+<meta property="og:locale" content="ko">
+<meta name="description" content="최근에 Sonarqube 를 도입하는 과정에서 SpringBoot 2.x 버전으로 사용하는 프로젝트를 다수 확인했다. 서비스의 시작 시점을 고려하면, SpringBoot 2.x 버전으로 개발한것에 대해서는 충분히 이해가 되었다. 하지만, 올해 생성한 프로젝트마저 SpringBoot 2.x 버전으로 개발되었다는 사실은 조금 혼란스러웠다.">
+<meta property="og:description" content="최근에 Sonarqube 를 도입하는 과정에서 SpringBoot 2.x 버전으로 사용하는 프로젝트를 다수 확인했다. 서비스의 시작 시점을 고려하면, SpringBoot 2.x 버전으로 개발한것에 대해서는 충분히 이해가 되었다. 하지만, 올해 생성한 프로젝트마저 SpringBoot 2.x 버전으로 개발되었다는 사실은 조금 혼란스러웠다.">
+<link rel="canonical" href="https://lkhlkh23.github.io/jekyll-theme-yat/springboot/2024/10/27/why-upgrade-springboot3.html">
+<meta property="og:url" content="https://lkhlkh23.github.io/jekyll-theme-yat/springboot/2024/10/27/why-upgrade-springboot3.html">
+<meta property="og:site_name" content="Code Chronicles">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-10-27T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="SpringBoot 3.x 로 왜 전환해야 하는가?!">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"lkhlkh23"},"dateModified":"2024-10-27T00:00:00+00:00","datePublished":"2024-10-27T00:00:00+00:00","description":"최근에 Sonarqube 를 도입하는 과정에서 SpringBoot 2.x 버전으로 사용하는 프로젝트를 다수 확인했다. 서비스의 시작 시점을 고려하면, SpringBoot 2.x 버전으로 개발한것에 대해서는 충분히 이해가 되었다. 하지만, 올해 생성한 프로젝트마저 SpringBoot 2.x 버전으로 개발되었다는 사실은 조금 혼란스러웠다.","headline":"SpringBoot 3.x 로 왜 전환해야 하는가?!","mainEntityOfPage":{"@type":"WebPage","@id":"https://lkhlkh23.github.io/jekyll-theme-yat/springboot/2024/10/27/why-upgrade-springboot3.html"},"url":"https://lkhlkh23.github.io/jekyll-theme-yat/springboot/2024/10/27/why-upgrade-springboot3.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="">
+  <link rel="canonical" href="https://lkhlkh23.github.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://lkhlkh23.github.io/jekyll-theme-yat/feed.xml" title="Code Chronicles">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Code Chronicles" src="" onerror="this.style.display='none'">
+  Code Chronicles
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">CODE CHRONICLES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a>
+
+
+
+
+
+
+
+
+
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">SpringBoot 3.x 로 왜 전환해야 하는가?!</h1>
+  <h2 class="post-subtitle">하이리스크-로우리턴인데, SpringBoot 3.x 로 왜 전환해야해?!</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2024-10-27T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Oct 27, 2024
+    </time>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 9 mins</span>
+  </div>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#springboot">#springboot</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p>최근에 Sonarqube 를 도입하는 과정에서 SpringBoot 2.x 버전으로 사용하는 프로젝트를 다수 확인했다. 서비스의 시작 시점을 고려하면, SpringBoot 2.x 버전으로 개발한것에 대해서는 충분히 이해가 되었다. 하지만, 올해 생성한 프로젝트마저 SpringBoot 2.x 버전으로 개발되었다는 사실은 조금 혼란스러웠다.</p>
+
+<p>그래서, 평가시즌이 끝나서 추가 개발이 빈번하지 않는 지금이 SpringBoot 3.x 버전으로 전환할 수 있는 가장 좋은 타이밍라고 생각한다. 그 누구도 시키지 않았지만 진행하려고 한다.</p>
+
+<p>나는 SpringBoot 3.x 전환을 <code class="language-plaintext highlighter-rouge">하이리스크-로우리턴</code> 이라고 생각한다. 고려사항과 작업내역 그리고 이슈가 발생할 수 있는 가능성도 많다. 하지만, 전환이 완료됬을 때, 정량적으로도 가시적으로도 향상된 부분을 바로 체감할 수 없다. 그렇기 때문에, 전환이 이슈없이 성공하면 본전, 실패하면 인민재판이다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-27/0.png" alt="0.png"></p>
+
+<p>그래서, SpringBoot 3.x 로 전환의 정당성을 부여하기 위해 SpringBoot 3.x 로 전환해야하는 이유를 정리해보려고 한다.</p>
+
+<h3 id="최신-java-표준-호환성"><strong>최신 Java 표준 호환성</strong></h3>
+
+<p>Spring Boot 3.x 는 최소 Java 17+ 을 기본으로 지원한다. 반면, Spring Boot 2.x 는 Java 17+ 의 버전을 지원하지 않기 때문에 Java 17+ 가 제공하는 기능을 활용할 수 없는 한계가 있다.</p>
+
+<p>또한, Spring Boot 3.x 이상에서는 Jakarta EE 9+ 를 채택하여 <code class="language-plaintext highlighter-rouge">javax.*</code> 대신 <code class="language-plaintext highlighter-rouge">jakarta.*</code> 네임스페이스로 완전히 전환되었다. 이는 Oracle 과의 상표권 이슈로 인해 <code class="language-plaintext highlighter-rouge">javax</code> 네임스페이스를 사용할 수 없게 되었기 때문이다. 따라서 <code class="language-plaintext highlighter-rouge">jakarta</code>는 <code class="language-plaintext highlighter-rouge">javax</code>의 최신 버전으로 이해하면 된다. 현재 <code class="language-plaintext highlighter-rouge">javax</code>는 더 이상 업데이트되지 않기 때문에 <code class="language-plaintext highlighter-rouge">jakarta</code>로의 전환이 필요하다.</p>
+
+<h3 id="최신-보안-표준-지원---spring-security-6">최신 보안 표준 지원 - Spring Security 6</h3>
+
+<p>Spring Security 6 는 Java 17+ 에서 동작하도록 설계되었다. Spring Security 6 에서는 보안 취약점이 발견될 가능성이 있는 API 를 제거하고, 최신 보안 표준을 준수하는 API 만 유지하게 되었다.</p>
+
+<p>EX) WebSecurityConfigurerAdapter 제거되고, Lambda 기반의 방식으로 변경</p>
+
+<p>SprintBoot 2.x - WebSecurityConfigurerAdapter</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@EnableWebSecurity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SecurityConfig</span> <span class="kd">extends</span> <span class="nc">WebSecurityConfigurerAdapter</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="nc">HttpSecurity</span> <span class="n">http</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="n">http</span>
+            <span class="o">.</span><span class="na">authorizeRequests</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">anyRequest</span><span class="o">().</span><span class="na">authenticated</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>SpringBoot 3.x - Lambda 방식</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@EnableWebSecurity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SecurityConfig</span> <span class="o">{</span>
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">SecurityFilterChain</span> <span class="nf">securityFilterChain</span><span class="o">(</span><span class="nc">HttpSecurity</span> <span class="n">http</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="n">http</span>
+            <span class="o">.</span><span class="na">authorizeHttpRequests</span><span class="o">(</span><span class="n">auth</span> <span class="o">-&gt;</span> <span class="n">auth</span>
+                <span class="o">.</span><span class="na">anyRequest</span><span class="o">().</span><span class="na">authenticated</span><span class="o">()</span>
+            <span class="o">);</span>
+        <span class="k">return</span> <span class="n">http</span><span class="o">.</span><span class="na">build</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>또한, 보안 필터 체인 설정하는 방식이 더 간단하고, 유연하게 변경되었다. 그리고, CSRF 와 HTTP 헤더 보안, 인증 엔드포인트 보호 등 여러 보안 설정에서 기본값이 더 강화되었다. 이전에는 개발자가 보안 설정을 직접 구성해야 했던 부분들이 기본적으로 더 안전하게 설정되어 있어 보안성을 향상시켰다.</p>
+
+<h3 id="성능-향상---graalvm-네이티브-이미지">성능 향상 - GraalVM 네이티브 이미지</h3>
+
+<p>SpringBoot 2.x 에서는 <code class="language-plaintext highlighter-rouge">JIT (Just-In-Time) 컴파일러</code> 를 사용해 실행 중에 필요한 코드를 컴파일하고 최적화했다. 그러나, SpringBoot 3.x 에서는 <code class="language-plaintext highlighter-rouge">AOT 컴파일</code> 을 사용해 미리 코드 전체를 바이너리 파일로 컴파일한다. AOT 컴파일 방식 덕분에, 실행 시점에 컴파일 작업이 필요하지 않기 때문에 실행 시간이 빨라지고 메모리 사용이 최적화된다.</p>
+
+<p>또한, GraalVM은 미리 컴파일하면서 불필요한 부분들을 걸러내는데, 이 과정을 Dead Code Elimination이라고고 한다. 예를 들어, 사용되지 않는 클래스나 메서드가 있다면 컴파일 과정에서 포함되지 않아 전체적인 애플리케이션 크기가 줄어들고, 필요 없는 코드가 실행되지 않기 때문에 성능이 최적화된다.</p>
+
+<h3 id="결론">결론</h3>
+
+<p>SpringBoot 2.x 에서는 더이상 업데이트가 되지 않는 서비스가 존재하기 때문에 계속해서 애플리케이션을 운영해야한다면, SpringBoot 3.x 로 전환이 반드시 필요하다! 최신 보안 표준 및 성능 개선과 함께 장기적인 유지보수가 필요하다면 변경하자!</p>
+
+<p>아직도 SpringBoot 3.x 전환이 고민된다면…?! 내가 만약 3년이내 퇴사가 예정되있다면, 그냥 SpringBoot 2.x 를 계속 사용해라!</p>
+
+<p>최근 리프레시를 위해서 워케이션과 동행자를 찾고 있다! 하지만, 주변에 재택이 가능한 개발자들이 멸종했다. 혼자가면 방컨디션이 다운그레이드가 되서 걱정이 된다! 이제 나에게 남은 희망은 한명이다!</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-27/1.png" alt="1.png"></p>
+
+<p>나를 실망시키지 말아라! 하지만, 우선 허락을 구하는게 1순위겠지?!</p>
+
+<h3 id="references">References</h3>
+
+<ul>
+  <li><a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Migration-Guide">SpringBoot 3.x 전환 가이드</a></li>
+  <li><a href="https://velog.io/@ililil9482/Spring-3.x-Security-%EC%84%A4%EC%A0%95">SpringBoot 3.x 전환 필요 이유</a></li>
+  <li><a href="https://mangkyu.tistory.com/302">GraalVM</a></li>
+  <li><a href="https://gyoogle.dev/blog/computer-language/Java/%EC%BB%B4%ED%8C%8C%EC%9D%BC%20%EA%B3%BC%EC%A0%95.html">Java 컴파일 동작원리</a></li>
+  <li><a href="https://hyeinisfree.tistory.com/26">컴파일러 vs 인터프리터</a></li>
+</ul>
+
+
+    </div>
+
+</article>
+</section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --></section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2024 lkhlkh23</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

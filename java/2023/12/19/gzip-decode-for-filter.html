@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>gzip 압축된 post method payload 처리 | Code Chronicles</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="gzip 압축된 post method payload 처리">
+<meta name="author" content="lkhlkh23">
+<meta property="og:locale" content="ko">
+<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+<meta property="og:description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+<link rel="canonical" href="https://lkhlkh23.github.io/jekyll-theme-yat/java/2023/12/19/gzip-decode-for-filter.html">
+<meta property="og:url" content="https://lkhlkh23.github.io/jekyll-theme-yat/java/2023/12/19/gzip-decode-for-filter.html">
+<meta property="og:site_name" content="Code Chronicles">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-12-19T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="gzip 압축된 post method payload 처리">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"lkhlkh23"},"dateModified":"2023-12-19T00:00:00+00:00","datePublished":"2023-12-19T00:00:00+00:00","description":"Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","headline":"gzip 압축된 post method payload 처리","mainEntityOfPage":{"@type":"WebPage","@id":"https://lkhlkh23.github.io/jekyll-theme-yat/java/2023/12/19/gzip-decode-for-filter.html"},"url":"https://lkhlkh23.github.io/jekyll-theme-yat/java/2023/12/19/gzip-decode-for-filter.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="">
+  <link rel="canonical" href="https://lkhlkh23.github.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://lkhlkh23.github.io/jekyll-theme-yat/feed.xml" title="Code Chronicles">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Code Chronicles" src="" onerror="this.style.display='none'">
+  Code Chronicles
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">CODE CHRONICLES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a>
+
+
+
+
+
+
+
+
+
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">gzip 압축된 post method payload 처리</h1>
+  <h2 class="post-subtitle">content-encoding gzip, filter</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2023-12-19T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Dec 19, 2023
+    </time>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 13 mins</span>
+  </div>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#spring">#spring</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-19/banner.png" alt="banner"></p>
+
+<p>최근에 ‘D회사’ 로부터 전달받은 데이터를 DB 에 저장하는 API 를 개발했다.
+‘D회사’ 에서는 아래와 같은 curl 을 통해 API 를 호출했다.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">echo</span> <span class="dl">'</span><span class="s1">["key":"value"]</span><span class="dl">'</span> <span class="o">|</span> <span class="nx">gzip</span> <span class="o">|</span> <span class="nx">curl</span> <span class="o">-</span><span class="nx">X</span> <span class="nx">POST</span> <span class="o">-</span><span class="nx">H</span> <span class="dl">"</span><span class="s2">Content-Encoding: gzip</span><span class="dl">"</span> <span class="o">-</span><span class="nx">H</span> <span class="dl">"</span><span class="s2">Content-Type: application/json</span><span class="dl">"</span> <span class="o">--</span><span class="nx">data</span><span class="o">-</span><span class="nx">binary</span> <span class="p">@</span> <span class="p">[</span><span class="nx">https</span><span class="p">:</span><span class="c1">//example-url/push](https://localhost:8080/push) </span>
+</code></pre></div></div>
+
+<p>하지만, 현재 개발된 API 에서는 500 오류가 발생하고, 데이터를 DB 에 저장하지 못했다.
+이를 해결한 간단한 코드를 정리하려고 한다.</p>
+
+<p>그전에 <strong>content-encoding gzip</strong>, <strong>filter vs interceptor</strong> 에 대해 간단하게 알아보려고 한다.</p>
+
+<h3 id="content-encoding-gzip">content-encoding gzip</h3>
+
+<p>content-encoding 은 리소스 (텍스트, 미디어 …) 전송하는 동안 데이터를 압축하거나 인코딩하는 방법을 정의하는 헤더이다. 대역폭을 절약하고 웹 페이지 로딩 시간을 단축하는 데 도움이 된다.</p>
+
+<ul>
+  <li>
+<strong>gzip</strong>
+    <ul>
+      <li>텍스트 기반의 리소스를 압축하기 위해 사용</li>
+      <li>서버는 리소스를 gzip으로 압축하여 클라이언트에게 전송하고, <strong>클라이언트는 해당 리소스를 받은 후에 gzip을 decode 처리 후 사용</strong>
+</li>
+    </ul>
+  </li>
+  <li>
+<strong>deflate:</strong> 텍스트 기반의 리소스를 압축하기 위해 사용</li>
+  <li>
+<strong>br</strong>
+    <ul>
+      <li>텍스트 및 압축 효율이 높은 리소스에 대한 압축하기 위해 사용 (gzip 보다 더 효과적)</li>
+    </ul>
+  </li>
+  <li>
+<strong>identity:</strong>
+    <ul>
+      <li>인코딩이 적용되지 않았음을 의미</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="filter-vs-interceptor">Filter vs Interceptor</h3>
+
+<p>Filter 는 Dispatcher Servlet 에 요청이 전달되기 전 / 후에 URL 패턴에 맞는 모든 요청에 대해 부가 작업을 처리할 수 있는 기능을 제공한다. 또한, 스프링 컨테이너가 아닌 톰캣과 같은 웹 컨테이너에 의해 관리가 되는 것이고 스프링 범위 밖에서 처리된다.</p>
+
+<p>Interceptor 는 Dispatcher Servlet 이 Controller 를 호출하기 전/후에 인터셉터가 끼어들어 요청과 응답을 참조하거나 가공할 수 있는 기능을 제공한다</p>
+
+<blockquote>
+  <p><strong>Dispatcher Servlet</strong>
+HTTP 로 들어오는 모든 요청을 가장 먼저 받아 적합한 컨트롤러에 위임해주는 프론트 컨트롤러</p>
+
+</blockquote>
+
+<p>Filter 와 Interceptor 의 가장 큰 차이는 Request 와 Response 에 대한 조작 유무의 차이이다. <strong>Filter 는 Filter Chaining 통해서 원하는 Request 와 Response 객체를 전달할 수 있다.</strong> Filter 는 조작이 가능하다!</p>
+
+<h3 id="오류-원인">오류 원인</h3>
+
+<p>오류의 원인은 간단하다. ‘D회사’ 에서 전달받은 Payload 는 gzip 으로 압축되었고, 해당 데이터는 Dispatcher Servlet 통해서 URL 패턴에 맞는 Controller 에게 전달되었다. gzip 으로 압축된 데이터는 Controller 의 DTO 형식에 맞지 않았고, 결국은 500 오류가 발생한 것이다.</p>
+
+<h3 id="해결-방법">해결 방법</h3>
+
+<p>결국은, gzip 으로 압축된 데이터는 decode 하고 Controller 에게 넘겨야 한다. 그러기 위해서 Filter 가 필요하다. Interceptor 로 개발을 한다면, Request 에서 전달받은 Payload 를 읽어서 decode 할 수 있지만, decode 한 데이터를 Request 에 넣을 수 없다. 왜냐하면?! Interceptor 는 Request 를 조작할 수 없기 때문이다.</p>
+
+<p>결국은, Request 를 변경할 수 있는 Filter 를 이용해야 한다. gzip decode 처리한 데이터를 가지고 있는 새로운 Request 를 전달하는 방식으로 문제를 해결해야 한다.</p>
+
+<h3 id="해결-코드">해결 코드</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class GzipBodyDecodeFilter implements Filter {
+	@Override
+	public void doFilter(final ServletRequest servletRequest,
+						 final ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
+		final HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+		final boolean isGzipped =
+			request.getHeader(HttpHeaders.CONTENT_ENCODING) != null &amp;&amp; request.getHeader(HttpHeaders.CONTENT_ENCODING)
+																			  .contains("gzip");
+		final boolean isPostMethod = "POST".equals(request.getMethod());
+		// gzip 압축되었거나, POST 요청에 대해서만 gzip decode 수행!
+		if (isGzipped &amp;&amp; isPostMethod) {
+			// client 로 부터 전달받은 request 가 아닌, gzip decode 된 데이터를 가지고 있는 신규 request 전달
+			chain.doFilter(new GZIPRequestWrapper(request), servletResponse);
+			return;
+		}
+		chain.doFilter(servletRequest, servletResponse);
+	}
+
+	private static class GZIPRequestWrapper extends HttpServletRequestWrapper {
+		private final String decompressed;
+		
+		public GZIPRequestWrapper(HttpServletRequest request) throws IOException {
+			super(request);
+			final byte[] inputs = IoUtils.toByteArray(request.getInputStream());
+			this.decompressed = decompress(inputs);
+		}
+
+		@Override
+		public ServletInputStream getInputStream() {
+			final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
+				decompressed.getBytes(StandardCharsets.UTF_8));
+			return new ServletInputStream() {
+				@Override
+				public boolean isFinished() {
+					return false;
+				}
+
+				@Override
+				public boolean isReady() {
+					return false;
+				}
+
+				@Override
+				public void setReadListener(ReadListener listener) {
+				}
+
+				@Override
+				public int read() {
+					// 데이터를 읽을 때는 gzip decode 된 데이터를 읽을 수 있도록 오버라이딩
+					return byteArrayInputStream.read();
+				}
+			};
+		}
+
+		@Override
+		public BufferedReader getReader() {
+			return new BufferedReader(new InputStreamReader(this.getInputStream()));
+		}
+
+		// gzip decode 메소드
+		private String decompress(final byte[] value) {
+			try (ByteArrayOutputStream outStream = new ByteArrayOutputStream(); GZIPInputStream gzipInStream = new GZIPInputStream(
+				new ByteArrayInputStream(value))) {
+				byte[] buffer = new byte[1024];
+				int bytesRead;
+				while ((bytesRead = gzipInStream.readNBytes(buffer, 0, buffer.length)) &gt; 0) {
+					outStream.write(buffer, 0, bytesRead);
+				}
+				return new String(outStream.toByteArray());
+			} catch (Exception e) {
+				return "";
+		
+</code></pre></div></div>
+
+
+    </div>
+
+</article>
+</section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --></section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2024 lkhlkh23</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
