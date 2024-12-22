@@ -1,0 +1,2548 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Tags | Code Chronicles</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Tags">
+<meta name="author" content="lkhlkh23">
+<meta property="og:locale" content="ko">
+<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+<meta property="og:description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+<link rel="canonical" href="https://lkhlkh23.github.io/jekyll-theme-yat/tags.html">
+<meta property="og:url" content="https://lkhlkh23.github.io/jekyll-theme-yat/tags.html">
+<meta property="og:site_name" content="Code Chronicles">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Tags">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"lkhlkh23"},"description":"Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","headline":"Tags","url":"https://lkhlkh23.github.io/jekyll-theme-yat/tags.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="">
+  <link rel="canonical" href="https://lkhlkh23.github.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://lkhlkh23.github.io/jekyll-theme-yat/feed.xml" title="Code Chronicles">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Code Chronicles" src="" onerror="this.style.display='none'">
+  Code Chronicles
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">CODE CHRONICLES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a>
+
+
+
+
+
+
+
+
+
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <div class="page-segments">
+  <ul class="page-segments-list">
+    
+    <h2 id="actuator" class="segment-name">actuator</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Dec 10, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/12/10/health-check-down.html">
+    간단한 Health Check Down 이슈 수정<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="apidoc" class="segment-name">apidoc</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Mar 27, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/03/27/auto-swagger.html">
+    Swagger ApiResponse 자동화<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="aws" class="segment-name">aws</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jan 21, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/aws/2024/01/21/secret-manager-rds-sqs.html">
+    Secret Manager, RDS, SQS 연동<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="bean" class="segment-name">bean</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jan 17, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/01/17/dynamic-bean-create.html">
+    프로퍼티 파일을 이용해서 Bean 동적 생성<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="conference" class="segment-name">conference</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Nov 12, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/insight/2024/11/12/conference-naver-dan-day2.html">
+    2024 Naver DAN Day2 후기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="crawling" class="segment-name">crawling</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jan 02, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2024/01/02/unresolved-jsoup-socket-timeout.html">
+    Jsoup SocketTimeoutException 에 대해서<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="dan" class="segment-name">dan</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Nov 12, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/insight/2024/11/12/conference-naver-dan-day2.html">
+    2024 Naver DAN Day2 후기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="decoration" class="segment-name">decoration</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Aug 31, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/sonarqube/2024/08/31/sonarqube-jenkins-github.html">
+    SonarQube + Jenkins + Github 연동 (with PR Decoration)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 23, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/sonarqube/2024/06/23/sonarqube-github.html">
+    SonarQube 와 Github 연동 (with PR Decoration)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="eureka" class="segment-name">eureka</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jul 30, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/07/30/eureka-server-restart-issue.html">
+    Eureka Server 재시작 시, 서비스 등록 실패<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="final" class="segment-name">final</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jul 21, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2024/07/21/why-use-final-keyword.html">
+    자바에서 final 사용해야 하는 이유<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="github" class="segment-name">github</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Aug 31, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/sonarqube/2024/08/31/sonarqube-jenkins-github.html">
+    SonarQube + Jenkins + Github 연동 (with PR Decoration)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 23, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/sonarqube/2024/06/23/sonarqube-github.html">
+    SonarQube 와 Github 연동 (with PR Decoration)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="google-login" class="segment-name">google-login</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Feb 09, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/02/09/oauth-concept-3.html">
+    Rest API 로 Google Login 구현<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 03, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/02/03/oauth-concept-2.html">
+    OpenID Connect 와 Google login 구현<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="h2" class="segment-name">h2</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Dec 21, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/jpa/2023/12/21/h2-on-duplicated-key-test.html">
+    H2 ON DUPLICATED KEY 테스트<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="immutable" class="segment-name">immutable</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jul 22, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2024/07/22/why-use-immutable.html">
+    불변객체를 사용해야 하는 이유 (이펙티브 자바 아이템 17)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="insight" class="segment-name">insight</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Dec 08, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/insight/2024/12/08/review-2024.html">
+    2024년 KPT 회고<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Nov 12, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/insight/2024/11/12/conference-naver-dan-day2.html">
+    2024 Naver DAN Day2 후기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="intellij" class="segment-name">intellij</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Dec 17, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2023/12/17/checkstyle.html">
+    Checkstyle 필요성과 간단한 커스텀<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="jacoco" class="segment-name">jacoco</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Dec 03, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2024/12/03/codecoverage-jacoco-pitest.html">
+    Code Coverage - Jacoco + PITest<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="java" class="segment-name">java</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Dec 10, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/12/10/health-check-down.html">
+    간단한 Health Check Down 이슈 수정<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Dec 03, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2024/12/03/codecoverage-jacoco-pitest.html">
+    Code Coverage - Jacoco + PITest<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jul 22, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2024/07/22/why-use-immutable.html">
+    불변객체를 사용해야 하는 이유 (이펙티브 자바 아이템 17)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jul 21, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2024/07/21/why-use-final-keyword.html">
+    자바에서 final 사용해야 하는 이유<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Apr 20, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/04/20/remote-lombok.html">
+    lombok 제거 By Record + 객체지향<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 20, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/01/20/jsend-error-vs-fail.html">
+    API 응답값 형에 대한 고민-2<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 18, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/01/18/api-response-format.html">
+    API 응답값 형에 대한 고민-1<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 17, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/01/17/dynamic-bean-create.html">
+    프로퍼티 파일을 이용해서 Bean 동적 생성<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 02, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2024/01/02/unresolved-jsoup-socket-timeout.html">
+    Jsoup SocketTimeoutException 에 대해서<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Dec 19, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2023/12/19/gzip-decode-for-filter.html">
+    gzip 압축된 post method payload 처리<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Dec 17, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2023/12/17/checkstyle.html">
+    Checkstyle 필요성과 간단한 커스텀<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="jenkins" class="segment-name">jenkins</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Aug 31, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/sonarqube/2024/08/31/sonarqube-jenkins-github.html">
+    SonarQube + Jenkins + Github 연동 (with PR Decoration)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="jpa" class="segment-name">jpa</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Dec 26, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/jpa/2023/12/26/transaciton-read-only-load-balance.html">
+    Transaction read only master-replication 분기 처리<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Dec 25, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/jpa/2023/12/25/why-use-transactioal-read-only-true.html">
+    Transaction read only true 왜 써야할까?!<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Dec 21, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/jpa/2023/12/21/h2-on-duplicated-key-test.html">
+    H2 ON DUPLICATED KEY 테스트<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="jsend" class="segment-name">jsend</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jan 20, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/01/20/jsend-error-vs-fail.html">
+    API 응답값 형에 대한 고민-2<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 18, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/01/18/api-response-format.html">
+    API 응답값 형에 대한 고민-1<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="jsoup" class="segment-name">jsoup</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jan 02, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2024/01/02/unresolved-jsoup-socket-timeout.html">
+    Jsoup SocketTimeoutException 에 대해서<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="kakao-2022" class="segment-name">kakao-2022</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Sep 22, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/springbatch/2024/09/22/spring-batch-performance.html">
+    스프링배치 성능 최적화<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="kotlin" class="segment-name">kotlin</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Dec 22, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/kotlin/2024/12/22/kotlin-2.html">
+    Kotlin-2. 코틀린 계산기 구현<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Dec 21, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/kotlin/2024/12/21/kotlin-1.html">
+    Kotlin-1. 코틀린 기본 문법<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="lombok" class="segment-name">lombok</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Apr 20, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/04/20/remote-lombok.html">
+    lombok 제거 By Record + 객체지향<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="mdc" class="segment-name">mdc</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Sep 30, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/springboot/2024/09/30/mdc.html">
+    MDC, Servlet Container, ThreadPool<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="migration" class="segment-name">migration</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Nov 21, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/springboot/2024/11/21/springboot-version-migration.html">
+    SpringBoot 3.x 마이그레이션<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="msa" class="segment-name">msa</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Apr 05, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/04/05/how-are-your-msa.html">
+    당신의 MSA 는 안녕하신가요?!<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="mutation" class="segment-name">mutation</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Dec 03, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2024/12/03/codecoverage-jacoco-pitest.html">
+    Code Coverage - Jacoco + PITest<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="naver" class="segment-name">naver</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Nov 12, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/insight/2024/11/12/conference-naver-dan-day2.html">
+    2024 Naver DAN Day2 후기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="oauth" class="segment-name">oauth</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jan 28, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/01/28/oauth-concept-1.html">
+    OAuth 2.0 상세 동작순서와 OAuth 1.0 과 비교<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="oauth1.0" class="segment-name">oauth1.0</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jan 28, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/01/28/oauth-concept-1.html">
+    OAuth 2.0 상세 동작순서와 OAuth 1.0 과 비교<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="oauth2.0" class="segment-name">oauth2.0</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Feb 09, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/02/09/oauth-concept-3.html">
+    Rest API 로 Google Login 구현<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 03, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/02/03/oauth-concept-2.html">
+    OpenID Connect 와 Google login 구현<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 28, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/01/28/oauth-concept-1.html">
+    OAuth 2.0 상세 동작순서와 OAuth 1.0 과 비교<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="openid-connect" class="segment-name">openid-connect</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Feb 03, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/02/03/oauth-concept-2.html">
+    OpenID Connect 와 Google login 구현<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="performance" class="segment-name">performance</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Oct 01, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/test/2024/10/01/k6-load-test.html">
+    K6 + InfluxDB + Prometheus + Grafana 를 이용한 성능테스트<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Sep 22, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/springbatch/2024/09/22/spring-batch-performance.html">
+    스프링배치 성능 최적화<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Sep 08, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/test/2024/09/08/load-test.html">
+    성능 테스트 준비/실행<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Sep 07, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/test/2024/09/07/ngrinder.html">
+    성능 테스트 도구 nGrinder<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Aug 30, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/test/2024/08/30/vegeta.html">
+    성능 테스트 도구 Vegeta<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="pitest" class="segment-name">pitest</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Dec 03, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2024/12/03/codecoverage-jacoco-pitest.html">
+    Code Coverage - Jacoco + PITest<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="pr" class="segment-name">pr</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Aug 31, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/sonarqube/2024/08/31/sonarqube-jenkins-github.html">
+    SonarQube + Jenkins + Github 연동 (with PR Decoration)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 23, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/sonarqube/2024/06/23/sonarqube-github.html">
+    SonarQube 와 Github 연동 (with PR Decoration)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="quality" class="segment-name">quality</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Dec 03, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2024/12/03/codecoverage-jacoco-pitest.html">
+    Code Coverage - Jacoco + PITest<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="rds" class="segment-name">rds</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jan 21, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/aws/2024/01/21/secret-manager-rds-sqs.html">
+    Secret Manager, RDS, SQS 연동<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="record" class="segment-name">record</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Apr 20, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/04/20/remote-lombok.html">
+    lombok 제거 By Record + 객체지향<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="rest" class="segment-name">rest</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jan 20, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/01/20/jsend-error-vs-fail.html">
+    API 응답값 형에 대한 고민-2<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 18, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/01/18/api-response-format.html">
+    API 응답값 형에 대한 고민-1<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="scdf" class="segment-name">scdf</h2>
+      
+      
+        <li class="">
+<span class="post-meta">May 13, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/05/13/scdf-2.html">
+    Spring Cloud Data Flow - 2<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Apr 19, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/04/19/scdf-1.html">
+    Spring Cloud Data Flow - 1<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="secret-manager" class="segment-name">secret-manager</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jan 21, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/aws/2024/01/21/secret-manager-rds-sqs.html">
+    Secret Manager, RDS, SQS 연동<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="servlet-container" class="segment-name">servlet-container</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Sep 30, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/springboot/2024/09/30/mdc.html">
+    MDC, Servlet Container, ThreadPool<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="sevelet" class="segment-name">sevelet</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Sep 30, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/springboot/2024/09/30/mdc.html">
+    MDC, Servlet Container, ThreadPool<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="socketTimeoutException" class="segment-name">socketTimeoutException</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jan 02, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2024/01/02/unresolved-jsoup-socket-timeout.html">
+    Jsoup SocketTimeoutException 에 대해서<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="sonarqube" class="segment-name">sonarqube</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Aug 31, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/sonarqube/2024/08/31/sonarqube-jenkins-github.html">
+    SonarQube + Jenkins + Github 연동 (with PR Decoration)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jun 23, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/sonarqube/2024/06/23/sonarqube-github.html">
+    SonarQube 와 Github 연동 (with PR Decoration)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="spring" class="segment-name">spring</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jul 30, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/07/30/eureka-server-restart-issue.html">
+    Eureka Server 재시작 시, 서비스 등록 실패<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 09, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/02/09/oauth-concept-3.html">
+    Rest API 로 Google Login 구현<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Feb 03, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/02/03/oauth-concept-2.html">
+    OpenID Connect 와 Google login 구현<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 28, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/01/28/oauth-concept-1.html">
+    OAuth 2.0 상세 동작순서와 OAuth 1.0 과 비교<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 21, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/aws/2024/01/21/secret-manager-rds-sqs.html">
+    Secret Manager, RDS, SQS 연동<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 20, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/01/20/jsend-error-vs-fail.html">
+    API 응답값 형에 대한 고민-2<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 18, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/01/18/api-response-format.html">
+    API 응답값 형에 대한 고민-1<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Jan 17, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/01/17/dynamic-bean-create.html">
+    프로퍼티 파일을 이용해서 Bean 동적 생성<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Dec 19, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2023/12/19/gzip-decode-for-filter.html">
+    gzip 압축된 post method payload 처리<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="springbatch" class="segment-name">springbatch</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Sep 22, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/springbatch/2024/09/22/spring-batch-performance.html">
+    스프링배치 성능 최적화<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">May 13, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/05/13/scdf-2.html">
+    Spring Cloud Data Flow - 2<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Apr 19, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/04/19/scdf-1.html">
+    Spring Cloud Data Flow - 1<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="springboot" class="segment-name">springboot</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Dec 10, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/12/10/health-check-down.html">
+    간단한 Health Check Down 이슈 수정<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Nov 21, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/springboot/2024/11/21/springboot-version-migration.html">
+    SpringBoot 3.x 마이그레이션<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Oct 27, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/springboot/2024/10/27/why-upgrade-springboot3.html">
+    SpringBoot 3.x 로 왜 전환해야 하는가?!<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Apr 05, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/04/05/how-are-your-msa.html">
+    당신의 MSA 는 안녕하신가요?!<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Mar 27, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/03/27/auto-swagger.html">
+    Swagger ApiResponse 자동화<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="sqs" class="segment-name">sqs</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Jan 21, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/aws/2024/01/21/secret-manager-rds-sqs.html">
+    Secret Manager, RDS, SQS 연동<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="swagger" class="segment-name">swagger</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Mar 27, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/spring/2024/03/27/auto-swagger.html">
+    Swagger ApiResponse 자동화<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="test" class="segment-name">test</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Dec 03, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/java/2024/12/03/codecoverage-jacoco-pitest.html">
+    Code Coverage - Jacoco + PITest<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Oct 01, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/test/2024/10/01/k6-load-test.html">
+    K6 + InfluxDB + Prometheus + Grafana 를 이용한 성능테스트<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Sep 08, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/test/2024/09/08/load-test.html">
+    성능 테스트 준비/실행<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Sep 07, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/test/2024/09/07/ngrinder.html">
+    성능 테스트 도구 nGrinder<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Aug 30, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/test/2024/08/30/vegeta.html">
+    성능 테스트 도구 Vegeta<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="thread-pool" class="segment-name">thread-pool</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Sep 30, 2024</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/springboot/2024/09/30/mdc.html">
+    MDC, Servlet Container, ThreadPool<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+    <h2 id="transaction" class="segment-name">transaction</h2>
+      
+      
+        <li class="">
+<span class="post-meta">Dec 26, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/jpa/2023/12/26/transaciton-read-only-load-balance.html">
+    Transaction read only master-replication 분기 처리<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+        <li class="">
+<span class="post-meta">Dec 25, 2023</span>
+<span>
+  <a class="post-link" href="/jekyll-theme-yat/jpa/2023/12/25/why-use-transactioal-read-only-true.html">
+    Transaction read only true 왜 써야할까?!<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+</span>
+</li>
+        
+      
+    
+  </ul>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="common-list">
+  <ul>
+    <li>
+      <a href="/jekyll-theme-yat/index.html">
+        All<span>37</span>
+      </a>
+    </li>
+
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-actuator">
+          actuator <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-apidoc">
+          apidoc <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-aws">
+          aws <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-bean">
+          bean <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-conference">
+          conference <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-crawling">
+          crawling <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-dan">
+          dan <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-decoration">
+          decoration <span>2</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-eureka">
+          eureka <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-final">
+          final <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-github">
+          github <span>2</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-google-login">
+          google-login <span>2</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-h2">
+          h2 <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-immutable">
+          immutable <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-insight">
+          insight <span>2</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-intellij">
+          intellij <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-jacoco">
+          jacoco <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-java">
+          java <span>11</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-jenkins">
+          jenkins <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-jpa">
+          jpa <span>3</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-jsend">
+          jsend <span>2</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-jsoup">
+          jsoup <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-kakao-2022">
+          kakao-2022 <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-kotlin">
+          kotlin <span>2</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-lombok">
+          lombok <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-mdc">
+          mdc <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-migration">
+          migration <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-msa">
+          msa <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-mutation">
+          mutation <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-naver">
+          naver <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-oauth">
+          oauth <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-oauth1.0">
+          oauth1.0 <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-oauth2.0">
+          oauth2.0 <span>3</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-openid-connect">
+          openid-connect <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-performance">
+          performance <span>5</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-pitest">
+          pitest <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-pr">
+          pr <span>2</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-quality">
+          quality <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-rds">
+          rds <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-record">
+          record <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-rest">
+          rest <span>2</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-scdf">
+          scdf <span>2</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-secret-manager">
+          secret-manager <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-servlet-container">
+          servlet-container <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-sevelet">
+          sevelet <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-socketTimeoutException">
+          socketTimeoutException <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-sonarqube">
+          sonarqube <span>2</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-spring">
+          spring <span>9</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-springbatch">
+          springbatch <span>3</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-springboot">
+          springboot <span>5</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-sqs">
+          sqs <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-swagger">
+          swagger <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-test">
+          test <span>5</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-thread-pool">
+          thread-pool <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/tags.html#h-transaction">
+          transaction <span>2</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2024 lkhlkh23</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

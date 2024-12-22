@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>스프링배치 성능 최적화 | Code Chronicles</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="스프링배치 성능 최적화">
+<meta name="author" content="lkhlkh23">
+<meta property="og:locale" content="ko">
+<meta name="description" content="요즘 시간이 있을 때, 과거 컨퍼런스 영상을 찾아보고 있다. “최신 컨퍼런스 영상도 아닌, 오래된 컨퍼런스 영상을 보고 있냐?!” 라는 질문을 받을 수 있다. 그러나, 역시! 이유가 있다!">
+<meta property="og:description" content="요즘 시간이 있을 때, 과거 컨퍼런스 영상을 찾아보고 있다. “최신 컨퍼런스 영상도 아닌, 오래된 컨퍼런스 영상을 보고 있냐?!” 라는 질문을 받을 수 있다. 그러나, 역시! 이유가 있다!">
+<link rel="canonical" href="https://lkhlkh23.github.io/jekyll-theme-yat/springbatch/2024/09/22/spring-batch-performance.html">
+<meta property="og:url" content="https://lkhlkh23.github.io/jekyll-theme-yat/springbatch/2024/09/22/spring-batch-performance.html">
+<meta property="og:site_name" content="Code Chronicles">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-09-22T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="스프링배치 성능 최적화">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"lkhlkh23"},"dateModified":"2024-09-22T00:00:00+00:00","datePublished":"2024-09-22T00:00:00+00:00","description":"요즘 시간이 있을 때, 과거 컨퍼런스 영상을 찾아보고 있다. “최신 컨퍼런스 영상도 아닌, 오래된 컨퍼런스 영상을 보고 있냐?!” 라는 질문을 받을 수 있다. 그러나, 역시! 이유가 있다!","headline":"스프링배치 성능 최적화","mainEntityOfPage":{"@type":"WebPage","@id":"https://lkhlkh23.github.io/jekyll-theme-yat/springbatch/2024/09/22/spring-batch-performance.html"},"url":"https://lkhlkh23.github.io/jekyll-theme-yat/springbatch/2024/09/22/spring-batch-performance.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="">
+  <link rel="canonical" href="https://lkhlkh23.github.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://lkhlkh23.github.io/jekyll-theme-yat/feed.xml" title="Code Chronicles">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Code Chronicles" src="" onerror="this.style.display='none'">
+  Code Chronicles
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">CODE CHRONICLES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a>
+
+
+
+
+
+
+
+
+
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">스프링배치 성능 최적화</h1>
+  <h2 class="post-subtitle">if Kakao 2022 Batch Performance 극한으로 끌어올리기</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2024-09-22T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 22, 2024
+    </time>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 27 mins</span>
+  </div>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#springbatch">#springbatch</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#performance">#performance</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#kakao-2022">#kakao-2022</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p>요즘 시간이 있을 때, 과거 컨퍼런스 영상을 찾아보고 있다. “최신 컨퍼런스 영상도 아닌, 오래된 컨퍼런스 영상을 보고 있냐?!” 라는 질문을 받을 수 있다. 그러나, 역시! 이유가 있다!</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-22/0.png" alt="0.png"></p>
+
+<p>내 업무에 적용해서, 개발뿐만 아니라 운영도 경험할 수 있는, 나에게 스토리를 줄 수 있는 인사이트를 얻고 싶어서이다. 최신 기술들은 현재 조직 환경에는 적합하지 않다. 그래서 과거 컨퍼런스 영상중에서 조직에서 사용하고 있는 기술과 연관된 영상을 우선적으로 찾아보고 있다.</p>
+
+<p>그래서 현 조직에서 잘 사용하고 있는 SpringBatch 와 관련된 강의 <a href="https://www.youtube.com/watch?v=2IIwQDIi3ys">if Kakao 2022 “Batch Performance 극한으로 끌어올리기: 1억 건 데이터 처리를 위한 노력” 강의</a> 를 듣고 내용 정리 및 나의 생각도 같이 담을 예정이다.</p>
+
+<p>SpringBatch 를 개발을 위해서는 두가지 방식이 있다.</p>
+
+<ul>
+  <li>Tasklet</li>
+  <li>Chunk Oriented Processing</li>
+</ul>
+
+<p>Chunk Oriented Processing 에서는 <code class="language-plaintext highlighter-rouge">reader → processor → writer</code> 구조로 처리를 한다. 해당 강의에서는 대용량 데이터를 처리하는 과정에서 각각의 구성요소에서 성능효율을 최대화할 수 있는 방법에 대해 소개하고 있다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-22/1.png" alt="1.png"></p>
+
+<p>참고로 Chunk Oriented Processing 이 아래와 같은 절차로 진행을 되고있다고 착각을 했다. 이유는 SpringBatch 4.0.4 버전의 공식문서에서 아래와 같이 나와있었다. 하지만 정확한 절차는 위 그림이다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-22/2.png" alt="2.png"></p>
+
+<h3 id="optimizing-reader-performance"><strong>Optimizing Reader Performance</strong></h3>
+
+<p>Reader 성능 최적화를 위해서 <code class="language-plaintext highlighter-rouge">적절한 PaginReader</code> 를 사용하는 전략이 있다.</p>
+
+<p>Chunk Oriented Processing 에서 데이터를 조회하기 위해서 <code class="language-plaintext highlighter-rouge">PagingItemReader</code> 와 <code class="language-plaintext highlighter-rouge">CursorItemReade</code> 를 사용한다.</p>
+
+<p>먼저 <code class="language-plaintext highlighter-rouge">PagingItemReader</code> 는 주로 <code class="language-plaintext highlighter-rouge">JpaPaginItemReader</code> 와 <code class="language-plaintext highlighter-rouge">RepositoryItemReader</code> 구현체를 사용한다. 이 두 가지 Reader는 페이징 방식으로 데이터를 읽어오지만, 데이터 양이 많아질수록 <code class="language-plaintext highlighter-rouge">LIMIT + OFFSET</code> 을 사용하는 쿼리 때문에 성능 저하가 발생할 수 있다.</p>
+
+<blockquote>
+  <p><strong>LIMIT + OFFSET 성능 저하 이유</strong></p>
+
+  <p>페이징을 구현할 때 LIMIT 과 OFFSET 을 사용하면, 데이터베이스는 요청된 페이지를 가져오기 전에 이전의 모든 레코드를 스캔한다. 즉, OFFSET 값이 클수록 데이터베이스는 더 많은 데이터를 스캔해야 하고, 이로 인해 성능이 저하된다.</p>
+
+</blockquote>
+
+<p>이를 해결하기 위해서 OFFSET 을 항상 0으로 유지하는, ZERO OFFSET 을 사용한다. <code class="language-plaintext highlighter-rouge">QuerydslZeroOffsetItemReader</code> 를 아래와 같이 커스텀하게 구현할 수 있다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">QuerydslPagingItemReader</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="nc">AbstractPagingItemReader</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+
+    <span class="kd">protected</span> <span class="kd">final</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">jpaPropertyMap</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+    <span class="kd">protected</span> <span class="nc">EntityManagerFactory</span> <span class="n">entityManagerFactory</span><span class="o">;</span>
+    <span class="kd">protected</span> <span class="nc">EntityManager</span> <span class="n">entityManager</span><span class="o">;</span>
+    <span class="kd">protected</span> <span class="nc">Function</span><span class="o">&lt;</span><span class="nc">JPAQueryFactory</span><span class="o">,</span> <span class="nc">JPAQuery</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;&gt;</span> <span class="n">queryFunction</span><span class="o">;</span>
+    <span class="kd">protected</span> <span class="kt">boolean</span> <span class="n">transacted</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span> <span class="c1">// default value</span>
+
+    <span class="kd">protected</span> <span class="nf">QuerydslPagingItemReader</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">setName</span><span class="o">(</span><span class="nc">ClassUtils</span><span class="o">.</span><span class="na">getShortName</span><span class="o">(</span><span class="nc">QuerydslPagingItemReader</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nf">QuerydslPagingItemReader</span><span class="o">(</span><span class="nc">EntityManagerFactory</span> <span class="n">entityManagerFactory</span><span class="o">,</span>
+                                    <span class="kt">int</span> <span class="n">pageSize</span><span class="o">,</span>
+                                    <span class="nc">Function</span><span class="o">&lt;</span><span class="nc">JPAQueryFactory</span><span class="o">,</span> <span class="nc">JPAQuery</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;&gt;</span> <span class="n">queryFunction</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">(</span><span class="n">entityManagerFactory</span><span class="o">,</span> <span class="n">pageSize</span><span class="o">,</span> <span class="kc">true</span><span class="o">,</span> <span class="n">queryFunction</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nf">QuerydslPagingItemReader</span><span class="o">(</span><span class="nc">EntityManagerFactory</span> <span class="n">entityManagerFactory</span><span class="o">,</span>
+                                    <span class="kt">int</span> <span class="n">pageSize</span><span class="o">,</span>
+                                    <span class="kt">boolean</span> <span class="n">transacted</span><span class="o">,</span>
+                                    <span class="nc">Function</span><span class="o">&lt;</span><span class="nc">JPAQueryFactory</span><span class="o">,</span> <span class="nc">JPAQuery</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;&gt;</span> <span class="n">queryFunction</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">();</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">entityManagerFactory</span> <span class="o">=</span> <span class="n">entityManagerFactory</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">queryFunction</span> <span class="o">=</span> <span class="n">queryFunction</span><span class="o">;</span>
+        <span class="n">setPageSize</span><span class="o">(</span><span class="n">pageSize</span><span class="o">);</span>
+        <span class="n">setTransacted</span><span class="o">(</span><span class="n">transacted</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * Reader의 트랜잭션격리 옵션 &lt;br/&gt;
+     * - false: 격리 시키지 않고, Chunk 트랜잭션에 의존한다 &lt;br/&gt;
+     * (hibernate.default_batch_fetch_size 옵션 사용가능) &lt;br/&gt;
+     * - true: 격리 시킨다 &lt;br/&gt;
+     * (Reader 조회 결과를 삭제하고 다시 조회했을때 삭제된게 반영되고 조회되길 원할때 사용한다.)
+     */</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTransacted</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">transacted</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">transacted</span> <span class="o">=</span> <span class="n">transacted</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">doOpen</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">doOpen</span><span class="o">();</span>
+
+        <span class="n">entityManager</span> <span class="o">=</span> <span class="n">entityManagerFactory</span><span class="o">.</span><span class="na">createEntityManager</span><span class="o">(</span><span class="n">jpaPropertyMap</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">entityManager</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">DataAccessResourceFailureException</span><span class="o">(</span><span class="s">"Unable to obtain an EntityManager"</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">"unchecked"</span><span class="o">)</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">doReadPage</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">EntityTransaction</span> <span class="n">tx</span> <span class="o">=</span> <span class="n">getTxOrNull</span><span class="o">();</span>
+
+        <span class="nc">JPQLQuery</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">createQuery</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">offset</span><span class="o">(</span><span class="n">getPage</span><span class="o">()</span> <span class="o">*</span> <span class="n">getPageSize</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">limit</span><span class="o">(</span><span class="n">getPageSize</span><span class="o">());</span>
+
+        <span class="n">initResults</span><span class="o">();</span>
+
+        <span class="n">fetchQuery</span><span class="o">(</span><span class="n">query</span><span class="o">,</span> <span class="n">tx</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="nc">EntityTransaction</span> <span class="nf">getTxOrNull</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">transacted</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">EntityTransaction</span> <span class="n">tx</span> <span class="o">=</span> <span class="n">entityManager</span><span class="o">.</span><span class="na">getTransaction</span><span class="o">();</span>
+            <span class="n">tx</span><span class="o">.</span><span class="na">begin</span><span class="o">();</span>
+
+            <span class="n">entityManager</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
+            <span class="n">entityManager</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+            <span class="k">return</span> <span class="n">tx</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="nc">JPAQuery</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="nf">createQuery</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">JPAQueryFactory</span> <span class="n">queryFactory</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">JPAQueryFactory</span><span class="o">(</span><span class="n">entityManager</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">queryFunction</span><span class="o">.</span><span class="na">apply</span><span class="o">(</span><span class="n">queryFactory</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">initResults</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="nc">CollectionUtils</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">(</span><span class="n">results</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">CopyOnWriteArrayList</span><span class="o">&lt;&gt;();</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">results</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+     * where 의 조건은 id max/min 을 이용한 제한된 범위를 가지게 한다
+     * @param query
+     * @param tx
+     */</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">fetchQuery</span><span class="o">(</span><span class="nc">JPQLQuery</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">query</span><span class="o">,</span> <span class="nc">EntityTransaction</span> <span class="n">tx</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">transacted</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">results</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">query</span><span class="o">.</span><span class="na">fetch</span><span class="o">());</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">tx</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">tx</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="nc">List</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">queryResult</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">fetch</span><span class="o">();</span>
+            <span class="k">for</span> <span class="o">(</span><span class="no">T</span> <span class="n">entity</span> <span class="o">:</span> <span class="n">queryResult</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">entityManager</span><span class="o">.</span><span class="na">detach</span><span class="o">(</span><span class="n">entity</span><span class="o">);</span>
+                <span class="n">results</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">entity</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">doJumpToPage</span><span class="o">(</span><span class="kt">int</span> <span class="n">itemIndex</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">doClose</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="n">entityManager</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">doClose</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * 배치의 형태가 삭제/수정으로 인해 조회 결과가 계속 동적으로 변경될때 사용할 Reader
+ * 참고: https://jojoldu.tistory.com/337
+ *
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">QuerydslZeroPagingItemReader</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="kd">extends</span> <span class="nc">QuerydslPagingItemReader</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="nf">QuerydslZeroPagingItemReader</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">();</span>
+        <span class="n">setName</span><span class="o">(</span><span class="nc">ClassUtils</span><span class="o">.</span><span class="na">getShortName</span><span class="o">(</span><span class="nc">QuerydslZeroPagingItemReader</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nf">QuerydslZeroPagingItemReader</span><span class="o">(</span><span class="nc">EntityManagerFactory</span> <span class="n">entityManagerFactory</span><span class="o">,</span>
+                                        <span class="kt">int</span> <span class="n">pageSize</span><span class="o">,</span>
+                                        <span class="nc">Function</span><span class="o">&lt;</span><span class="nc">JPAQueryFactory</span><span class="o">,</span> <span class="nc">JPAQuery</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;&gt;</span> <span class="n">queryFunction</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">();</span>
+        <span class="n">setTransacted</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">entityManagerFactory</span> <span class="o">=</span> <span class="n">entityManagerFactory</span><span class="o">;</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">queryFunction</span> <span class="o">=</span> <span class="n">queryFunction</span><span class="o">;</span>
+        <span class="n">setPageSize</span><span class="o">(</span><span class="n">pageSize</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">"unchecked"</span><span class="o">)</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">doReadPage</span><span class="o">()</span> <span class="o">{</span>
+
+        <span class="nc">EntityTransaction</span> <span class="n">tx</span> <span class="o">=</span> <span class="n">getTxOrNull</span><span class="o">();</span>
+
+        <span class="nc">JPQLQuery</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">createQuery</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">offset</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">limit</span><span class="o">(</span><span class="n">getPageSize</span><span class="o">());</span>
+
+        <span class="n">initResults</span><span class="o">();</span>
+
+        <span class="n">fetchQuery</span><span class="o">(</span><span class="n">query</span><span class="o">,</span> <span class="n">tx</span><span class="o">);</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">CursorItemReader</code> 를 사용한다면, OFFSET 에 의한 성능 저하를 걱정할 필요가 없다.</p>
+
+<p>그러나, 구현체인 <code class="language-plaintext highlighter-rouge">JpaCursorItemReader</code> 는 권장하지 않는다. JpaCursorItemReader 는 데이터를 모두 조회한 후, 애플리케이션에서 직접 Cursor 하는 방식이다. 그렇기 때문에 데이터가 많을 경우 OOM 이 발생할 수 있다.</p>
+
+<p>그러므로, <code class="language-plaintext highlighter-rouge">JdbcCursorItemReader</code> 와 <code class="language-plaintext highlighter-rouge">HibernateCursorItemReader</code> 을 권장한다. 두개의 Reader 는 DB 에서 Cursor 하는 방식이기 때문에 OOM 을 걱정하지 않아도 된다. 그러나, 개인적으로 선호하지 않는다. 이 두 Reader 는 데이터를 조회할 때 HQL이나 Native Query를 사용해야 하기 때문에, 코드의 가독성이 떨어지고, 유지보수가 어렵고, 데이터베이스 종속적이라는 문제가 있다.</p>
+
+<p>영상에서는 JetBrain Kotlin 기반 ORM 프레임워크 <code class="language-plaintext highlighter-rouge">Exposed</code> 를 추천했지만, 오직 Kotlin 만 호환이 되기 때문에 현재 조직에서 사용하는 프로젝트에는 적합하지 않다. 그래서, 나는 <code class="language-plaintext highlighter-rouge">QuerydslZeroOffsetItemReader</code> 를 선호한다.</p>
+
+<h3 id="optimizing-processor-performance"><strong>Optimizing Processor Performance</strong></h3>
+
+<p>Processor 성능 최적화를 위해서 <code class="language-plaintext highlighter-rouge">redis</code> 를 사용하는 전략이 있다.</p>
+
+<p>강의에서는 reader 에서 <code class="language-plaintext highlighter-rouge">GROUP BY + SUM</code> 같은 집계 쿼리를 사용하는 것이 성능 저하의 원인이 될 수 있다고 지적했다. 데이터가 적을 때는 간단하게 처리할 수 있지만, 처리할 데이터가 많아질 경우 비효율적이다. 또한, 쿼리가 복잡해질수록 쿼리 튜닝도 복잡해지고 어려워진다. 이 과정에서 쿼리 성능을 최적화하기 위해 과도한 인덱스를 생성하게 되면, 이는 다시 INSERT 나 UPDATE 성능을 저하시킬 수 있다.</p>
+
+<p>반대로, <code class="language-plaintext highlighter-rouge">GROUP BY + SUM</code> 같은 집계 쿼리없이 전체 데이터를 모두 애플리케이션으로 가져와 처리한다면, 메모리 부족 문제가 발생할 수 있고, 데이터베이스에서 직접 처리하는 것보다 처리 속도도 훨씬 느리다.</p>
+
+<p>이러한 문제를 해결하기 위해 redis 가 사용된다. redis 를 단순히 캐시로만 생각할 수 있지만, 사실 중간 연산을 처리하는 장비로도 활용할 수 있다. redis 는 메모리에서 작업하기 때문에 연산 속도가 매우 빠르고, 메모리 공간도 충분히 확보할 수 있다. 또한, 인메모리 특성상 중간 연산된 데이터가 영구적으로 저장되지 않고 휘발되어 관리가 편하다.</p>
+
+<p>물론, redis 에 데이터를 요청할 때 발생할 수 있는 네트워크 지연이 걱정될 수 있다. 그러나 이를 해결하기 위해 <code class="language-plaintext highlighter-rouge">redis pipeline</code> 을 사용할 수 있다. redis pipeline 을 사용하면 여러 요청을 한 번에 묶어서 처리할 수 있어, 요청 간의 네트워크 지연을 최소화할 수 있다.</p>
+
+<h3 id="optimizing-writer-performance"><strong>Optimizing Writer Performance</strong></h3>
+
+<p>writer 성능 최적화를 위해서는 <code class="language-plaintext highlighter-rouge">명시적 쿼리 사용</code>, <code class="language-plaintext highlighter-rouge">Bulk Insert</code> 전략이 있다. 간단하게 알아보자!</p>
+
+<p><strong>Bulk Insert - 네트워크 지연 최소화</strong></p>
+
+<p>쿼리를 1개씩 DB 에 요청하는 것이 아닌, N개의 쿼리를 한번에 요청함으로써, <code class="language-plaintext highlighter-rouge">네트워크 지연을 최소화</code>한다. 하지만, chunk 크기를 너무 크게 설정하면 메모리 사용량이 급격히 증가할 수 있으므로, 애플리케이션의 메모리와 데이터베이스의 처리 능력을 고려하여 적절한 크기를 설정하는 것이 중요하다.</p>
+
+<p><strong>명시적 쿼리를 사용 - only 필요한 컬럼 Update 처리</strong></p>
+
+<p>불필요한 컬럼을 포함해서 업데이트를 하면 네트워크 전송량이 증가해 대역폭이 증가하고, <code class="language-plaintext highlighter-rouge">네트워크 지연이 더 발생</code>할 수 있다. 그리고, <code class="language-plaintext highlighter-rouge">I/O 비용도 증가</code> 한다.</p>
+
+<p>Update 를 할 때, 데이터는 Lock 이 걸리는데, 불필요한 컬럼을 포함해서 업데이트를 하면 <code class="language-plaintext highlighter-rouge">넓은 범위의 Lock 이 발생</code>할 수 있기 때문에 동시성 처리에 불리할 수 있다.</p>
+
+<p>그러나, 우리에게 너무 친숙한 JPA 는 위 두가지 전략을 지원하지 않기 때문에 SrpingBatch 에는 적합하지 않는다. 하지만, 여기서 JPA 를 조금 아는 사람은 “@DynamicUpdate 를 통해서 명시적 쿼리를 사용할 수 있다!” 라고 질문을 할 수 있다. 하지만, DynamicUpdate 는 동적쿼리를 생성하는 과정에서 성능저하를 발생할 수 있기 때문에 JPA 를 쓰는 것을 권장하지 않는다!</p>
+
+<p>영상의 뒤에서는 Spring Cloud Data Flow 를 활용해서 효율적인 Batch 자원의 활용과 모니터링에 대해 소개하고 있지만, 나는 영상을 끝까지 들을 수 없었다. 조직에서 Spring Cloud Data Flow 를 적용했지만, 내 손으로 제거했다. 아직은 SCDF 를 도입하기에는 시기가 이른것 같다.</p>
+
+<p>이제 알겠냐?! 내가 왜 과거 컨퍼런스 영상만 보고있는지?! 내 선택은 틀리지 않았어!</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-22/3.jpeg" alt="3.jpeg"></p>
+
+
+    </div>
+
+</article>
+</section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --></section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2024 lkhlkh23</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

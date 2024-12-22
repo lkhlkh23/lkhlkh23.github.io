@@ -1,0 +1,4627 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Code Chronicles | Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Code Chronicles">
+<meta name="author" content="lkhlkh23">
+<meta property="og:locale" content="ko">
+<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+<meta property="og:description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+<link rel="canonical" href="https://lkhlkh23.github.io/jekyll-theme-yat/">
+<meta property="og:url" content="https://lkhlkh23.github.io/jekyll-theme-yat/">
+<meta property="og:site_name" content="Code Chronicles">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Code Chronicles">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","author":{"@type":"Person","name":"lkhlkh23"},"description":"Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","headline":"Code Chronicles","name":"Code Chronicles","url":"https://lkhlkh23.github.io/jekyll-theme-yat/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="">
+  <link rel="canonical" href="https://lkhlkh23.github.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://lkhlkh23.github.io/jekyll-theme-yat/feed.xml" title="Code Chronicles">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header site-header-transparent" role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Code Chronicles" src="" onerror="this.style.display='none'">
+  Code Chronicles
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">CODE CHRONICLES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a>
+
+
+
+
+
+
+
+
+
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;documentElement.setAttribute("data-header-transparent", "");var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="page-banner">
+    <div class="page-banner-img">
+<div style="background-image: url(/jekyll-theme-yat/assets/images/banners/home.jpeg)"></div>
+        <img class="img-placeholder" src="/jekyll-theme-yat/assets/images/banners/home.jpeg">
+</div>
+    <div class="wrapper">
+      <div class="page-banner-inner"><div class="page-banner-default">
+            <h1 class="page-banner-heading">
+              함께해서 더러웠고 다시 만나지말자!
+            </h1>
+            <h2 class="page-banner-subheading">
+              -프리저사마-
+            </h2>
+          </div></div>
+    </div>
+  </section><script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="articles">
+  
+
+  
+
+
+  
+
+
+
+
+<div class="pagination">
+  <!-- Post list links -->
+  <ul class="post-list z-image-style">
+    <!-- Top list item --><!-- Normal list item -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/kotlin/2024/12/22/kotlin-2.html">
+      Kotlin-2. 코틀린 계산기 구현<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Dec 22, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 5 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/kotlin/2024/12/22/kotlin-2.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-22/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/kotlin/2024/12/22/kotlin-2.html">
+      <p>Kotlin 이용해서 계산기를 구현하면서 처음 Java 를 배웠던 추억이 떠올랐다. 그때와 지금과 가장 큰 차이는 개발에 대한 이해도와 숙력도가 아니었다. 개발을 했을 때의 즐거움인것 같다. 그래서 Kotlin 이라는 새로운 언어를 학습하면서 그때와 같은 즐거움이 다시 생겼으면 좋겠다.
+
+
+
+What is requirements
+
+사칙 연산 ... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#kotlin">#kotlin</a></div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/kotlin/2024/12/21/kotlin-1.html">
+      Kotlin-1. 코틀린 기본 문법<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Dec 21, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 15 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/kotlin/2024/12/21/kotlin-1.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-21/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/kotlin/2024/12/21/kotlin-1.html">
+      <p>Kotlin 을 공부해야지! 해야지! 생각만하다가, 이제는 진짜 시작하려고 한다. 제일 좋은 동기부여는 위기였다. 스터디 내용을 간단하게 기록해서 포스팅하려고 한다. 오늘은 일단 Kotlin 기초 강의를 듣고 간단하게 학습했다.
+
+
+
+What is Kotlin..?!
+
+JetBrains 에서 2011년에 공개한 오픈 소스 프로그래밍 언어이다.... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#kotlin">#kotlin</a></div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/spring/2024/12/10/health-check-down.html">
+      간단한 Health Check Down 이슈 수정<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Dec 10, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 12 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/spring/2024/12/10/health-check-down.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-10/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/spring/2024/12/10/health-check-down.html">
+      <p>“ADMIN이 멈췄다!”
+
+
+
+아침부터 어수선했던 사무실이 갑작스러운 외침으로 더 깊은 혼란에 빠졌다. 고과 면담으로 꽉 찬 일정에 지친 표정들이 순식간에 긴장감으로 굳어졌다. 모두의 시선이 한 곳으로 모였다.
+
+“왜 안 되는 거죠?!”
+
+급박한 목소리와 함께 키보드 타이핑 소리가 사무실을 가득 메웠다. 화면 속 에러 메시지는 날카로운... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#springboot">#springboot</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#actuator">#actuator</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/insight/2024/12/08/review-2024.html">
+      2024년 KPT 회고<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Dec 08, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 6 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/insight/2024/12/08/review-2024.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-08/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/insight/2024/12/08/review-2024.html">
+      <p>2024년이 이제 얼마 남지 않았다. 2024년 포트폴리오를 업데이트하기전에 간단하게 2024년을 회고하려고 한다. 원래 나의 계획은 지원금으로 워케이션을 하면서 리프레시한 환경에서 회고를 하려고 했지만, 현실의 벽을 넘지 못했다. 계획은 틀어졌지만, 회고를 진행해보려고 한다.
+
+회고는 단순히 잘못된 부분을 찾는 ... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#insight">#insight</a></div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/java/2024/12/03/codecoverage-jacoco-pitest.html">
+      Code Coverage - Jacoco + PITest<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Dec 03, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 17 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/java/2024/12/03/codecoverage-jacoco-pitest.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-04/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/java/2024/12/03/codecoverage-jacoco-pitest.html">
+      <p>2025년 코드의 품질을 향상시키는 작업을 계획하고 있다. 작업을 위한 학습이다. 실은 뭐라도 하지 않으면 안될것 같다. 생각이 복잡하다.
+
+
+
+What is Difference Between Code coverage and Test coverage..?!
+
+Code coverage 는 개발 코드에서 테스트가 적용된 코드의 비율... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#quality">#quality</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#jacoco">#jacoco</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#test">#test</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#pitest">#pitest</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#mutation">#mutation</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/springboot/2024/11/21/springboot-version-migration.html">
+      SpringBoot 3.x 마이그레이션<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Nov 21, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 24 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/springboot/2024/11/21/springboot-version-migration.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-11-21/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/springboot/2024/11/21/springboot-version-migration.html">
+      <p>SpringBoot 3.x 마이그레이션 작업을 진행하고 있다. 이전 포스팅에서 3년이내 회사를 퇴사하지 않을 예정이라면 마이그레이션을 권장한다고 글을 작성했다. 그럼 난 마이그레이션 작업을 해야하는것일까?!
+
+
+
+그래도 시작한 마이그레이션 작업은 마저 끝내야하지 않는가?! 그래서 여러 포스팅... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#springboot">#springboot</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#migration">#migration</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/insight/2024/11/12/conference-naver-dan-day2.html">
+      2024 Naver DAN Day2 후기<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Nov 12, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 7 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/insight/2024/11/12/conference-naver-dan-day2.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-11-12/banner.jpeg); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/insight/2024/11/12/conference-naver-dan-day2.html">
+      <p>Day.02 에서는 BackEnd 개발자보다는, 디자이너, 기획자 그리고 AI 관련 직군과 연관된 세션들이 많았다. 그래서 개발적인 내용보다는 인사이트를 얻는 목적으로 세션에 참석했다.
+
+
+
+Morning Session Review …
+
+CREATIVE Opening &amp; Highlight Session
+
+오전 세션에는 ... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#insight">#insight</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#naver">#naver</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#dan">#dan</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#conference">#conference</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/springboot/2024/10/27/why-upgrade-springboot3.html">
+      SpringBoot 3.x 로 왜 전환해야 하는가?!<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Oct 27, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 9 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/springboot/2024/10/27/why-upgrade-springboot3.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-27/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/springboot/2024/10/27/why-upgrade-springboot3.html">
+      <p>최근에 Sonarqube 를 도입하는 과정에서 SpringBoot 2.x 버전으로 사용하는 프로젝트를 다수 확인했다. 서비스의 시작 시점을 고려하면, SpringBoot 2.x 버전으로 개발한것에 대해서는 충분히 이해가 되었다. 하지만, 올해 생성한 프로젝트마저 SpringBoot 2.x 버전으로 개발되었다는 사실은 조... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#springboot">#springboot</a></div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/test/2024/10/01/k6-load-test.html">
+      K6 + InfluxDB + Prometheus + Grafana 를 이용한 성능테스트<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Oct 01, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 14 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/test/2024/10/01/k6-load-test.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-01/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/test/2024/10/01/k6-load-test.html">
+      <p>이번에는 K6 에 대해 알아보려고 한다! 처음에는 K3 로 검색을 했는데, 기아자동차가 나왔다. 그래서 K4, 5, 6 순차적으로 검색을 해보니, 내가 원하는 성능테스트 도구에 대한 결과가 나왔다.
+
+오늘은 K6 를 이용한 테스트 방법과 InfluxDB, Grafana, Prometheus 와 결합해서 사용하는... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#test">#test</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#performance">#performance</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/springboot/2024/09/30/mdc.html">
+      MDC, Servlet Container, ThreadPool<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Sep 30, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 25 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/springboot/2024/09/30/mdc.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-30/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/springboot/2024/09/30/mdc.html">
+      <p>팀원이 외부 API 호출 이력을 남기는 개발을 진행을 하고있는데, MDC 를 이용한다고 들었다. 생소한 단어였다. MDC 활용에 대해 어떤 코멘트도 할 수 없었다. 그래서 정리하려고 한다.
+
+
+
+What is MDC..?
+
+MDC (Mapped Diagnostic Context) 는 로깅 시스템에서 각 스레드에 대... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#mdc">#mdc</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#sevelet">#sevelet</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#servlet-container">#servlet-container</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#thread-pool">#thread-pool</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/springbatch/2024/09/22/spring-batch-performance.html">
+      스프링배치 성능 최적화<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Sep 22, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 27 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/springbatch/2024/09/22/spring-batch-performance.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-22/banner.jpg); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/springbatch/2024/09/22/spring-batch-performance.html">
+      <p>요즘 시간이 있을 때, 과거 컨퍼런스 영상을 찾아보고 있다. “최신 컨퍼런스 영상도 아닌, 오래된 컨퍼런스 영상을 보고 있냐?!” 라는 질문을 받을 수 있다. 그러나, 역시! 이유가 있다!
+
+
+
+내 업무에 적용해서, 개발뿐만 아니라 운영도 경험할 수 있는, 나에게 스토리를 줄 수 있는 인사이트를 얻고 싶어서이다. 최... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#springbatch">#springbatch</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#performance">#performance</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#kakao-2022">#kakao-2022</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/test/2024/09/08/load-test.html">
+      성능 테스트 준비/실행<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Sep 08, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 16 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/test/2024/09/08/load-test.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-08/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/test/2024/09/08/load-test.html">
+      <p>What is background..?
+
+
+
+최근 시스템의 구조가 변경하는 과정에서 이슈가 발생했다. 사전에 서비스 점검을 공지한 후, 서비스를 중지한 상태에서 진행했다. 작업이 완료되고 서비스 오픈을 앞두고 API 의 속도가 많이 감소되었다. 급하게 PostgreSQL 을 Spec Up 해서 다시 원복했다.... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#test">#test</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#performance">#performance</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/test/2024/09/07/ngrinder.html">
+      성능 테스트 도구 nGrinder<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Sep 07, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 24 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/test/2024/09/07/ngrinder.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-07/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/test/2024/09/07/ngrinder.html">
+      <p>이전에 Vegeta 가 조직 내부적으로 잘 이용되었다. 하지만, 아쉬웠다. vegeta 를 제외하고 다양한 성능테스트 도구들이 많은데, 왜 가장 기본적인 기능을 제공해주는 vegeta 가 계속 쓰이는 것일까?! 이러다가 vegeta 가 공식적인 성능 테스트 도구가 되지는 않겠지?! 라는 불안감이 들어서... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#test">#test</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#performance">#performance</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/sonarqube/2024/08/31/sonarqube-jenkins-github.html">
+      SonarQube + Jenkins + Github 연동 (with PR Decoration)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Aug 31, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 27 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/sonarqube/2024/08/31/sonarqube-jenkins-github.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-08-31/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/sonarqube/2024/08/31/sonarqube-jenkins-github.html">
+      <p>이전 포스팅에서 soanrqube + github action + github 구조를 이용해서 pull request 를 했을 때, 정적분석 결과를 pull request 에 decoration 을 하는 작업을 정리했다.
+
+폐쇠망에서 github enterprise 를 사용하는 조직이기 때문에 네트... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#sonarqube">#sonarqube</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#github">#github</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#pr">#pr</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#decoration">#decoration</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#jenkins">#jenkins</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/test/2024/08/30/vegeta.html">
+      성능 테스트 도구 Vegeta<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Aug 30, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 17 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/test/2024/08/30/vegeta.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-08-30/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/test/2024/08/30/vegeta.html">
+      <p>최근에 개발팀 내부에서 간단하게 API 서비스에 대한 성능 테스트를 진행했다. 성능 테스트를 위해 다양한 도구들이 있었지만, 간단하게 이용할 수 있는 vegeta 를 이용했다.
+
+대부분 jmeter, locust 는 친숙할 수 있지만, vegeta 는 조금 생소할 수 있다. 아마도 가장 먼저 드래곤볼을 생각했을 것... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#test">#test</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#performance">#performance</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/spring/2024/07/30/eureka-server-restart-issue.html">
+      Eureka Server 재시작 시, 서비스 등록 실패<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Jul 30, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 15 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/spring/2024/07/30/eureka-server-restart-issue.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-07-30/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/spring/2024/07/30/eureka-server-restart-issue.html">
+      <p>Eureka Server 재시작 시, Eureka Client 가 자동적으로 서비스 등록되지 않는 이슈가 발생했다. 모든 Eureka Client 가 서비스 등록에 실패하는 것이 아닌 특정 Eureka Client 대상으로만 발생했다.
+
+오늘은 해당 이슈에 대한 원인과 해결방법에 대해 정리하려고 한다.
+
+Sy... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#spring">#spring</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#eureka">#eureka</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/java/2024/07/22/why-use-immutable.html">
+      불변객체를 사용해야 하는 이유 (이펙티브 자바 아이템 17)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Jul 22, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 15 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/java/2024/07/22/why-use-immutable.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-07-22/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/java/2024/07/22/why-use-immutable.html">
+      <p>final 을 써야하는 이유에 대해 포스팅을 하다가, 불변객체를 써야하는 이유까지 다시 복습하게 되었다. 다시 이펙티브 자바를 읽었다. 이 책은 정말 매력적이다. 읽을때마다 항상 새롭다. 늘 뇌가 리셋되었다고 할까?! 나의 뇌를 순수하게 만든다고 할까?!
+
+What is Immutable Class
+
+객체 내부에 정의된 필드의 값을 ... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#immutable">#immutable</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/java/2024/07/21/why-use-final-keyword.html">
+      자바에서 final 사용해야 하는 이유<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Jul 21, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 12 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/java/2024/07/21/why-use-final-keyword.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-07-21/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/java/2024/07/21/why-use-final-keyword.html">
+      <p>팀원의 코드 리뷰를 하는 과정에서 final 키워드를 습관적으로 작성하면 좋을 것 같다! 라고 피드백을 주었다. 그리고 그 이유에 대해서는 명확하게 설명하지 못했다. 왜냐하면 내가 가장 좋아했던 개발자분의 코드에는 항상 final 있었기 때문에 나는 그 방식이 좋은 방식이라고 맹신했기 때문이다.
+
+
+
+그래서 나름대로 그 이유를 생각해봤다!
+
+... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#final">#final</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/sonarqube/2024/06/23/sonarqube-github.html">
+      SonarQube 와 Github 연동 (with PR Decoration)<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Jun 23, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 26 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/sonarqube/2024/06/23/sonarqube-github.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-06-23/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/sonarqube/2024/06/23/sonarqube-github.html">
+      <p>현 조직에서 개발 관련된 KPI 에서 높은 점수를 취득하기 위해서는 SonarQube 정적분석 결과 ALL GREEN 을 달성해야 한다. 결국은 SonarQube 를 이용한 코드 품질을 개선하기 위한 목표라고 생각한다.
+
+하지만, 지금 조직에서 사용하는 SonarQube 는 코드 품질보다는 Bug, Vul... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#sonarqube">#sonarqube</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#github">#github</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#pr">#pr</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#decoration">#decoration</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/spring/2024/05/13/scdf-2.html">
+      Spring Cloud Data Flow - 2<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> May 13, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 33 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/spring/2024/05/13/scdf-2.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-05-13/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/spring/2024/05/13/scdf-2.html">
+      <p>SCDF 의 플랫폼으로서 local system, CloudFoundry, Kubenetes 를 선택할 수 있다. 이번 포스팅에서는 가장 간단한 local system 을 이용해서 SCDF 를 적용하려고 한다. kubenetes 만만치 않는 친구이다. 절교하고 싶다.
+
+아래 단계를 통해 순차적으로 진행해보자!
+
+
+
+Step... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#springbatch">#springbatch</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#scdf">#scdf</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/spring/2024/04/20/remote-lombok.html">
+      lombok 제거 By Record + 객체지향<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Apr 20, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 25 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/spring/2024/04/20/remote-lombok.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-04-20/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/spring/2024/04/20/remote-lombok.html">
+      <p>java 17 기반으로 작성된 프로젝트를 java 21 로 버전으로 변경하면서 lombok 도 함께 제거하기로 결정을 했다.
+대부분 클래스에 lombok 을 사용하고 있기 때문에 공수가 많이 발생할지라도 안전하게 제거하는 것을 목표로 진행하려고 한다.
+
+그래서 안전하게 lombok 을 제거하는 절차에 대해 간단하게 작성하려고 한다. 아래에 있는... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#record">#record</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#lombok">#lombok</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/spring/2024/04/19/scdf-1.html">
+      Spring Cloud Data Flow - 1<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Apr 19, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 10 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/spring/2024/04/19/scdf-1.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-04-19/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/spring/2024/04/19/scdf-1.html">
+      <p>배경
+
+현재 Springbatch 를 이용해서 대용량의 데이터에 대해 일괄 처리를 진행하고 있다. SpringBatch 는 Jenkins 를 통해 실행되고 있으며, Jenkins 에서 제공하는 콘솔 및 히스토리를 통해 이력 관리를 하고 있다.
+
+내가 Jenkins 를 100% 활용을 못하고 있는 것도 있겠지만,... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#springbatch">#springbatch</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#scdf">#scdf</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/spring/2024/04/05/how-are-your-msa.html">
+      당신의 MSA 는 안녕하신가요?!<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Apr 05, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 17 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/spring/2024/04/05/how-are-your-msa.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-04-05/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/spring/2024/04/05/how-are-your-msa.html">
+      <p>대부분의 개발자라면 MSA 기반으로 개발을 하고 있으며, 혹은 한번쯤은 들어봤을 것이다.
+
+
+  Micro Service Architecture
+작은 역할을 가진 여러 개의 서비스로 구성되있으며, 각 서비스가 독립적으로 개발되고 배포되는 구조
+
+
+
+Spring 이 Java 기반의 애플리케이션을 구축하는 표준 프레임워크가... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#springboot">#springboot</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#msa">#msa</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/spring/2024/03/27/auto-swagger.html">
+      Swagger ApiResponse 자동화<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Mar 27, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 18 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/spring/2024/03/27/auto-swagger.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-03-27/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/spring/2024/03/27/auto-swagger.html">
+      <p>Swagger 정의
+
+Swagger 는 REST API 를 설계, 구축, 문서화 및 사용하는 데 도움이 될 수 있는 API 기반으로 구축된 오픈 소스 도구이다.
+
+Swagger 의 가장 큰 장점은 API 문서 자동화이다. Swagger는 API 를 문서화하기 위한 명세를 작성하고 이를 기반으로 문서를 자동으로 생성할 수 있다... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#springboot">#springboot</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#swagger">#swagger</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#apidoc">#apidoc</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/spring/2024/02/09/oauth-concept-3.html">
+      Rest API 로 Google Login 구현<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Feb 09, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 15 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/spring/2024/02/09/oauth-concept-3.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-02-09/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/spring/2024/02/09/oauth-concept-3.html">
+      <p>이전에는 하나의 프로젝트에서 OAuth 에 대한 FrontEnd 와 BackEnd 를 모두 구현했다. 이번에는 F/E 와 B/E 를 각각 다른 프로젝트에서 호출하는 방식으로 구현하려고 한다. 아래는 각각의 Git Repository 이다.
+
+
+  OAuth-FrontEnd
+  OAuth-BackEnd
+
+
+OAu... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#spring">#spring</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#google-login">#google-login</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#oauth2.0">#oauth2.0</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/spring/2024/02/03/oauth-concept-2.html">
+      OpenID Connect 와 Google login 구현<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Feb 03, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 18 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/spring/2024/02/03/oauth-concept-2.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-02-03/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/spring/2024/02/03/oauth-concept-2.html">
+      <p>
+
+이전 글에서는 OAuth 에 대해서 알아봤고, 이제는 Google Login 직접 구현해보려고 한다.
+
+참고로 아래 코드가 완성된 코드이다.
+
+
+  OAuth Github Repository
+
+
+
+
+그전에! OpenID Connect 에 대해 간단하게 알아보려고 한다. OpenID Connect 가 Go... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#spring">#spring</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#openid-connect">#openid-connect</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#google-login">#google-login</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#oauth2.0">#oauth2.0</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/spring/2024/01/28/oauth-concept-1.html">
+      OAuth 2.0 상세 동작순서와 OAuth 1.0 과 비교<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Jan 28, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 17 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/spring/2024/01/28/oauth-concept-1.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-28/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/spring/2024/01/28/oauth-concept-1.html">
+      <p>
+
+이번에 진행하는 프로젝트에서 Social Login 개발이 필요하다. 지금까지 전시 서비스를 주로 개발을 진행하다보니, Sociail Login 을 직접 구현할 기회가 없었다. 
+이번에 개발을 진행하기 전에 Social Login 에 대해서 간단하게 정리를 하면서 진행하려고 한다.
+
+우선 이론적인 부분을 먼저... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#spring">#spring</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#oauth">#oauth</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#oauth1.0">#oauth1.0</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#oauth2.0">#oauth2.0</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/aws/2024/01/21/secret-manager-rds-sqs.html">
+      Secret Manager, RDS, SQS 연동<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Jan 21, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 19 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/aws/2024/01/21/secret-manager-rds-sqs.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-21/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/aws/2024/01/21/secret-manager-rds-sqs.html">
+      <p>
+
+개인 프로젝트에서 DB 에 대한 정보를 Jasypt 이용해서 암호화를 했다. 
+암호화를 했지만, 복호화가 너무 쉽기 때문에 보안 이슈가 있을 것이라고 생각해서 다른 방식을 고안하게되었다. 
+물론, 이러한 이유로 Secrets Manager 를 고민하고, 공부한 것이 아니다. 회사 업무를 하면서 정리가 필요하... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#aws">#aws</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#secret-manager">#secret-manager</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#sqs">#sqs</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#rds">#rds</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#spring">#spring</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/spring/2024/01/20/jsend-error-vs-fail.html">
+      API 응답값 형에 대한 고민-2<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Jan 20, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 7 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/spring/2024/01/20/jsend-error-vs-fail.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-20/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/spring/2024/01/20/jsend-error-vs-fail.html">
+      <p>
+
+오늘은 API Response Format 에 대한 간단한 협의를 했다. 아래 정리한 내용을 공유했고, 긍정과 부정의 피드백을 하나씩 받았다.
+
+
+  참고 : API 응답값 형에 대한 고민
+
+
+우선 사용자 이슈와 서버의 비지니스 로직 이슈를 구분하는 fail 과 error 에 대해서는 긍정적이었다.
+
+하지만, fail 과 er... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#spring">#spring</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#rest">#rest</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#jsend">#jsend</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/spring/2024/01/18/api-response-format.html">
+      API 응답값 형에 대한 고민-1<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Jan 18, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 13 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/spring/2024/01/18/api-response-format.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-18/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/spring/2024/01/18/api-response-format.html">
+      <p>
+
+Response
+
+신규로 진행하는 프로젝트에서 API 응답에 대한 표준을 정해야 하는 협의가 내일 예정되있다.
+
+API 응답에 대한 표준은 F/E 개발자와 B/E 개발자 간의 공통적인 약속을 정의함으로써 상호작용에 많은 도움을 줄 수 있다. 또한, API 호출은 F/E 뿐만 아니라, B/E 서버 간에서도 많은 호출이 있기 때문에 이... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#spring">#spring</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#rest">#rest</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#jsend">#jsend</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/spring/2024/01/17/dynamic-bean-create.html">
+      프로퍼티 파일을 이용해서 Bean 동적 생성<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Jan 17, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 10 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/spring/2024/01/17/dynamic-bean-create.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-17/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/spring/2024/01/17/dynamic-bean-create.html">
+      <p>
+
+최근에 속성 값만 다를 뿐, 동일한 클래스의 Bean 을 생성하는 코드를 작성했다. 다시 코드를 봤을 때 중복 코드가 신경이 많이 쓰였다. 또한, 속성 값이 더 추가되었을 때 더 많은 중복 코드가 발생할 것 같은 불길한 예감이 들었다.
+
+그래서, Bean 을 동적으로 생성할 수 있는 방법을 고민하게 되었다.
+
+Spr... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#spring">#spring</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#bean">#bean</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/java/2024/01/02/unresolved-jsoup-socket-timeout.html">
+      Jsoup SocketTimeoutException 에 대해서<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Jan 02, 2024</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 16 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/java/2024/01/02/unresolved-jsoup-socket-timeout.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-02/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/java/2024/01/02/unresolved-jsoup-socket-timeout.html">
+      <p>
+
+최근 VIP 에게 쇼핑몰 상품 이미지를 자동으로 다운받을 수 있는 기능을 개발해달라는 요청을 받았다.
+
+Java Jsoup 라이브러리를 사용하면 손쉽게 크롤링할 수 있다고 생각해서 진행을 했다.
+물론, 로컬 환경까지 너무나도 쉽게 크롤링이 완료되었고, 마침내 AWS 에 서... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#jsoup">#jsoup</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#crawling">#crawling</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#socketTimeoutException">#socketTimeoutException</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/jpa/2023/12/26/transaciton-read-only-load-balance.html">
+      Transaction read only master-replication 분기 처리<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Dec 26, 2023</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 13 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/jpa/2023/12/26/transaciton-read-only-load-balance.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-26/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/jpa/2023/12/26/transaciton-read-only-load-balance.html">
+      <p>
+
+@Transaction (readonly=true) 설정만 있다면, 짠! 하고 내부적으로 Replication DB 로 리디렉션 처리해줄 것으로 생각했다. 하지만, 내부적인 개발 설정이 별도로 필요하다. 관련된 코드는 github 를 통해 확인 가능하다. 참고로 DB 는 Docker 를 이용했다.
+
+Ma... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#jpa">#jpa</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#transaction">#transaction</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/jpa/2023/12/25/why-use-transactioal-read-only-true.html">
+      Transaction read only true 왜 써야할까?!<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Dec 25, 2023</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 4 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/jpa/2023/12/25/why-use-transactioal-read-only-true.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-25/banner.jpeg); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/jpa/2023/12/25/why-use-transactioal-read-only-true.html">
+      <p>
+
+최근에 Pull Request 에 @Transaction (readonly=true) 를 적용했으면 좋겠다고 피드백을 남겼다. 이번에는 @Transaction (readonly=true) 적용했을 때, 장점을 간단하게 정리해보려고 한다.
+
+가독성
+
+대다수의 개발자들이 메소드 네이밍에 진심이기 때문에 메소드명으로만으로 ... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#jpa">#jpa</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#transaction">#transaction</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/jpa/2023/12/21/h2-on-duplicated-key-test.html">
+      H2 ON DUPLICATED KEY 테스트<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Dec 21, 2023</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 2 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/jpa/2023/12/21/h2-on-duplicated-key-test.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-21/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/jpa/2023/12/21/h2-on-duplicated-key-test.html">
+      <p>
+
+H2 환경에서 MYSQL ‘ON DUPLICATE KEY’ 쿼리를 테스트할 수 있을까?!
+
+문제
+
+MYSQL 에서 아래와 같은 문법을 사용하고 있다. H2 환경에서 테스트를 진행하려고 할 때 오류가 발생했다.
+
+
+
+원인
+
+H2 는 데이터베이스마다 다르게 동작하고 있으며 기본적으로 ANSI SQL 표준을 지원한다.... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#jpa">#jpa</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#h2">#h2</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/java/2023/12/19/gzip-decode-for-filter.html">
+      gzip 압축된 post method payload 처리<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Dec 19, 2023</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 13 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/java/2023/12/19/gzip-decode-for-filter.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-19/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/java/2023/12/19/gzip-decode-for-filter.html">
+      <p>
+
+최근에 ‘D회사’ 로부터 전달받은 데이터를 DB 에 저장하는 API 를 개발했다.
+‘D회사’ 에서는 아래와 같은 curl 을 통해 API 를 호출했다.
+
+echo '["key":"value"]' | gzip | curl -X POST -H "Content-Encoding: gzip" -H ... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#spring">#spring</a>
+</div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="post-item ">
+  <h2 class="post-title">
+    <a class="post-link" href="/jekyll-theme-yat/java/2023/12/17/checkstyle.html">
+      Checkstyle 필요성과 간단한 커스텀<span class="post-badges">
+  <span class="post-badge badge-top">TOP</span>
+  <span class="post-badge badge-new">NEW</span>
+</span>
+</a>
+  </h2>
+  <div class="post-meta">
+    <span class="post-date"><i class="fa fa-calendar"></i> Dec 17, 2023</span><span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 5 mins</span>
+  </div>
+  <div class="post-excerpt">
+<a class="post-image" href="/jekyll-theme-yat/java/2023/12/17/checkstyle.html" style="flex: 0 1 38.2%">
+      <div style="background-image: url(https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/banner.png); height: 160px"></div>
+    </a><a class="post-text" href="/jekyll-theme-yat/java/2023/12/17/checkstyle.html">
+      <p>
+
+개발자들은 코드의 가독성을 높이기 위해 많은 시간을 투자하여 노력을 한다. 명확한 의미전달을 할 수 있도록 네이밍을 고려하기도 하고, 역할과 책임에 맞게 코드를 설계하기도 한다.
+
+그럼에도 불구하고 가장 간단하게 코드의 가독성을 향상시킬 수 있는 방법을 하나 정리하려고 한다.
+
+checkstyle 정의
+
+사전 정의된 규칙 및 표... <span class="read_more">Read More</span></p>
+    </a>
+  </div>
+  <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#intellij">#intellij</a>
+</div>
+</li>
+</ul>
+
+  <!-- Pagination links -->
+</div>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="common-list">
+  <ul>
+    <li>
+      <a href="/jekyll-theme-yat/index.html">
+        All<span>37</span>
+      </a>
+    </li>
+
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-aws">
+          aws <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-insight">
+          insight <span>2</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-java">
+          java <span>6</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-jpa">
+          jpa <span>3</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-kotlin">
+          kotlin <span>2</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-sonarqube">
+          sonarqube <span>2</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-spring">
+          spring <span>13</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-springbatch">
+          springbatch <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-springboot">
+          springboot <span>3</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-test">
+          test <span>4</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2024 lkhlkh23</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

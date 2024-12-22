@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Checkstyle 필요성과 간단한 커스텀 | Code Chronicles</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Checkstyle 필요성과 간단한 커스텀">
+<meta name="author" content="lkhlkh23">
+<meta property="og:locale" content="ko">
+<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+<meta property="og:description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+<link rel="canonical" href="https://lkhlkh23.github.io/jekyll-theme-yat/java/2023/12/17/checkstyle.html">
+<meta property="og:url" content="https://lkhlkh23.github.io/jekyll-theme-yat/java/2023/12/17/checkstyle.html">
+<meta property="og:site_name" content="Code Chronicles">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-12-17T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Checkstyle 필요성과 간단한 커스텀">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"lkhlkh23"},"dateModified":"2023-12-17T00:00:00+00:00","datePublished":"2023-12-17T00:00:00+00:00","description":"Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","headline":"Checkstyle 필요성과 간단한 커스텀","mainEntityOfPage":{"@type":"WebPage","@id":"https://lkhlkh23.github.io/jekyll-theme-yat/java/2023/12/17/checkstyle.html"},"url":"https://lkhlkh23.github.io/jekyll-theme-yat/java/2023/12/17/checkstyle.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="">
+  <link rel="canonical" href="https://lkhlkh23.github.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://lkhlkh23.github.io/jekyll-theme-yat/feed.xml" title="Code Chronicles">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Code Chronicles" src="" onerror="this.style.display='none'">
+  Code Chronicles
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">CODE CHRONICLES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a>
+
+
+
+
+
+
+
+
+
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Checkstyle 필요성과 간단한 커스텀</h1>
+  <h2 class="post-subtitle">Checkstyle 적용하기까지...</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2023-12-17T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Dec 17, 2023
+    </time>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 5 mins</span>
+  </div>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#intellij">#intellij</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/banner.png" alt="banner"></p>
+
+<p>개발자들은 코드의 가독성을 높이기 위해 많은 시간을 투자하여 노력을 한다. 명확한 의미전달을 할 수 있도록 네이밍을 고려하기도 하고, 역할과 책임에 맞게 코드를 설계하기도 한다.</p>
+
+<p>그럼에도 불구하고 가장 간단하게 코드의 가독성을 향상시킬 수 있는 방법을 하나 정리하려고 한다.</p>
+
+<h3 id="checkstyle-정의">checkstyle 정의</h3>
+
+<p>사전 정의된 규칙 및 표준을 기반으로 Java 코드의 품질을 분석하고 확인하는 데 사용되 <strong>정적 코드 분석</strong> 도구이다.</p>
+
+<p>코드의 가독성과 안정성을 확인하는데 도움이 된다.</p>
+
+<blockquote>
+  <p>정적 코드 분석 : 프로그램을 실행하지 않고, 수행되는 분석</p>
+
+</blockquote>
+
+<h3 id="checkstyle-장점-그리고-사소한-단점">checkstyle 장점 그리고 사소한 단점</h3>
+
+<p>팀 전체에 일관된 코딩 스타일을 적용하여 <strong>일관성</strong>을 보장한다.</p>
+
+<p>checkstyle 을 적용하지 않으면 동일한 프로젝트를 다수의 개발자가 코딩을 할 때, 서로 다른 스타일로 인해서 코드의 일관성이 없어보이며 굉장히 혼란스럽다.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 선호하지 않는 스타일</span>
+<span class="kr">private</span> <span class="k">void</span> <span class="nf">handleNonPreferred</span><span class="p">()</span> <span class="p">{</span>
+		<span class="nx">IntStream</span><span class="p">.</span><span class="nf">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+			<span class="p">.</span><span class="nf">parallel</span><span class="p">()</span>
+			<span class="p">.</span><span class="nf">forEach</span><span class="p">(</span><span class="nx">no</span> <span class="o">-&gt;</span> <span class="nf">inner</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="c1">// 선호하는 스타일</span>
+<span class="kr">private</span> <span class="k">void</span> <span class="nf">handlePreferred</span><span class="p">()</span> <span class="p">{</span>
+		<span class="nx">IntStream</span><span class="p">.</span><span class="nf">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+			       <span class="p">.</span><span class="nf">parallel</span><span class="p">()</span>
+			       <span class="p">.</span><span class="nf">forEach</span><span class="p">(</span><span class="nx">no</span> <span class="o">-&gt;</span> <span class="nf">inner</span><span class="p">());</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>자동 코드 검토</strong>가 가능하다.</p>
+
+<p>빌드를 통해 자동으로 코드 스타일을 검토하기 때문에 개발자가 수동으로 작업을 하지 않아 편리하다.
+코드를 분석하고 규칙을 검사하는 과정에서 추가적인 리소스가 발생하기 때문에 성능이 저하될 수 있다는 우려를 할 수 있다. 하지만, 나의 리소스가 발생하는 것보다 IDE 의 리소스가 발생하는 것이 더 합리적이지 않을까?!</p>
+
+<p>개발부서 내부의 <strong>업무 협업 능력이 증가</strong>한다.</p>
+
+<p>checkstyle 통해서 개발 부서의 코딩 표준을 정의할 수 있고, 개발자들의 성향과 프로젝트의 특성에 맞게 커스텀할 수 있다.</p>
+
+<p>하지만 작은 단점도 존재한다. 정적 분석을 기반으로 하기 때문에 모든 상황을 고려하지 못할 수 있다. 때로는 실제로는 유효한 코드에 대해 잘못된 경고를 제공할 수 있다.</p>
+
+<h3 id="checkstyle-적용">checkstyle 적용</h3>
+
+<p>개인적으로 <a href="https://github.com/naver/hackday-conventions-java/blob/master/rule-config/naver-intellij-formatter.xml">naver checkstyle</a> 적용 후, 간단한 커스텀을 진행하여 사용하고 있다.</p>
+
+<p>아래 코드는 checkstyle 이 적용되지 않는 상태이다. 내가 개인적으로 정말 선호하지 않는 스타일의 코드이다.
+<img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/0.png" alt="banner"></p>
+
+<p><strong>plugin 설치 및 save action 설정</strong></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/1.png" alt="banner"></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/2.png" alt="banner"></p>
+
+<p><strong>checkstyle 적용</strong>
+<img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/3.png" alt="banner"></p>
+
+<p><strong>method argument 수정 및 적용 결과</strong>
+<img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/4.png" alt="banner"></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/5.png" alt="banner"></p>
+
+<p><strong>chain method calls 수정 및 적용 결과</strong>
+<img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/6.png" alt="banner"></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2023-12-17/7.png" alt="banner"></p>
+
+<h3 id="checkstyle-결론">checkstyle 결론</h3>
+<p>checkstyle 은 개발자가 초기 설정만 투자한다면 코드 가독성을 향상시키는데 많은 도움을 준다고 생각한다.
+개발자가 비지니스 로직에만 집중할 수 있도록 지원해주기 때문에 특별한 사유가 없다면 적용하는 것이 좋다고 생각한다.
+만약 checkstyle 이 없다면, 코드 입력한 숫자보다 스페이스키와 엔터키를 더 많이 누르게 될 것이다.</p>
+
+
+    </div>
+
+</article>
+</section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --></section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2024 lkhlkh23</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

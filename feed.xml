@@ -1,0 +1,1758 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko"><generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator><link href="https://lkhlkh23.github.io/jekyll-theme-yat/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lkhlkh23.github.io/jekyll-theme-yat/" rel="alternate" type="text/html" hreflang="ko" /><updated>2024-12-22T10:41:10+00:00</updated><id>https://lkhlkh23.github.io/jekyll-theme-yat/feed.xml</id><title type="html">Code Chronicles</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>lkhlkh23</name></author><entry><title type="html">Kotlin-2. 코틀린 계산기 구현</title><link href="https://lkhlkh23.github.io/jekyll-theme-yat/kotlin/2024/12/22/kotlin-2.html" rel="alternate" type="text/html" title="Kotlin-2. 코틀린 계산기 구현" /><published>2024-12-22T00:00:00+00:00</published><updated>2024-12-22T00:00:00+00:00</updated><id>https://lkhlkh23.github.io/jekyll-theme-yat/kotlin/2024/12/22/kotlin-2</id><content type="html" xml:base="https://lkhlkh23.github.io/jekyll-theme-yat/kotlin/2024/12/22/kotlin-2.html"><![CDATA[<p>Kotlin 이용해서 계산기를 구현하면서 처음 Java 를 배웠던 추억이 떠올랐다. 그때와 지금과 가장 큰 차이는 개발에 대한 이해도와 숙력도가 아니었다. 개발을 했을 때의 즐거움인것 같다. 그래서 Kotlin 이라는 새로운 언어를 학습하면서 그때와 같은 즐거움이 다시 생겼으면 좋겠다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-22/0.png" alt="0.png" /></p>
+
+<h3 id="what-is-requirements">What is requirements</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>사칙 연산 계산기 클래스 만들기
+
+1. 두개의 값을 받아 사칙연산을 하는 코드 작성
+2. 나눗셈은 0으로 나눌 경우, 예외를 발생
+</code></pre></div></div>
+
+<h3 id="lets-practice">Let’s Practice</h3>
+
+<p>다형성을 이용해서 테스트 가능한 구조로 코드를 작성했다. 그리고, Junit5 를 이용해서 테스트를 작성했다.
+아래 코드들은 작성한 코드들의 일부분이다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">Calculator</span> <span class="p">{</span>
+  <span class="k">fun</span> <span class="nf">calculate</span><span class="p">(</span><span class="n">num1</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">num2</span><span class="p">:</span> <span class="nc">Int</span><span class="p">):</span> <span class="nc">Any</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">DivideCalculator</span> <span class="p">:</span> <span class="nc">Calculator</span> <span class="p">{</span>
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">calculate</span><span class="p">(</span><span class="n">num1</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">num2</span><span class="p">:</span> <span class="nc">Int</span><span class="p">):</span> <span class="nc">Any</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">num2</span> <span class="p">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="nc">Exception</span><span class="p">(</span><span class="s">"0으로 나눌 수 없겠죠?!"</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">num1</span><span class="p">.</span><span class="nf">toDouble</span><span class="p">()</span> <span class="p">/</span> <span class="n">num2</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">enum</span> <span class="kd">class</span> <span class="nc">OperandType</span><span class="p">(</span><span class="kd">val</span> <span class="py">type</span><span class="p">:</span> <span class="nc">Char</span><span class="p">,</span> <span class="kd">val</span> <span class="py">calculator</span><span class="p">:</span> <span class="nc">Calculator</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nc">SUM</span><span class="p">(</span><span class="sc">'+'</span><span class="p">,</span> <span class="nc">SumCalculator</span><span class="p">()),</span>
+  <span class="nc">SUB</span><span class="p">(</span><span class="sc">'-'</span><span class="p">,</span> <span class="nc">SubCalculator</span><span class="p">()),</span>
+  <span class="nc">MULTIPLY</span><span class="p">(</span><span class="sc">'*'</span><span class="p">,</span> <span class="nc">MultiplyCalculator</span><span class="p">()),</span>
+  <span class="nc">DIVIDE</span><span class="p">(</span><span class="sc">'/'</span><span class="p">,</span> <span class="nc">DivideCalculator</span><span class="p">());</span>
+
+  <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+    <span class="nd">@JvmStatic</span>
+    <span class="k">fun</span> <span class="nf">getCalculator</span><span class="p">(</span><span class="n">type</span><span class="p">:</span> <span class="nc">Char</span><span class="p">):</span> <span class="nc">Calculator</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="n">entries</span><span class="p">.</span><span class="nf">find</span> <span class="p">{</span> <span class="n">it</span><span class="p">.</span><span class="n">type</span> <span class="p">==</span> <span class="n">type</span> <span class="p">}</span><span class="o">?.</span><span class="n">calculator</span> <span class="o">?:</span> <span class="k">throw</span> <span class="nc">IllegalArgumentException</span><span class="p">(</span>
+        <span class="s">"Invalid Operand Type: $type"</span>
+      <span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">CalculatorBoard</span> <span class="p">{</span>
+  <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+    <span class="nd">@JvmStatic</span>
+    <span class="k">fun</span> <span class="nf">calculate</span><span class="p">(</span><span class="n">num1</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">num2</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">operand</span><span class="p">:</span> <span class="nc">Char</span><span class="p">):</span> <span class="nc">Any</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nc">OperandType</span><span class="p">.</span><span class="nf">getCalculator</span><span class="p">(</span><span class="n">operand</span><span class="p">).</span><span class="nf">calculate</span><span class="p">(</span><span class="n">num1</span><span class="p">,</span> <span class="n">num2</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">DivideCalculatorTest</span> <span class="p">{</span>
+
+  <span class="nd">@Test</span>
+  <span class="nd">@DisplayName</span><span class="p">(</span><span class="s">"0 으로 나눌 경우, 예외 발생"</span><span class="p">)</span>
+  <span class="k">fun</span> <span class="nf">test_calculate_1</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">assertThrows</span><span class="p">&lt;</span><span class="nc">Exception</span><span class="p">&gt;</span> <span class="p">{</span>
+      <span class="nc">DivideCalculator</span><span class="p">().</span><span class="nf">calculate</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="nd">@Test</span>
+  <span class="nd">@DisplayName</span><span class="p">(</span><span class="s">"0 이 아닌 수로 나눌 경우, 정상 결과 응답"</span><span class="p">)</span>
+  <span class="k">fun</span> <span class="nf">test_calculate_2</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">assertThat</span><span class="p">(</span><span class="nc">DivideCalculator</span><span class="p">().</span><span class="nf">calculate</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">)).</span><span class="nf">isEqualTo</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="and-i-am">And I am</h3>
+
+<p>내일부터는 Kotlin 을 이용해서 블랙잭 게임을 간단하게 구현해야겠다! 급하게보다는 천천히 하나씩 해야곘다. 아직 시간은 많으니 …</p>]]></content><author><name>lkhlkh23</name></author><category term="kotlin" /><category term="kotlin" /><summary type="html"><![CDATA[Kotlin 이용해서 계산기를 구현하면서 처음 Java 를 배웠던 추억이 떠올랐다. 그때와 지금과 가장 큰 차이는 개발에 대한 이해도와 숙력도가 아니었다. 개발을 했을 때의 즐거움인것 같다. 그래서 Kotlin 이라는 새로운 언어를 학습하면서 그때와 같은 즐거움이 다시 생겼으면 좋겠다.]]></summary></entry><entry><title type="html">Kotlin-1. 코틀린 기본 문법</title><link href="https://lkhlkh23.github.io/jekyll-theme-yat/kotlin/2024/12/21/kotlin-1.html" rel="alternate" type="text/html" title="Kotlin-1. 코틀린 기본 문법" /><published>2024-12-21T00:00:00+00:00</published><updated>2024-12-21T00:00:00+00:00</updated><id>https://lkhlkh23.github.io/jekyll-theme-yat/kotlin/2024/12/21/kotlin-1</id><content type="html" xml:base="https://lkhlkh23.github.io/jekyll-theme-yat/kotlin/2024/12/21/kotlin-1.html"><![CDATA[<p>Kotlin 을 공부해야지! 해야지! 생각만하다가, 이제는 진짜 시작하려고 한다. 제일 좋은 동기부여는 위기였다. 스터디 내용을 간단하게 기록해서 포스팅하려고 한다. 오늘은 일단 <a href="https://www.youtube.com/watch?v=UWq6AA5Zi4M&amp;list=PLlTylS8uB2fD2qbHGEUZcKUyNNmM2CHLg&amp;index=14">Kotlin 기초 강의</a>를 듣고 간단하게 학습했다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-21/0.png" alt="0.png" /></p>
+
+<h3 id="what-is-kotlin">What is Kotlin..?!</h3>
+
+<p>JetBrains 에서 2011년에 공개한 오픈 소스 프로그래밍 언어이다. 2017년에는 구글이 안드로이드의 공식 언어로 코틀린을 추가했다. Java 와 유사한 특징이 있지만, 비교적 더 간결하고 다양한 가능이 추가되었다. Java 와 상호 운용이 가능하다.</p>
+
+<h3 id="what-are-features-of-kotlin">What are features of Kotlin..?!</h3>
+
+<p><strong>Null-Safety</strong></p>
+
+<p>Kotlin 은 기본적으로 null 허용하지 않고, nullable 타입 (?) 을 명식적으로 사용해야만 한다. NPE 를 방지한다는 장점을 가지고 있다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">name</span><span class="p">:</span> <span class="nc">String</span> <span class="p">=</span> <span class="s">"LEE"</span><span class="p">;</span> <span class="c1">// NULL 불가</span>
+<span class="kd">val</span> <span class="py">nullableName</span><span class="p">:</span> <span class="nc">String</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span> <span class="c1">// NULL 가능</span>
+</code></pre></div></div>
+
+<p><strong>타입 추론</strong></p>
+
+<p>변수의 타입을 명시하지 않아도 컴파일러가 자동으로 추론한다. Kotlin 은 Reference data type 을 사용한다. Reference Data Type 는 객체 (메모리) 를 생성하고, 데이터를 할당하는 방식이다. Reference data type 으로 생성된 객체는 컴파일 과정에서 기본형으로 대체된다.  정수형은 기본적으로 Int 로 추론되고, 실수형은 기본적으로 Double 로 추론된다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">name</span> <span class="p">=</span> <span class="s">"LEE"</span><span class="p">;</span>
+<span class="kd">val</span> <span class="py">age</span> <span class="p">=</span> <span class="mi">35</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p><strong>데이터 클래스</strong></p>
+
+<p>자바에서의 lombok @Data 와 같은 역할 수행</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">data class</span> <span class="nc">Person</span><span class="p">(</span><span class="kd">val</span> <span class="py">name</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span> <span class="kd">val</span> <span class="py">age</span><span class="p">:</span> <span class="n">age</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>함수형 프로그래밍 지원</strong></p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">sum</span> <span class="p">=</span> <span class="p">{</span> <span class="n">a</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nc">Int</span> <span class="p">-&gt;</span> <span class="n">a</span> <span class="p">+</span> <span class="n">b</span> <span class="p">}</span>  
+<span class="k">fun</span> <span class="nf">operate</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="p">(</span><span class="nc">Int</span><span class="p">,</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Int</span><span class="p">):</span> <span class="nc">Int</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nf">operation</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nf">println</span><span class="p">(</span><span class="nf">operate</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">sum</span><span class="p">))</span>  <span class="c1">// 결과: 7</span>
+
+</code></pre></div></div>
+
+<p><strong>Null-Safe 호출 연산자</strong></p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">length</span> <span class="p">=</span> <span class="n">name</span><span class="o">?.</span><span class="n">length</span>  <span class="c1">// name이 null이면 null 반환</span>
+<span class="kd">val</span> <span class="py">length</span> <span class="p">=</span> <span class="n">name</span><span class="o">?.</span><span class="n">length</span> <span class="o">?:</span> <span class="mi">0</span>  <span class="c1">// null이면 0 반환</span>
+</code></pre></div></div>
+
+<h3 id="how-to-use-loop-and-conditions">How to use Loop and Conditions</h3>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LoopConditionPractice</span> <span class="p">{</span>
+
+  <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+
+    <span class="nd">@JvmStatic</span>
+    <span class="k">fun</span> <span class="nf">loop</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="nc">Array</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;)</span> <span class="p">{</span>
+      <span class="k">for</span> <span class="p">(</span><span class="n">arg</span> <span class="k">in</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"arguments : $arg"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">arg</span><span class="p">.</span><span class="nf">equals</span><span class="p">(</span><span class="s">"pause"</span><span class="p">))</span> <span class="p">{</span>
+          <span class="k">break</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nd">@JvmStatic</span>
+    <span class="k">fun</span> <span class="nf">condition</span><span class="p">(</span><span class="n">num1</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">num2</span><span class="p">:</span> <span class="nc">Int</span> <span class="p">=</span> <span class="mi">999</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">num1</span> <span class="p">&gt;</span> <span class="n">num2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"num1 ($num1) is greater than num2 ($num2)"</span><span class="p">)</span>
+      <span class="p">}</span>
+
+      <span class="k">when</span> <span class="p">(</span><span class="n">num1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="p">-&gt;</span> <span class="nf">println</span><span class="p">(</span><span class="s">"1"</span><span class="p">)</span>
+        <span class="k">in</span> <span class="mi">3</span><span class="o">..</span><span class="mi">10</span> <span class="p">-&gt;</span> <span class="nf">println</span><span class="p">(</span><span class="s">"3 to 10"</span><span class="p">)</span>
+        <span class="k">else</span> <span class="p">-&gt;</span> <span class="nf">println</span><span class="p">(</span><span class="s">"else"</span><span class="p">)</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="how-to-use-open-data-and-enum-">How to use open, data and enum ..?!</h3>
+
+<p><strong>상속 기본 구조 (open)</strong></p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">open</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="k">constructor</span><span class="p">(</span><span class="k">private</span> <span class="kd">val</span> <span class="py">name</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span> <span class="k">private</span> <span class="kd">var</span> <span class="py">age</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="k">private</span> <span class="kd">var</span> <span class="py">gender</span><span class="p">:</span> <span class="nc">Char</span> <span class="p">=</span> <span class="sc">'M'</span>
+
+  <span class="nf">init</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="s">"Always Called"</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="k">constructor</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nc">String</span><span class="p">)</span> <span class="p">:</span> <span class="k">this</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="mi">35</span><span class="p">)</span>
+
+  <span class="k">constructor</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span> <span class="n">age</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">gender</span><span class="p">:</span> <span class="nc">Char</span><span class="p">)</span> <span class="p">:</span> <span class="k">this</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">gender</span> <span class="p">=</span> <span class="n">gender</span>
+    <span class="nf">println</span><span class="p">(</span><span class="s">"gender is $gender"</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="k">open</span> <span class="k">fun</span> <span class="nf">printInfo</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="s">"name : $name"</span><span class="p">)</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Student</span> <span class="k">constructor</span><span class="p">(</span><span class="kd">val</span> <span class="py">name</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span> <span class="kd">val</span> <span class="py">age</span><span class="p">:</span> <span class="nc">Int</span><span class="p">):</span> <span class="nc">Person</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">printInfo</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="s">"name : $name, age : $age"</span><span class="p">);</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>데이터 클래스 (data)</strong></p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">data class</span> <span class="nc">Score</span><span class="p">(</span><span class="kd">val</span> <span class="py">subject</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span> <span class="kd">val</span> <span class="py">pass</span><span class="p">:</span> <span class="nc">Boolean</span><span class="p">)</span> <span class="p">{</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>열거형 클래스 (enum)</strong></p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">enum</span> <span class="kd">class</span> <span class="nc">SignalType</span> <span class="k">constructor</span><span class="p">(</span><span class="kd">val</span> <span class="py">code</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span> <span class="kd">val</span> <span class="py">description</span><span class="p">:</span> <span class="nc">String</span><span class="p">){</span>
+  <span class="nc">GREEN</span><span class="p">(</span><span class="s">"01"</span><span class="p">,</span> <span class="s">"합격"</span><span class="p">),</span>
+  <span class="nc">RED</span><span class="p">(</span><span class="s">"02"</span><span class="p">,</span> <span class="s">"불합격"</span><span class="p">),</span>
+  <span class="nc">YELLOW</span><span class="p">(</span><span class="s">"03"</span><span class="p">,</span> <span class="s">"보류"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="how-to-use-abstract-and-interface">How to use abstract and interface</h3>
+
+<p><strong>abstract class</strong></p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">abstract</span> <span class="kd">class</span> <span class="nc">DataProcessor</span> <span class="p">{</span>
+  <span class="k">open</span> <span class="k">fun</span> <span class="nf">fetch</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="s">"DataReader fetch"</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">abstract</span> <span class="k">fun</span> <span class="nf">register</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nc">String</span><span class="p">);</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">JpaDataProcessor</span><span class="p">:</span> <span class="nc">DataProcessor</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">fetch</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="s">"JpaDataProcessor fetch"</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">register</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nc">String</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="s">"JpaDataReader register : $data"</span><span class="p">);</span>
+  <span class="p">}</span>
+  
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p><strong>interface</strong></p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">DataProcessor</span> <span class="p">{</span>
+  <span class="k">fun</span> <span class="nf">fetch</span><span class="p">():</span> <span class="nc">String</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="s">"DataReader fetch"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">"DataProcessor"</span>
+  <span class="p">}</span>
+
+  <span class="k">fun</span> <span class="nf">register</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nc">String</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">JpaDataProcessor</span> <span class="p">:</span> <span class="nc">DataProcessor</span> <span class="p">{</span>
+
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">fetch</span><span class="p">():</span> <span class="nc">String</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="s">"JpaDataProcessor fetch"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">"JpaDataProcessor"</span>
+  <span class="p">}</span>
+
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">register</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nc">String</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="s">"JpaDataReader register : $data"</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="how-to-use-visibility-modifier">How to use Visibility Modifier</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>접근 제한자</th>
+      <th>설명</th>
+      <th>Java와 차이점</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">public</code></td>
+      <td>어디서든 접근 가능 (default)</td>
+      <td>Kotlin 에서는 기본값</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">private</code></td>
+      <td>동일 클래스 or 동일 파일 내에서만 접근 가능</td>
+      <td>Java 에서는 only 동일 클래스</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">protected</code></td>
+      <td>동일 클래스/하위 클래스에서만 접근 가능</td>
+      <td>Kotlin 에서 파일 수준에서 불가</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">internal</code></td>
+      <td>동일 모듈(Module) 내에서만 접근 가능</td>
+      <td>Java 에서 미지원</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="what-is-formatter">What is Formatter</h3>
+
+<p>코틀린 린트 (Kotlin Lint)는 Kotlin 코드의 스타일과 품질을 분석하고, 코드 스타일이 일관되게 유지되도록 돕는 도구이다. Java의 Checkstyle 과 유사한 역할을 하지만, Kotlin 언어에 특화되어 있다.</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plugins</span> <span class="o">{</span>
+  <span class="n">kotlin</span><span class="o">(</span><span class="s2">"jvm"</span><span class="o">)</span> <span class="n">version</span> <span class="s2">"1.9.0"</span>
+  <span class="n">id</span><span class="o">(</span><span class="s2">"org.jlleitschuh.gradle.ktlint"</span><span class="o">)</span> <span class="n">version</span> <span class="s2">"11.3.2"</span>
+  <span class="n">application</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">root</span> <span class="p">=</span> <span class="k">true</span>
+<span class="na">
+[*]</span>
+<span class="n">charset</span> <span class="p">=</span> <span class="n">utf-8</span>
+<span class="n">end_of_line</span> <span class="p">=</span> <span class="n">lf</span>
+<span class="n">indent_size</span> <span class="p">=</span> <span class="mi">2</span>
+<span class="n">indent_style</span> <span class="p">=</span> <span class="n">space</span>
+<span class="n">trim_trailing_whitespace</span> <span class="p">=</span> <span class="k">true</span>
+<span class="n">insert_final_newline</span> <span class="p">=</span> <span class="k">true</span>
+<span class="n">max_line_length</span> <span class="p">=</span> <span class="mi">120</span>
+<span class="n">tab_width</span> <span class="p">=</span> <span class="mi">2</span>
+</code></pre></div></div>
+
+<p>간단한 사용법에 대해서는 학습을 했고, Kotlin 강의에 있는 간단한 실습 과제를 내일부터 진행하려고 한다.</p>
+
+<h3 id="and-i-am-">And I am …</h3>
+
+<p>최근에 기획서가 픽스되지 않는 상황에서 개발 완료일이 먼저 픽스된 상황을 경험했다. 개발 범위 및 리소스의 파악도 없이 개발 완료일을 일방적으로 통보받았다. 앞으로 이런 상황이 계속 반복된다면, 나는 어떻게 해야할까?!</p>
+
+<p>비슷한 고민으로 선배들과 이야기를 하면, 나는 조직에 잘 적응하지 못하는 사람이라는 것을 느낀다. 다들 참고 다니는 것이라고 대답한다. 나는 사회성이 조금 부족한것 같다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-21/1.png" alt="1.png" /></p>]]></content><author><name>lkhlkh23</name></author><category term="kotlin" /><category term="kotlin" /><summary type="html"><![CDATA[Kotlin 을 공부해야지! 해야지! 생각만하다가, 이제는 진짜 시작하려고 한다. 제일 좋은 동기부여는 위기였다. 스터디 내용을 간단하게 기록해서 포스팅하려고 한다. 오늘은 일단 Kotlin 기초 강의를 듣고 간단하게 학습했다.]]></summary></entry><entry><title type="html">간단한 Health Check Down 이슈 수정</title><link href="https://lkhlkh23.github.io/jekyll-theme-yat/spring/2024/12/10/health-check-down.html" rel="alternate" type="text/html" title="간단한 Health Check Down 이슈 수정" /><published>2024-12-10T00:00:00+00:00</published><updated>2024-12-10T00:00:00+00:00</updated><id>https://lkhlkh23.github.io/jekyll-theme-yat/spring/2024/12/10/health-check-down</id><content type="html" xml:base="https://lkhlkh23.github.io/jekyll-theme-yat/spring/2024/12/10/health-check-down.html"><![CDATA[<p><strong>“ADMIN이 멈췄다!”</strong></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-10/0.png" alt="0.png" /></p>
+
+<p>아침부터 어수선했던 사무실이 갑작스러운 외침으로 더 깊은 혼란에 빠졌다. 고과 면담으로 꽉 찬 일정에 지친 표정들이 순식간에 긴장감으로 굳어졌다. 모두의 시선이 한 곳으로 모였다.</p>
+
+<p><strong>“왜 안 되는 거죠?!”</strong></p>
+
+<p>급박한 목소리와 함께 키보드 타이핑 소리가 사무실을 가득 메웠다. 화면 속 에러 메시지는 날카로운 단서처럼 눈길을 끌었다. 긴장이 팽팽히 감돌았다. 문제를 해결해야 했다. 그리고 그것도 빨리!</p>
+
+<p>오늘 점심 메뉴는 1년에 몇 번 나오지 않는 특식. 문제를 늦게 해결하면 다 식어버린 음식뿐이다. 특식은 반드시 따뜻하게 먹어야 한다는 사명감. 그 사명감이 손가락 끝으로 전해지며, 속도를 더했다.</p>
+
+<h3 id="사건-접수">사건 접수</h3>
+
+<p>QAS 환경에서 ADMIN 이 정상적으로 동작하지 않는 현상을 접수했다. 인증 API  로부터 500 INTERNAL SERVER ERROR 를 응답받고 있었다. 그러나, 인증 API 에는 로그가 발생하지 않았다.</p>
+
+<h3 id="원인-분석">원인 분석</h3>
+
+<p>인증 API 가 Eureka 에 등록이 되지 않는 것을 확인했고, Health Check 결과도 DOWN 상태였다. 그렇기 때문에 인증 API 에 요청이 유입되지 않았기 때문에 로그도 발생하지 않고, 500 ERROR 만 발생한 것으로 보였다. Health Check 의 결과를 명확하게 확인하기 위해 아래와 같은 옵션을 추가했다.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">management</span><span class="pi">:</span>
+<span class="err">	</span><span class="na">endpoint</span><span class="pi">:</span>
+<span class="err">	</span>  <span class="na">health</span><span class="pi">:</span>
+<span class="err">	</span>    <span class="na">show-details</span><span class="pi">:</span> <span class="s">always</span>
+</code></pre></div></div>
+
+<p>결과는 아래와 같았다.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DOWN"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"components"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"db"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"details"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"database"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MySQL"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"validationQuery"</span><span class="p">:</span><span class="w"> </span><span class="s2">"isValid()"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"discoveryComposite"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"components"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"discoveryClient"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"details"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"services"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+              </span><span class="err">...</span><span class="w"> </span><span class="err">...</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"eureka"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Eureka discovery client has not yet successfully connected to a Eureka server"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"details"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"applications"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="err">...</span><span class="w"> </span><span class="err">...</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"diskSpace"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"details"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">53619982336</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"free"</span><span class="p">:</span><span class="w"> </span><span class="mi">52759257088</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"threshold"</span><span class="p">:</span><span class="w"> </span><span class="mi">10485760</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"... ..."</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"exists"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"ping"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"redis"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DOWN"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"details"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"org.springframework.data.redis.RedisConnectionFailureException: Unable to connect to Redis"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"refreshScope"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Health Check 결과 REDIS 를 연결하는 과정에서 예외가 발생했고, 결국은 Health Check 결과가 DOWN 으로 응답됬다. 문제는 REDIS 연결이었다.</p>
+
+<p>추가적으로 Health Check 는 아래와 같은 상황에서 DOWN 이 발생할 수 있다.</p>
+
+<ul>
+  <li>데이터베이스가 DOWN 되었거나, 네트워크 이슈로 접근 불가한 상황</li>
+  <li>디스크 공간이 부족한 상황</li>
+  <li>캐시 서비스가 DOWN 되었거나,응답하지 않는 상황</li>
+  <li>큐의 사용량이 초과한 상황</li>
+</ul>
+
+<h3 id="해결">해결</h3>
+
+<p>build.gradle 에서 아래 의존성을 제거했다.</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">implementation</span> <span class="s1">'org.springframework.boot:spring-boot-starter-data-redis'</span>
+</code></pre></div></div>
+
+<p>위와 같은 의존성이 설정이 되있다면 REDIS 에 연결을 시도한다. 그리고 연결을 시도하는 REDIS 에 대한 설정이 존재하지 않는다면 디폴트값을 이용해서 연결을 시도한다.</p>
+
+<ul>
+  <li>host : localhost</li>
+  <li>port : 6379</li>
+</ul>
+
+<p>의존성을 제거하고 다시 Health Check 를 수행해보니, 아래와 같이 UP 상태를 확인할 수 있었다.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"components"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"db"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"details"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"database"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MySQL"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"validationQuery"</span><span class="p">:</span><span class="w"> </span><span class="s2">"isValid()"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"discoveryComposite"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"components"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"discoveryClient"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"details"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"services"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+              </span><span class="err">...</span><span class="w"> </span><span class="err">...</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="nl">"eureka"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Remote status from Eureka server"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"details"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"applications"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="err">...</span><span class="w"> </span><span class="err">...</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"diskSpace"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"details"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">53619982336</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"free"</span><span class="p">:</span><span class="w"> </span><span class="mi">52766064640</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"threshold"</span><span class="p">:</span><span class="w"> </span><span class="mi">10485760</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"... ..."</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"exists"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"ping"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"refreshScope"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UP"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>생각보다 매우 간단한 이슈였다. Health Check 의 응답만 봐도 쉽게 해결할 수 있는 이슈였다.</p>
+
+<h3 id="하지만">하지만…</h3>
+
+<p>Health Check 는 DOWN. 나는 Calm DOWN.</p>
+
+<p>가장 큰 이슈는 Health Check DOWN 이 아니다. 내가 이제 DOWN 되었다. 나의 모든 서비스는 이제 DOWN 이다. 약속의 날이 더 빨리 올것 같은 느낌이 들었다.</p>]]></content><author><name>lkhlkh23</name></author><category term="spring" /><category term="springboot" /><category term="java" /><category term="actuator" /><summary type="html"><![CDATA[“ADMIN이 멈췄다!”]]></summary></entry><entry><title type="html">2024년 KPT 회고</title><link href="https://lkhlkh23.github.io/jekyll-theme-yat/insight/2024/12/08/review-2024.html" rel="alternate" type="text/html" title="2024년 KPT 회고" /><published>2024-12-08T00:00:00+00:00</published><updated>2024-12-08T00:00:00+00:00</updated><id>https://lkhlkh23.github.io/jekyll-theme-yat/insight/2024/12/08/review-2024</id><content type="html" xml:base="https://lkhlkh23.github.io/jekyll-theme-yat/insight/2024/12/08/review-2024.html"><![CDATA[<p>2024년이 이제 얼마 남지 않았다. 2024년 포트폴리오를 업데이트하기전에 간단하게 2024년을 회고하려고 한다. 원래 나의 계획은 지원금으로 워케이션을 하면서 리프레시한 환경에서 회고를 하려고 했지만, 현실의 벽을 넘지 못했다. 계획은 틀어졌지만, 회고를 진행해보려고 한다.</p>
+
+<p>회고는 <strong>단순히 잘못된 부분을 찾는 것이 아닌, 더 나은 자신을 만들기 위한 과정</strong>이다. 자신의 작업 방식, 실수, 성공 사례를 돌아보며 더 나은 내가 되기 위한 방향을 설정할 수 있다. 그리고 실패를 분석하여 동일한 문제를 반복하지 않도록 예방하기 위해 회고는 필요하다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-08/0.png" alt="0.png" /></p>
+
+<p>다양한 ‘회고 방법론’ 이 존재하고, 나는 <code class="language-plaintext highlighter-rouge">KPT 회고 방법</code>을 통해 2024년을 돌아보려고 한다.</p>
+
+<p>KPT 회고 방법은 Keep-Problem-Try 의 약자이다.</p>
+
+<ul>
+  <li><strong>Keep</strong> : 잘했던 점이나 성공적인 요소를 파악하고, 앞으로도 지속적으로 유지하거나 발전시킬 항목 기록</li>
+  <li><strong>Problem</strong> : 작업 중에 발생한 문제, 개선이 필요한 부분 기록</li>
+  <li><strong>Try</strong> : 문제를 해결하거나 더 나은 결과를 얻기 위해 새롭게 시도해볼 아이디어나 전략 기록</li>
+</ul>
+
+<p><a href="https://www.notion.so/d4050b5698954029a9cea115f05b8b67?pvs=21">KPT 회고에 대한 템플릿</a> 을 참고해서 고해성사를 해보자! 나는 개발자, 회사원 그리고 개인으로서 3가지 역할으로서 나를 회고하려고 한다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-08/1.png" alt="1.png" /></p>
+
+<h3 id="keep-유지">Keep (유지)</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>✔️ 성공적으로 수행한 것, 긍정적인 경험을 기록해요.
+</code></pre></div></div>
+<ul>
+  <li>Developer
+    <ul>
+      <li>기술 블로그 운영 및 포스팅 → Total : 27EA (2024.01 ~ 2024.11)</li>
+      <li>지속적인 기술 학습과 기술 서적 독서를 통해 끊임없이 성장하려는 노력</li>
+    </ul>
+  </li>
+  <li>Employee
+    <ul>
+      <li>신규 조직 적응</li>
+      <li>조직내 새로운 인사이트 제공하기 위해 노력</li>
+      <li>조직내 코드 품질 개선을 위해 노력</li>
+      <li>진급 최소 조건 충족</li>
+    </ul>
+  </li>
+  <li>Self-Reflection
+    <ul>
+      <li>절주 (금주는 존재하지 않는다! 절주만 있을뿐!) 개인 운동 (2024.03 ~ 2024.11)</li>
+      <li>개인 운동 (2024.03 ~ 2024.11)
+<img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-08/3.png" alt="0.png" /></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="problem-문제">Problem (문제)</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>✔️ 프로젝트 동안 발생한 문제나 어려움을 기록해요.
+</code></pre></div></div>
+<ul>
+  <li>Developer
+    <ul>
+      <li>토이 프로젝트 개발/운영 중단 → 비효율적인 AWS 인프라 구성으로 비용 ↑</li>
+      <li>동기부여</li>
+    </ul>
+  </li>
+  <li>Employee
+    <ul>
+      <li>조직에서 운영하는 비지니스 로직 파악에 다소 소홀함</li>
+      <li>진행하고 있는 프로젝트의 갑작스러운 중단 → 스트레스 ↑</li>
+    </ul>
+  </li>
+  <li>Self-Reflection
+    <ul>
+      <li>제테크 학습 및 실행</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="try-시도">Try (시도)</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>✔️ Problem에 대한 해결 방식을 기반으로 추후에 시도해볼 점, 아이디어, 개선사항을 기록해요.
+</code></pre></div></div>
+<ul>
+  <li>Developer
+    <ul>
+      <li>AWS 비용 절감
+        <ul>
+          <li>Flutter 서비스 개발
+            <ul>
+              <li>In-memory 사용 + APP 에서 비지니스 처리를 통한 EC2 비용 절감</li>
+            </ul>
+          </li>
+          <li>AWS 인프라 학습</li>
+        </ul>
+      </li>
+      <li>멘토링 참여
+        <ul>
+          <li>지속적인 동기부여, 인사이트를 통한 성장</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Employee
+    <ul>
+      <li>비지니스 로직 집중
+        <ul>
+          <li>CS 처리 업무 비중을 높여서 비지니스 로직 집중 및 개선 작업 진행</li>
+        </ul>
+      </li>
+      <li>기획에 의존적이지 않는 개발자 단독으로 진행할 수 있는 개선업무 진행</li>
+      <li>회사에서 요구하는 업무와 개인의 커리어 성장에 도움이 되는 업무를 조화시켜 진행</li>
+    </ul>
+  </li>
+  <li>Self-Reflection
+    <ul>
+      <li>주기적인 부동산 임장 및 재테크 학습 진행</li>
+      <li>새로운 취미 발견</li>
+    </ul>
+  </li>
+</ul>
+
+<p>회고를 하면서 가장 중요한 것을 결정하지 못했다. 2025년은 내 삶의 변화를 많이 주는 삶을 살 것인가?! 현재의 삶을 좀 다지는 삶을 살 것인가?! 이것은 조금 더 고민을 해봐야겠다!</p>
+
+<p>그리고 2024년에는 회사에서의 스트레스가 내 개인의 생활에도 많은 영향을 주었다. 2025년에는 디커플링 작업이 필요할 것 같다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-08/2.png" alt="2.png" /></p>]]></content><author><name>lkhlkh23</name></author><category term="insight" /><category term="insight" /><summary type="html"><![CDATA[2024년이 이제 얼마 남지 않았다. 2024년 포트폴리오를 업데이트하기전에 간단하게 2024년을 회고하려고 한다. 원래 나의 계획은 지원금으로 워케이션을 하면서 리프레시한 환경에서 회고를 하려고 했지만, 현실의 벽을 넘지 못했다. 계획은 틀어졌지만, 회고를 진행해보려고 한다.]]></summary></entry><entry><title type="html">Code Coverage - Jacoco + PITest</title><link href="https://lkhlkh23.github.io/jekyll-theme-yat/java/2024/12/03/codecoverage-jacoco-pitest.html" rel="alternate" type="text/html" title="Code Coverage - Jacoco + PITest" /><published>2024-12-03T00:00:00+00:00</published><updated>2024-12-03T00:00:00+00:00</updated><id>https://lkhlkh23.github.io/jekyll-theme-yat/java/2024/12/03/codecoverage-jacoco-pitest</id><content type="html" xml:base="https://lkhlkh23.github.io/jekyll-theme-yat/java/2024/12/03/codecoverage-jacoco-pitest.html"><![CDATA[<p>2025년 코드의 품질을 향상시키는 작업을 계획하고 있다. 작업을 위한 학습이다. 실은 뭐라도 하지 않으면 안될것 같다. 생각이 복잡하다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-04/0.png" alt="0.png" /></p>
+
+<h3 id="what-is-difference-between-code-coverage-and-test-coverage">What is Difference Between Code coverage and Test coverage..?!</h3>
+
+<p><code class="language-plaintext highlighter-rouge">Code coverage</code> 는 개발 코드에서 테스트가 적용된 코드의 비율을 측정하는 메커니즘이다. Code coverage 를 측정하기 위해서 일반적으로 <a href="https://www.baeldung.com/jacoco">Jacoco</a> 또는 <a href="https://www.baeldung.com/cobertura">Cobertura</a> 와 같은 도구를 활용한다.</p>
+
+<p>Code coverage 는 정량적인 지표를 제공하기 때문에 테스트되지 않는 코드 영역, 미사용 코드 영역을 쉽게 파악할 수 있다.</p>
+
+<p>하지만, Code coverage 는 코드 영역에 대한 테스트 유무를 파악할 수 있지만, 해당 테스트에 대한 유효성과 정확성까지는 보장하지 않는다. 그리고 Code coverage 를 강제로 늘리기 위해 불필요하고 쓸모없는 테스트가 대량 생산될 수 있다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Test coverage</code> 는 테스트가 애플리케이션의 기능을 얼마나 포괄하는지를 측정하는데 사용하는 매커니즘이다. Test coverage 는 엔드 유저 관점에서 QA 에 의해 계산된다. Test coverage 를 측정하기 위해서는 일반적으로 <a href="https://www.baeldung.com/selenium-webdriver-page-object">Selenium</a>, <a href="https://playwright.dev/">Playwright</a>, <a href="https://www.cypress.io/">Cypress</a> 와 같은 도구를 활용한다.</p>
+
+<p>수동으로 진행하는 테스트 같은 경우, 전문적인 지식이 필요하지 않고, 구현하기가 쉽다는 장점을 가지고 있다. 그리고, Test coverage 는 Code coverage 와 달리 품질적이므로 정량화하기가 어렵다.</p>
+
+<h3 id="what-is-jacoco">What is Jacoco..?!</h3>
+
+<p>Jacoco 는 Java Code coverage 를 측정하기 위해 사용되는 오픈소스 도구이다. 코드 품질 및 완전성을 평가하는데 도움을 준다. Jacoco 는 Java 에이전트로 동작하여, JVM 바이트코드를 조작해 코드 실행 경로를 추적한다. 그리고, Jenkins, Gradle 등 다양한 빌드도구 및 CI/CD 와 쉽게 통합이 가능하다. 그리고 html, xml, csv 와 같은 다양한 형식의 리포트를 제공한다.</p>
+
+<h3 id="what-is-jacoco-metrics-and-limitations">What is Jacoco Metrics and Limitations..?!</h3>
+
+<p>Jacoco 는 csv, xml 과 같은 다양한 형식의 보고서를 생성할 수 있는데, 해당 보고서에서는 아래와 같은 지표들을 보여주고 있다. 여기서 <code class="language-plaintext highlighter-rouge">_COVERED</code> 는 실행된 코드를 의미한다. 실행되었다는 것은 테스트 코드에 의해 호출이 되었거나, 프로덕션 코드에서 호출이 되었다는 것을 의미한다. 반대로 <code class="language-plaintext highlighter-rouge">_MISSED</code> 는 전혀 실행되지 않는 코드를 의미한다.</p>
+
+<ul>
+  <li>GROUP : 코드 분석 대상의 최상위 그룹</li>
+  <li>PACKAGE : Java 패키지 수준에서 커버리지</li>
+  <li>CLASS : Java 클래스 수준에서 커버리지</li>
+  <li>INSTRUCTION_MISSED : 실행되지 않은 바이트코드 명령어 수</li>
+  <li>INSTRUCTION_COVERED : 실행된 바이트코드 명령어 수</li>
+  <li>BRANCH_MISSED : 실행되지 않은 분기 수 (조건문에서 발생할 수 있는 모든 경로 중 실행되지 않은 경로)</li>
+  <li>BRANCH_COVERED : 실행된 분기 수</li>
+  <li>LINE_MISSED : 실행되지 않은 소스 코드 라인의 수</li>
+  <li>LINE_COVERED : 실행된 소스 코드 라인의 수</li>
+  <li>COMPLEXITY_MISSED : 실행되지 않은 코드의 복잡도</li>
+  <li>COMPLEXITY_COVERED : 실행된 코드의 복잡도</li>
+  <li>METHOD_MISSED : 실행되지 않은 메서드의 수</li>
+  <li>METHOD_COVERED : 실행된. 메서드의. 수</li>
+</ul>
+
+<p>Jacoco 에서 제공하는 _COVERED 지표에서는 테스트 코드가 존재할지라도 해당 테스트 코드가 유효하고 신뢰할만한 테스트라고 보장하기가 어렵다. Jacoco 가 개발 코드에 대한 정량적인 품질 지표라고 한다면, 이제 소개할 테스트 방법과 도구는 테스트 코드에 대한 품질 지표라고 보면 된다.</p>
+
+<h3 id="what-is-mutation-and-pitest">What is Mutation and PITest..?!</h3>
+
+<p><code class="language-plaintext highlighter-rouge">Mutating</code> 은 코드를 약간 변형하여 원래 코드와 다른 결과를 만들어내는 작업을 말한다. 변경된 코드는 “Mutant(돌연변이)”라고 부른다. (예 : if (a &gt; b) → if (a ≥ b) 로 변형)</p>
+
+<p><code class="language-plaintext highlighter-rouge">Mutation Test</code> 는 Mutant 코드가 실패되는지를 평가하는 테스트 기법이다. Mutation Test 는 테스트의 강도를 평가하기 위해 사용된다.  Mutation Test 는 테스트의 강도를 평가해서, 약한 테스트를 식별 및 보완할 수 있도록 도움을 준다. 그리고 PITest 와 Stryker 도구를 이용해서 자동화활 수 있다.</p>
+
+<p>그러나, Mutant 를 생성하고 테스트를 수행하는데 많은 시간이 소요된다는 단점이 있다. 그리고 특정 코드에 대해서는 Mutant 를 생성하고 테스트하기 어려울 수 있다. 예를들어, 외부 API 호출, 데이터베이스에 의존적인 코드와 같이 3rd Party 와 연관된 코드에 대해서는 테스트의 한계가 있다.</p>
+
+<p>이러한 단점을 보완하기 위해서는 전체 코드에 대해서 Mutation Test 를 하는것이 아닌, 특정 코드에 대해서만 선별적으로 진행하는 것을 권장한다. 외부 API 호출이나 비동기 작업에 대해 Mock을 사용하여 한계점을 극복하는 것이 좋다.</p>
+
+<p>PITest 를 위해서 build.gradle 의 설정을 아래와 같이 작성한다.</p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plugins</span> <span class="o">{</span>
+	<span class="n">id</span> <span class="s1">'java'</span>
+	<span class="n">id</span> <span class="s1">'org.springframework.boot'</span> <span class="n">version</span> <span class="s1">'3.4.0'</span>
+	<span class="n">id</span> <span class="s1">'io.spring.dependency-management'</span> <span class="n">version</span> <span class="s1">'1.1.6'</span>
+	<span class="n">id</span> <span class="s1">'info.solidsoft.pitest'</span> <span class="n">version</span> <span class="s1">'1.15.0'</span>
+<span class="o">}</span>
+
+<span class="n">group</span> <span class="o">=</span> <span class="s1">'test'</span>
+<span class="n">version</span> <span class="o">=</span> <span class="s1">'0.0.1-SNAPSHOT'</span>
+
+<span class="n">pitest</span> <span class="o">{</span>
+	<span class="n">junit5PluginVersion</span> <span class="o">=</span> <span class="s1">'1.2.1'</span>
+	<span class="n">pitestVersion</span> <span class="o">=</span> <span class="s1">'1.15.2'</span>
+<span class="o">}</span>
+
+<span class="n">java</span> <span class="o">{</span>
+	<span class="n">toolchain</span> <span class="o">{</span>
+		<span class="n">languageVersion</span> <span class="o">=</span> <span class="n">JavaLanguageVersion</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">21</span><span class="o">)</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+<span class="n">configurations</span> <span class="o">{</span>
+	<span class="n">compileOnly</span> <span class="o">{</span>
+		<span class="n">extendsFrom</span> <span class="n">annotationProcessor</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+<span class="n">repositories</span> <span class="o">{</span>
+	<span class="n">mavenCentral</span><span class="o">()</span>
+<span class="o">}</span>
+
+<span class="n">dependencies</span> <span class="o">{</span>
+	<span class="n">implementation</span> <span class="s1">'org.springframework.boot:spring-boot-starter'</span>
+	<span class="n">compileOnly</span> <span class="s1">'org.projectlombok:lombok'</span>
+	<span class="n">annotationProcessor</span> <span class="s1">'org.projectlombok:lombok'</span>
+	<span class="n">testImplementation</span> <span class="s1">'org.springframework.boot:spring-boot-starter-test'</span>
+	<span class="n">testRuntimeOnly</span> <span class="s1">'org.junit.platform:junit-platform-launcher'</span>
+
+	<span class="n">implementation</span> <span class="nl">group:</span> <span class="s1">'org.pitest'</span><span class="o">,</span> <span class="nl">name:</span> <span class="s1">'pitest-parent'</span><span class="o">,</span> <span class="nl">version:</span> <span class="s1">'1.15.0'</span><span class="o">,</span> <span class="nl">ext:</span> <span class="s1">'pom'</span>
+<span class="o">}</span>
+
+<span class="n">tasks</span><span class="o">.</span><span class="na">named</span><span class="o">(</span><span class="s1">'test'</span><span class="o">)</span> <span class="o">{</span>
+	<span class="n">useJUnitPlatform</span><span class="o">()</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>그리고 개발 코드와 테스트 코드를 아래과 같이 작성했다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Calculator</span> <span class="o">{</span>
+
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">calculate</span><span class="o">(</span><span class="kd">final</span> <span class="kt">int</span> <span class="n">num1</span><span class="o">,</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">num2</span><span class="o">,</span> <span class="kd">final</span> <span class="kt">char</span> <span class="n">operand</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">operand</span> <span class="o">==</span> <span class="sc">'+'</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="nf">sum</span><span class="o">(</span><span class="n">num1</span><span class="o">,</span> <span class="n">num2</span><span class="o">);</span>
+		<span class="o">}</span>
+
+		<span class="k">if</span> <span class="o">(</span><span class="n">operand</span> <span class="o">==</span> <span class="sc">'-'</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="nf">subtract</span><span class="o">(</span><span class="n">num1</span><span class="o">,</span> <span class="n">num2</span><span class="o">);</span>
+		<span class="o">}</span>
+
+		<span class="k">if</span> <span class="o">(</span><span class="n">operand</span> <span class="o">==</span> <span class="sc">'*'</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="nf">multiply</span><span class="o">(</span><span class="n">num1</span><span class="o">,</span> <span class="n">num2</span><span class="o">);</span>
+		<span class="o">}</span>
+
+		<span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="o">(</span><span class="s">"존재하지 않는 연산자 입니다."</span><span class="o">);</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">sum</span><span class="o">(</span><span class="kd">final</span> <span class="kt">int</span> <span class="n">num1</span><span class="o">,</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">num2</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">num1</span> <span class="o">+</span> <span class="n">num2</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">multiply</span><span class="o">(</span><span class="kd">final</span> <span class="kt">int</span> <span class="n">num1</span><span class="o">,</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">num2</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">num1</span> <span class="o">*</span> <span class="n">num2</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">subtract</span><span class="o">(</span><span class="kd">final</span> <span class="kt">int</span> <span class="n">num1</span><span class="o">,</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">num2</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">num1</span> <span class="o">-</span> <span class="n">num2</span><span class="o">;</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">CalculatorTest</span> <span class="o">{</span>
+
+	<span class="nd">@Test</span>
+	<span class="kt">void</span> <span class="nf">test_calculate_1</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+		<span class="c1">// given</span>
+		<span class="kd">final</span> <span class="nc">Calculator</span> <span class="n">calculator</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Calculator</span><span class="o">();</span>
+
+		<span class="c1">// when</span>
+		<span class="kd">final</span> <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="na">calculate</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="sc">'-'</span><span class="o">);</span>
+
+		<span class="c1">// then</span>
+		<span class="n">assertEquals</span><span class="o">(-</span><span class="mi">1</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+	<span class="o">}</span>
+
+	<span class="nd">@Test</span>
+	<span class="kt">void</span> <span class="nf">test_calculate_2</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+		<span class="c1">// given</span>
+		<span class="kd">final</span> <span class="nc">Calculator</span> <span class="n">calculator</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Calculator</span><span class="o">();</span>
+
+		<span class="c1">// when</span>
+		<span class="kd">final</span> <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="na">calculate</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="sc">'*'</span><span class="o">);</span>
+
+		<span class="c1">// then</span>
+		<span class="n">assertEquals</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">result</span><span class="o">);</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>그리고나서, PITest 를 실행하고 결과를 확인하자! 결과 레포트는 <code class="language-plaintext highlighter-rouge">build/reports/pitest/index.html</code> 에서 확인할 수 있다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./gradlew pitest
+</code></pre></div></div>
+
+<p>레포트를 보면, 테스트 클래스의 Line coverage, Mutation coverage, Test strength 를 확인할 수 있다. <code class="language-plaintext highlighter-rouge">Mutation coverage</code> 가 높다는 것은 테스트 코드의 변형에 잘 반응하고 있다는 것을 의미한다. 결국은, 테스트 코드를 명확하게 잘 작성했다는 것으로 해석하면 편하다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Test strength</code> 는 테스트 코드 실행되었는지 유무를 넘어서, 다양한 경로 및 예외적인 조건을 얼마나 충족했는지를 의미한다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-04/2.png" alt="2.png" /></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-04/3.png" alt="3.png" /></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-04/4.png" alt="4.png" /></p>
+
+<h3 id="and-i-am-">And I am ..</h3>
+
+<p>최근에 <del>조직개판</del>이 아닌, 조직개편이 있었다. 어쩌다보니 팀에서 파트가 방출되었다. 개발의 효율성에 맞게 조직이동을 할 수 있다고 생각할 수 있다. 처음에 나도 그렇게 생각했다. 하지만, 최근에 방출이라는 느낌을 받았다. 이런것을 환승이별의 기분이 이런것일까?!</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-12-04/1.png" alt="1.png" /></p>]]></content><author><name>lkhlkh23</name></author><category term="java" /><category term="java" /><category term="quality" /><category term="jacoco" /><category term="test" /><category term="pitest" /><category term="mutation" /><summary type="html"><![CDATA[2025년 코드의 품질을 향상시키는 작업을 계획하고 있다. 작업을 위한 학습이다. 실은 뭐라도 하지 않으면 안될것 같다. 생각이 복잡하다.]]></summary></entry><entry><title type="html">SpringBoot 3.x 마이그레이션</title><link href="https://lkhlkh23.github.io/jekyll-theme-yat/springboot/2024/11/21/springboot-version-migration.html" rel="alternate" type="text/html" title="SpringBoot 3.x 마이그레이션" /><published>2024-11-21T00:00:00+00:00</published><updated>2024-11-21T00:00:00+00:00</updated><id>https://lkhlkh23.github.io/jekyll-theme-yat/springboot/2024/11/21/springboot-version-migration</id><content type="html" xml:base="https://lkhlkh23.github.io/jekyll-theme-yat/springboot/2024/11/21/springboot-version-migration.html"><![CDATA[<p>SpringBoot 3.x 마이그레이션 작업을 진행하고 있다. <a href="https://lkhlkh23.github.io/springboot/2024/10/27/why-upgrade-springboot3.html">이전 포스팅</a>에서 3년이내 회사를 퇴사하지 않을 예정이라면 마이그레이션을 권장한다고 글을 작성했다. 그럼 난 마이그레이션 작업을 해야하는것일까?!</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-11-21/0.png" alt="0.png" /></p>
+
+<p>그래도 시작한 마이그레이션 작업은 마저 끝내야하지 않는가?! 그래서 여러 포스팅과 공식문서를 참고해서 작업한 내용을 정리했다.</p>
+
+<h3 id="목표">목표</h3>
+
+<ul>
+  <li>JDK 버전 업그레이드
+    <ul>
+      <li>jdk 11 → jdk 21</li>
+    </ul>
+  </li>
+  <li>SpringBoot 버전 업그레이드
+    <ul>
+      <li>2.7.x → 3.2.x</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="작업-내역">작업 내역</h3>
+
+<p><strong>Step.1 JDK 버전 + SpringBoot 버전 변경</strong></p>
+
+<p>SpringBoot 버전이 낮을 경우, 한번에 3.x 버전으로 변경하기보다는 점차적으로 변경하는 것을 권장한다. 하지만, 나는 위험을 감수하고 한번에 변경을 했다. 현재 검증 프로세스 진행 상황으로 보면, 해당 작업의 완료 시점이 보이지 않는다.</p>
+
+<ul>
+  <li><a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.0-Migration-Guide">1.5 → 2.0 마이그레이션 공식문서</a></li>
+  <li><a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-Config-Data-Migration-Guide">2.4 + config data 마이그레이션 공식문서</a></li>
+  <li><a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Migration-Guide">2.7 → 3.x 마이그레이션 공식 문서</a></li>
+</ul>
+
+<p>SpringBoot 버전에 호환되는 SpringCloud 버전으로 변경이 필요하다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-11-21/1.png" alt="1.png" /></p>
+
+<ul>
+  <li><a href="https://spring.io/projects/spring-cloud">SpringCloud 버전 호환성 공식문서</a></li>
+</ul>
+
+<p><strong>as-is</strong></p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plugins</span> <span class="o">{</span>
+    <span class="n">id</span> <span class="s1">'java'</span>
+    <span class="n">id</span> <span class="s1">'org.springframework.boot'</span> <span class="n">version</span> <span class="s1">'2.7.14'</span>
+    <span class="n">id</span> <span class="s1">'io.spring.dependency-management'</span> <span class="n">version</span> <span class="s1">'1.0.15.RELEASE'</span>
+    <span class="n">id</span> <span class="s2">"com.ewerk.gradle.plugins.querydsl"</span> <span class="n">version</span> <span class="s2">"1.0.10"</span>
+<span class="o">}</span>
+ 
+<span class="n">sourceCompatibility</span> <span class="o">=</span> <span class="s1">'11'</span>
+ 
+<span class="n">ext</span> <span class="o">{</span>
+    <span class="n">set</span><span class="o">(</span><span class="s1">'springCloudVersion'</span><span class="o">,</span> <span class="s2">"2021.0.8"</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>to-be</strong></p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plugins</span> <span class="o">{</span>
+    <span class="n">id</span> <span class="s1">'java'</span>
+    <span class="n">id</span> <span class="s1">'org.springframework.boot'</span> <span class="n">version</span> <span class="s1">'3.2.5'</span>
+    <span class="n">id</span> <span class="s1">'io.spring.dependency-management'</span> <span class="n">version</span> <span class="s1">'1.1.4'</span>
+<span class="o">}</span>  
+ 
+<span class="n">sourceCompatibility</span> <span class="o">=</span> <span class="s1">'21'</span>
+<span class="n">targetCompatibility</span> <span class="o">=</span> <span class="s1">'21'</span>  
+ 
+<span class="n">ext</span> <span class="o">{</span>
+    <span class="n">set</span><span class="o">(</span><span class="s1">'springCloudVersion'</span><span class="o">,</span> <span class="s2">"2023.0.0"</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>Step.2 jakatra 변경</strong></p>
+
+<p>intellij 에서 제공하는 기능을 이용해서 javax → jakatra 로 한번에 변경이 가능하다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-11-21/2.png" alt="2.png" /></p>
+
+<p><strong>의존성 변경 내역</strong></p>
+
+<ul>
+  <li>javax.validation.constraints.NotBlank → jakarta.validation.constraints.NotBlank</li>
+  <li>javax.validation.constraints.NotNull → jakarta.validation.constraints.NotNull</li>
+  <li>javax.validation.constraints.Size → jakarta.validation.constraints.Size</li>
+  <li>javax.validation.constraints.PositiveOrZero → jakarta.validation.constraints.PositiveOrZero</li>
+  <li>javax.validation.constraints.Email → jakarta.validation.constraints.Email</li>
+  <li>javax.servlet.http.HttpServletRequest → jakarta.servlet.http.HttpServletRequest</li>
+  <li>javax.servlet.http.HttpServletResponse → jakarta.servlet.http.HttpServletResponse</li>
+  <li>javax.validation.ConstraintViolationException → jakarta.validation.ConstraintViolationException</li>
+  <li>javax.transaction.Transactional → jakarta.transaction.Transactional</li>
+  <li>javax.persistence.Column → jakarta.persistence.Column</li>
+  <li>javax.persistence.Entity → jakarta.persistence.Entity</li>
+  <li>javax.persistence.IdClass → jakarta.persistence.IdClass</li>
+  <li>javax.persistence.GeneratedValue → jakarta.persistence.GeneratedValue</li>
+  <li>javax.persistence.GenerationType → jakarta.persistence.GenerationType</li>
+  <li>javax.persistence.Id → jakarta.persistence.Id</li>
+  <li>javax.persistence.SequenceGenerator → jakarta.persistence.SequenceGenerator</li>
+  <li>javax.persistence.Table → jakarta.persistence.Table</li>
+  <li>javax.servlet.FilterChain → jakarta.servlet.FilterChain</li>
+  <li>javax.servlet.ServletException → jakarta.servlet.ServletException</li>
+  <li>javax.servlet.ServletContextEvent → jakarta.servlet.ServletContextEvent</li>
+  <li>javax.servlet.ServletContextListener → jakarta.servlet.ServletContextListener</li>
+  <li>javax.servlet.annotation.WebListener → jakarta.servlet.annotation.WebListener</li>
+  <li>javax.persistence.EntityManager → jakarta.persistence.EntityManager</li>
+  <li>javax.annotation.PostConstruct → jakarta.annotation.PostConstruct</li>
+  <li>javax.persistence.AttributeConverter → jakarta.persistence.AttributeConverter</li>
+  <li>javax.persistence.Converter → jakarta.persistence.Converter</li>
+  <li>javax.annotation.PreDestroy → jakarta.annotation.PreDestroy</li>
+</ul>
+
+<p><strong>Step.3 config 설정 변경 (yaml or properties)</strong></p>
+
+<p>SpringBoot 버전이 변경됨에 따라 config 에 대한 설정도 변화가 있다. 아래 문서를 통해 프로젝트 내부 config 설정 확인이 필요하다. 내가 작업한 프로젝트는 2.7.x → 3.2.x 로 변경했기 때문에 아래 문서를 통해 설정의 변경을 확인했다.</p>
+
+<p>springboot 의 버전을 점진적으로 변경하라는 이유를 이때 공감했다!</p>
+
+<ul>
+  <li><a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Configuration-Changelog">springboot 2.7.6 ~ 3.0.0 공식문서</a></li>
+  <li><a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.1-Configuration-Changelog">springboot 3.0.7 ~ 3.1.0 공식문서</a></li>
+  <li><a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.2-Configuration-Changelog">springboot 3.1.6 ~ 3.2.0 공식문서</a></li>
+</ul>
+
+<p><strong>as-is</strong></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">management</span><span class="pi">:</span>
+  <span class="na">metrics</span><span class="pi">:</span>
+    <span class="na">export</span><span class="pi">:</span>
+      <span class="na">influx</span><span class="pi">:</span>
+        <span class="na">enabled</span><span class="pi">:</span> <span class="kc">false</span>
+</code></pre></div></div>
+
+<p><strong>to-be</strong></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">management</span><span class="pi">:</span>
+  <span class="na">influx</span><span class="pi">:</span>
+    <span class="na">metrics</span><span class="pi">:</span>
+      <span class="na">export</span><span class="pi">:</span>
+        <span class="na">enabled</span><span class="pi">:</span> <span class="kc">false</span>
+</code></pre></div></div>
+
+<p><strong>Step.4 Querydsl 변경</strong></p>
+
+<p><strong>as-is</strong></p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dependencies</span> <span class="o">{</span>
+    <span class="n">implementation</span> <span class="s1">'com.querydsl:querydsl-jpa:5.0.0'</span>
+    <span class="n">implementation</span> <span class="s1">'com.querydsl:querydsl-apt:5.0.0'</span>
+    <span class="n">implementation</span> <span class="s1">'com.querydsl:querydsl-core:5.0.0'</span>
+ 
+    <span class="n">implementation</span> <span class="s1">'org.springframework.boot:spring-boot-starter-validation'</span>
+  <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>to-be</strong></p>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dependencies</span> <span class="o">{</span>   
+    <span class="n">implementation</span> <span class="s1">'com.querydsl:querydsl-jpa:5.0.0:jakarta'</span>
+    <span class="n">annotationProcessor</span> <span class="s1">'com.querydsl:querydsl-apt:5.0.0:jakarta'</span>
+    <span class="n">annotationProcessor</span> <span class="s1">'jakarta.persistence:jakarta.persistence-api'</span>
+    <span class="n">implementation</span> <span class="s1">'com.querydsl:querydsl-core'</span>
+    <span class="n">implementation</span> <span class="s1">'com.querydsl:querydsl-collections'</span>
+    <span class="n">annotationProcessor</span> <span class="s1">'jakarta.annotation:jakarta.annotation-api'</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>Step.5 Hibernate 변경</strong></p>
+
+<p>Hibernate 6.x 부터는 Jakatra Persistence API 3.x 를 사용한다.</p>
+
+<ul>
+  <li><a href="https://github.com/quarkusio/quarkus/wiki/Migration-Guide-3.0:-Hibernate-ORM-5-to-6-migration">Hibernate 5.x → 6.x 공식문서</a></li>
+</ul>
+
+<aside>
+💡
+
+What is Hibernate
+
+Hibernate는 Java 기반의 객체-관계 매핑 (ORM) 도구로, 객체 지향 도메인 모델을 관계형 데이터베이스에 매핑하는 기능을 제공한다. JDBC를 통해 관계형 데이터베이스와 상호 작용한다.
+
+</aside>
+
+<p>Hibernate 6.x 부터 @Type, @TypeDef 를 미지원하기 때문에 AttributeConverter 로 변경이 필요하다. 현재 운영중인 서비스에서는 Postgresql 에서 배열 타입의 컬럼을 사용하고 있는데, AttributeConverter 를 생성해서 대체했다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Converter</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">StringToStringArrayConverter</span> <span class="kd">implements</span> <span class="nc">AttributeConverter</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">[],</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="o">{</span>
+ 
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">convertToDatabaseColumn</span><span class="o">(</span><span class="kd">final</span> <span class="nc">String</span><span class="o">[]</span> <span class="n">attribute</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">attribute</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="nc">String</span><span class="o">.</span><span class="na">join</span><span class="o">(</span><span class="s">","</span><span class="o">,</span> <span class="n">attribute</span><span class="o">);</span>
+    <span class="o">}</span>
+ 
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">String</span><span class="o">[]</span> <span class="nf">convertToEntityAttribute</span><span class="o">(</span><span class="kd">final</span> <span class="nc">String</span> <span class="n">dbData</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">dbData</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">dbData</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">","</span><span class="o">);</span>
+    <span class="o">}</span>
+ 
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>Step.6 SpringSecurity 변경</strong></p>
+
+<p>SpringSecurity 5.7.0 이후부터 <code class="language-plaintext highlighter-rouge">WebSecurityConfigurerAdapter</code> 가 deprecated 가 되었고, 컴포넌트 기반으로 보안 설정을 하도록 변경되었다.</p>
+
+<p>현재 내가 작업하고 있는 프로젝트의 SpringSecurity 는 5.7.1 버전이기 때문에 <code class="language-plaintext highlighter-rouge">WebSecurityConfigurerAdapter</code> 는 사용하고 있지는 않지만, SpringSecurity 6.2.4 버전으로 마이그레이션을 하는 과정에서는 추가적인 수정이 필요하다.</p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">@EnableSecurity</code> 에서 @Configuration 제거
+→ SpringSecurity 설정을 정의하는 클래스에서 별도로 Bean 등록이 필요</li>
+  <li><code class="language-plaintext highlighter-rouge">antMatchers</code>, <code class="language-plaintext highlighter-rouge">mvcMatchers</code>,  <code class="language-plaintext highlighter-rouge">regexMatchers</code> 가 제거되고, <code class="language-plaintext highlighter-rouge">requestMatchers</code> 로 변경</li>
+  <li>람다 기반의 방식으로 변경</li>
+</ol>
+
+<p><strong>as-is</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@EnableWebSecurity</span>
+<span class="nd">@RequiredArgsConstructor</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SecurityConfigure</span> <span class="o">{</span>
+	<span class="o">...</span>
+	
+	<span class="nd">@Bean</span>
+    <span class="kd">protected</span> <span class="nc">SecurityFilterChain</span> <span class="nf">securityFilterChain</span><span class="o">(</span><span class="nc">HttpSecurity</span> <span class="n">http</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">http</span>
+                <span class="o">.</span><span class="na">httpBasic</span><span class="o">().</span><span class="na">disable</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">csrf</span><span class="o">().</span><span class="na">disable</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">cors</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">and</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">authorizeRequests</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">antMatchers</span><span class="o">(</span><span class="s">"/admin/docs/**"</span><span class="o">,</span> <span class="s">"/actuator/**"</span><span class="o">).</span><span class="na">permitAll</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">anyRequest</span><span class="o">().</span><span class="na">authenticated</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">and</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">exceptionHandling</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">authenticationEntryPoint</span><span class="o">(</span><span class="n">jwtAuthenticationEntryPoint</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">accessDeniedHandler</span><span class="o">(</span><span class="n">jwtAccessDeniedHandler</span><span class="o">)</span>
+ 
+                <span class="o">.</span><span class="na">and</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">addFilterBefore</span><span class="o">(</span><span class="k">new</span> <span class="nc">JwtFilter</span><span class="o">(</span><span class="n">authClientService</span><span class="o">),</span> <span class="nc">UsernamePasswordAuthenticationFilter</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+    <span class="o">}</span>
+    
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>to-be</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@EnableWebSecurity</span>
+<span class="nd">@RequiredArgsConstructor</span>
+<span class="nd">@Configuration</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SecurityConfigure</span> <span class="o">{</span>
+    <span class="o">...</span>
+ 
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">SecurityFilterChain</span> <span class="nf">filterChain</span><span class="o">(</span><span class="nc">HttpSecurity</span> <span class="n">http</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="n">http</span>
+            <span class="o">.</span><span class="na">csrf</span><span class="o">(</span><span class="nl">AbstractHttpConfigurer:</span><span class="o">:</span><span class="n">disable</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">cors</span><span class="o">(</span><span class="nl">AbstractHttpConfigurer:</span><span class="o">:</span><span class="n">disable</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">httpBasic</span><span class="o">(</span><span class="nl">AbstractHttpConfigurer:</span><span class="o">:</span><span class="n">disable</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">authorizeHttpRequests</span><span class="o">(</span><span class="n">authorize</span> <span class="o">-&gt;</span> <span class="n">authorize</span>
+                <span class="o">.</span><span class="na">requestMatchers</span><span class="o">(</span><span class="s">"/admin/docs/**"</span><span class="o">,</span> <span class="s">"/actuator/**"</span><span class="o">).</span><span class="na">permitAll</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">anyRequest</span><span class="o">().</span><span class="na">authenticated</span><span class="o">()</span>
+            <span class="o">)</span>
+            <span class="o">.</span><span class="na">exceptionHandling</span><span class="o">(</span><span class="n">exception</span> <span class="o">-&gt;</span> <span class="n">exception</span>
+                <span class="o">.</span><span class="na">authenticationEntryPoint</span><span class="o">(</span><span class="n">jwtAuthenticationEntryPoint</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">accessDeniedHandler</span><span class="o">(</span><span class="n">jwtAccessDeniedHandler</span><span class="o">)</span>
+            <span class="o">)</span>
+            <span class="o">.</span><span class="na">addFilterBefore</span><span class="o">(</span><span class="k">new</span> <span class="nc">JwtFilter</span><span class="o">(</span><span class="n">authClientService</span><span class="o">),</span> <span class="nc">UsernamePasswordAuthenticationFilter</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+ 
+        <span class="k">return</span> <span class="n">http</span><span class="o">.</span><span class="na">build</span><span class="o">();</span>
+    <span class="o">}</span>
+     
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li><a href="https://docs.spring.io/spring-security/reference/5.8/migration/servlet/config.html">SpringSecurity 마이그레이션 공식문서</a></li>
+</ul>
+
+<p><strong>Step.7 SpringCloud Sleuth</strong></p>
+
+<p>SpringCloud Sleuth 는 분산추적을 위한 SpringBoot 자동 구성을 제공한다. SpringBoot 3.x 이상 버전부터는 SpringCloud Sleuth 를 지원하지 않는다. SpringCloud Sleuth 를 지원하는 마지막 버전은 2.x 이다.</p>
+
+<p>현재 작업하고 있는 프로젝트에서는 Sleuth 를 사용하지 않기 때문에 추가적으로 작업할 내용은 없었다.</p>
+
+<ul>
+  <li><a href="https://docs.spring.io/spring-cloud-sleuth/docs/current/reference/html/">SpringCloud Sleuth 공식문서</a></li>
+</ul>
+
+<h3 id="검증-내역">검증 내역</h3>
+
+<p>프로젝트의 모든 API 를 테스트하는것은 쉽지가 않다. 그래서 작업 내용에 영향을 받는 API 들만 별도로 샘플링해서 개발자 수준의 테스트를 진행했다. 만약, 테스트 코드가 있다면 테스트 코드를 실행시키는것만으로 검증할 수 있다. 하지만, 이 프로젝트는 그렇게 호락호락하지 않았다.</p>
+
+<p>현재는 검증중이고, 12월에 배포할 예정이다. 끝났다! 하지만…</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-11-21/3.png" alt="3.png" /></p>
+
+<p>고통은 끝나지 않았다. 하지만, 그 고통 이제 나눌 것이다.</p>]]></content><author><name>lkhlkh23</name></author><category term="springboot" /><category term="springboot" /><category term="migration" /><summary type="html"><![CDATA[SpringBoot 3.x 마이그레이션 작업을 진행하고 있다. 이전 포스팅에서 3년이내 회사를 퇴사하지 않을 예정이라면 마이그레이션을 권장한다고 글을 작성했다. 그럼 난 마이그레이션 작업을 해야하는것일까?!]]></summary></entry><entry><title type="html">2024 Naver DAN Day2 후기</title><link href="https://lkhlkh23.github.io/jekyll-theme-yat/insight/2024/11/12/conference-naver-dan-day2.html" rel="alternate" type="text/html" title="2024 Naver DAN Day2 후기" /><published>2024-11-12T00:00:00+00:00</published><updated>2024-11-12T00:00:00+00:00</updated><id>https://lkhlkh23.github.io/jekyll-theme-yat/insight/2024/11/12/conference-naver-dan-day2</id><content type="html" xml:base="https://lkhlkh23.github.io/jekyll-theme-yat/insight/2024/11/12/conference-naver-dan-day2.html"><![CDATA[<p>Day.02 에서는 BackEnd 개발자보다는, 디자이너, 기획자 그리고 AI 관련 직군과 연관된 세션들이 많았다. 그래서 개발적인 내용보다는 인사이트를 얻는 목적으로 세션에 참석했다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-11-12/banner.jpeg" alt="banner.jpeg" /></p>
+
+<h3 id="morning-session-review-">Morning Session Review …</h3>
+
+<p><strong>CREATIVE Opening &amp; Highlight Session</strong></p>
+
+<p>오전 세션에는 <code class="language-plaintext highlighter-rouge">네이버 브랜드</code>, <code class="language-plaintext highlighter-rouge">생성형 AI + 검색 인터페이스 확장</code> , <code class="language-plaintext highlighter-rouge">경험을 전략하기 위한 방법</code> 그리고 <code class="language-plaintext highlighter-rouge">패널 토크</code> 순서로 진행되었다. 특히 인상 깊었던 부분은 추상적이고 측정하기 어려운 경험을 명확하고 정량적인 메트릭으로 전환하는 전략이었다. 이를 통해 경험을 더 구체적이고 실질적으로 다룰 수 있는 방법이 제시되었다.</p>
+
+<p>또한, 네이버는 글로벌 테크기업과의 기술 격차에 대한 질문에 대해 고도의 기술뿐 아니라 사용자 니즈를 충족시키는 것이 더욱 중요하다는 답변을 내놓아, 기술과 사용자 중심의 균형을 강조했다.</p>
+
+<h3 id="afternoon-session-review-">Afternoon Session Review …</h3>
+
+<p><strong>SQM 으로 네이버 검색 품질 체크</strong></p>
+
+<p>SQM 은 Search Quality Metric 의 약자로서 검색품질지표를 의미한다. 검색결과에 대한 평가는 주관적이기 때문에 객관적인 지표인 SQM 이 필요하다. 해당 세션에서는 SQM 지표, 지표 선정 기준, 지표의 근거, 지표 설계 고려사항과 관련된 내용을 포함하고 있었다.</p>
+
+<p>그리고, 마지막으로 검색품질 신호등 프로젝트에 대해 소개했다. 검색품질 신호등은 아래 3-Step 으로 진행을 한다. 해당 프로젝트를 통해 검색품질을 개선했다고 한다.</p>
+
+<ul>
+  <li>저품질 구간 발국</li>
+  <li>저품질 원인 분석, 유형화, 리포트 작성</li>
+  <li>담당자 공유, 개선과제 수행, 모니터링</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-11-12/0.png" alt="0.png" /></p>
+
+<p>세션을 들으면서 <code class="language-plaintext highlighter-rouge">코드품질 신호등</code> 프로젝트를 생각하게 되었다. 올해 구축한 <code class="language-plaintext highlighter-rouge">소나큐브</code>와 <code class="language-plaintext highlighter-rouge">jacoco</code> 를 이용하면 지속적으로 코드 품질을 관리할 수 있지 않을까?! 라는 생각을 했다. 코드 품질에 필요한 여러 지표를 선정하고, jacoco 를 이용해서 코드에 대한 품질을 기록하고 모니터링하고 싶어졌다.</p>
+
+<p>그리고 주기적으로 코드 품질 결과를 바탕으로 같이 리팩토링하는 시간을 가진다면 개발자의 개인 역량과 프로젝트의 품질까지 같이 향상될 수 있을것이라고 생각한다. 또한, 정량적인 지표를 통해 조직내에서 리팩토링의 효과도 증명할 수 있기 때문에 재미있을것 같다. 내년에 내가 평가에 자유로워진다면, 진행해보고싶다.</p>
+
+<p><strong>네이버 쇼핑이 가격비교와 네이버플러스 스토어로 새로운 경험을 제공합니다.</strong></p>
+
+<p>네이버는 제공하는 컨텐츠가 다양하기 때문에 쇼핑으로 진입할 수 있는 다양한 경로를 가지고 있다. 다양한 채널을 통해 쇼핑까지 자유롭게 진입할 수 있다는 장점으로도 생각할 수 있지만, 상품 진입까지의 사용자의 피로감을 증가시킬 수 있다. 이런 문제를 해결한 것이 <code class="language-plaintext highlighter-rouge">네이버 플러스 스토어</code> 이다. 네이버 플러스 스토어는 AI 개인화 기술과 직관적인 동선을 이용해서 사용자의 경험을 개선했다.</p>
+
+<p>세션을 들으면서 최근에 내가 개발한 컨텐츠에는 불필요한 화면이동과 클릭이 너무 많지 않은가?! 또한, 너무 많은 정보를 제공하려다보니 직관성을 떨어뜨리고 있지 않는가?! 이로인해 사용자의 피로도는 증가시키고 있지 않는가?! 라는 생각을 하게 되었다.</p>
+
+<p><strong>CQueryHub : Data Warehouse 입니다. 근데 이제 Flink 와 Iceberg 를 곁들인</strong></p>
+
+<p>다양한 서비스들의 로그들을 분류하고, 기록하는 로그 적재 시스템을 구축한 배경 및 구조에 대한 설명이 있었다. 여기서는 내가 정리하고 요약하기보다는 발표자료와 강의를 직접 듣는것이 좋을 것 같다!</p>
+
+<ul>
+  <li><a href="https://dan.naver.com/data/deview/session/attach/CQueryhub_Data_Warehouse%E1%84%8B%E1%85%B5%E1%86%B8%E1%84%82%E1%85%B5%E1%84%83%E1%85%A1_%E1%84%80%E1%85%B3%E1%86%AB%E1%84%83%E1%85%A6_%E1%84%8B%E1%85%B5%E1%84%8C%E1%85%A6_Flink%E1%84%8B%E1%85%AA_Iceberg%E1%84%85%E1%85%B3%E1%86%AF_%E1%84%80%E1%85%A7%E1%87%80%E1%84%83%E1%85%B3%E1%86%AF%E1%84%8B%E1%85%B5%E1%86%AB.pdf">발표자료 링크</a></li>
+</ul>
+
+<h3 id="summary">Summary</h3>
+
+<p>네이버는 정성적이고, 객관적인 결과를 <code class="language-plaintext highlighter-rouge">정량적이고 주관적인</code> 결과로 변환시킬 수 있는 지표를 가지고 있었다. 그리고 이 지표를 이용해서 사용자의 경험을 개선하고 있었다. 또한, 모든 세션들이 많은 사용자들의 인터렉션으로 인해 다양한 구조와 서비스들이 고안되고 개발되었다. 많은 사용자와의 인터렉션이 많이 발생을 해야 서비스가 지속적으로 발전할 수 있다는 것을 배울 수 있었다.</p>
+
+<p>처음 세션 토픽을 봤을 때, AI 중심의 세션이라고 생각했지만, AI 는 사용자와 서비스를 연결하기 위한 브짓지일뿐, 실제 세션의 메인 주제는 사용자였다!</p>
+
+<p>서비스에 사용자가 제일 중요하다고 생각하는데, 지금 운영하고 있는 서비스에서 필요한 것은 이익 창출이 아닌, 사용자를 늘리는 것이 제일 중요한것은 아닐까?! 라는 생각이 들었다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-11-12/1.png" alt="1.png" /></p>
+
+<p>세션이 끝나고 집에 오는길에 많은 생각이 들었다.</p>]]></content><author><name>lkhlkh23</name></author><category term="insight" /><category term="insight" /><category term="naver" /><category term="dan" /><category term="conference" /><summary type="html"><![CDATA[Day.02 에서는 BackEnd 개발자보다는, 디자이너, 기획자 그리고 AI 관련 직군과 연관된 세션들이 많았다. 그래서 개발적인 내용보다는 인사이트를 얻는 목적으로 세션에 참석했다.]]></summary></entry><entry><title type="html">SpringBoot 3.x 로 왜 전환해야 하는가?!</title><link href="https://lkhlkh23.github.io/jekyll-theme-yat/springboot/2024/10/27/why-upgrade-springboot3.html" rel="alternate" type="text/html" title="SpringBoot 3.x 로 왜 전환해야 하는가?!" /><published>2024-10-27T00:00:00+00:00</published><updated>2024-10-27T00:00:00+00:00</updated><id>https://lkhlkh23.github.io/jekyll-theme-yat/springboot/2024/10/27/why-upgrade-springboot3</id><content type="html" xml:base="https://lkhlkh23.github.io/jekyll-theme-yat/springboot/2024/10/27/why-upgrade-springboot3.html"><![CDATA[<p>최근에 Sonarqube 를 도입하는 과정에서 SpringBoot 2.x 버전으로 사용하는 프로젝트를 다수 확인했다. 서비스의 시작 시점을 고려하면, SpringBoot 2.x 버전으로 개발한것에 대해서는 충분히 이해가 되었다. 하지만, 올해 생성한 프로젝트마저 SpringBoot 2.x 버전으로 개발되었다는 사실은 조금 혼란스러웠다.</p>
+
+<p>그래서, 평가시즌이 끝나서 추가 개발이 빈번하지 않는 지금이 SpringBoot 3.x 버전으로 전환할 수 있는 가장 좋은 타이밍라고 생각한다. 그 누구도 시키지 않았지만 진행하려고 한다.</p>
+
+<p>나는 SpringBoot 3.x 전환을 <code class="language-plaintext highlighter-rouge">하이리스크-로우리턴</code> 이라고 생각한다. 고려사항과 작업내역 그리고 이슈가 발생할 수 있는 가능성도 많다. 하지만, 전환이 완료됬을 때, 정량적으로도 가시적으로도 향상된 부분을 바로 체감할 수 없다. 그렇기 때문에, 전환이 이슈없이 성공하면 본전, 실패하면 인민재판이다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-27/0.png" alt="0.png" /></p>
+
+<p>그래서, SpringBoot 3.x 로 전환의 정당성을 부여하기 위해 SpringBoot 3.x 로 전환해야하는 이유를 정리해보려고 한다.</p>
+
+<h3 id="최신-java-표준-호환성"><strong>최신 Java 표준 호환성</strong></h3>
+
+<p>Spring Boot 3.x 는 최소 Java 17+ 을 기본으로 지원한다. 반면, Spring Boot 2.x 는 Java 17+ 의 버전을 지원하지 않기 때문에 Java 17+ 가 제공하는 기능을 활용할 수 없는 한계가 있다.</p>
+
+<p>또한, Spring Boot 3.x 이상에서는 Jakarta EE 9+ 를 채택하여 <code class="language-plaintext highlighter-rouge">javax.*</code> 대신 <code class="language-plaintext highlighter-rouge">jakarta.*</code> 네임스페이스로 완전히 전환되었다. 이는 Oracle 과의 상표권 이슈로 인해 <code class="language-plaintext highlighter-rouge">javax</code> 네임스페이스를 사용할 수 없게 되었기 때문이다. 따라서 <code class="language-plaintext highlighter-rouge">jakarta</code>는 <code class="language-plaintext highlighter-rouge">javax</code>의 최신 버전으로 이해하면 된다. 현재 <code class="language-plaintext highlighter-rouge">javax</code>는 더 이상 업데이트되지 않기 때문에 <code class="language-plaintext highlighter-rouge">jakarta</code>로의 전환이 필요하다.</p>
+
+<h3 id="최신-보안-표준-지원---spring-security-6">최신 보안 표준 지원 - Spring Security 6</h3>
+
+<p>Spring Security 6 는 Java 17+ 에서 동작하도록 설계되었다. Spring Security 6 에서는 보안 취약점이 발견될 가능성이 있는 API 를 제거하고, 최신 보안 표준을 준수하는 API 만 유지하게 되었다.</p>
+
+<p>EX) WebSecurityConfigurerAdapter 제거되고, Lambda 기반의 방식으로 변경</p>
+
+<p>SprintBoot 2.x - WebSecurityConfigurerAdapter</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@EnableWebSecurity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SecurityConfig</span> <span class="kd">extends</span> <span class="nc">WebSecurityConfigurerAdapter</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(</span><span class="nc">HttpSecurity</span> <span class="n">http</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="n">http</span>
+            <span class="o">.</span><span class="na">authorizeRequests</span><span class="o">()</span>
+            <span class="o">.</span><span class="na">anyRequest</span><span class="o">().</span><span class="na">authenticated</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>SpringBoot 3.x - Lambda 방식</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@EnableWebSecurity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SecurityConfig</span> <span class="o">{</span>
+    <span class="nd">@Bean</span>
+    <span class="kd">public</span> <span class="nc">SecurityFilterChain</span> <span class="nf">securityFilterChain</span><span class="o">(</span><span class="nc">HttpSecurity</span> <span class="n">http</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="n">http</span>
+            <span class="o">.</span><span class="na">authorizeHttpRequests</span><span class="o">(</span><span class="n">auth</span> <span class="o">-&gt;</span> <span class="n">auth</span>
+                <span class="o">.</span><span class="na">anyRequest</span><span class="o">().</span><span class="na">authenticated</span><span class="o">()</span>
+            <span class="o">);</span>
+        <span class="k">return</span> <span class="n">http</span><span class="o">.</span><span class="na">build</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>또한, 보안 필터 체인 설정하는 방식이 더 간단하고, 유연하게 변경되었다. 그리고, CSRF 와 HTTP 헤더 보안, 인증 엔드포인트 보호 등 여러 보안 설정에서 기본값이 더 강화되었다. 이전에는 개발자가 보안 설정을 직접 구성해야 했던 부분들이 기본적으로 더 안전하게 설정되어 있어 보안성을 향상시켰다.</p>
+
+<h3 id="성능-향상---graalvm-네이티브-이미지">성능 향상 - GraalVM 네이티브 이미지</h3>
+
+<p>SpringBoot 2.x 에서는 <code class="language-plaintext highlighter-rouge">JIT (Just-In-Time) 컴파일러</code> 를 사용해 실행 중에 필요한 코드를 컴파일하고 최적화했다. 그러나, SpringBoot 3.x 에서는 <code class="language-plaintext highlighter-rouge">AOT 컴파일</code> 을 사용해 미리 코드 전체를 바이너리 파일로 컴파일한다. AOT 컴파일 방식 덕분에, 실행 시점에 컴파일 작업이 필요하지 않기 때문에 실행 시간이 빨라지고 메모리 사용이 최적화된다.</p>
+
+<p>또한, GraalVM은 미리 컴파일하면서 불필요한 부분들을 걸러내는데, 이 과정을 Dead Code Elimination이라고고 한다. 예를 들어, 사용되지 않는 클래스나 메서드가 있다면 컴파일 과정에서 포함되지 않아 전체적인 애플리케이션 크기가 줄어들고, 필요 없는 코드가 실행되지 않기 때문에 성능이 최적화된다.</p>
+
+<h3 id="결론">결론</h3>
+
+<p>SpringBoot 2.x 에서는 더이상 업데이트가 되지 않는 서비스가 존재하기 때문에 계속해서 애플리케이션을 운영해야한다면, SpringBoot 3.x 로 전환이 반드시 필요하다! 최신 보안 표준 및 성능 개선과 함께 장기적인 유지보수가 필요하다면 변경하자!</p>
+
+<p>아직도 SpringBoot 3.x 전환이 고민된다면…?! 내가 만약 3년이내 퇴사가 예정되있다면, 그냥 SpringBoot 2.x 를 계속 사용해라!</p>
+
+<p>최근 리프레시를 위해서 워케이션과 동행자를 찾고 있다! 하지만, 주변에 재택이 가능한 개발자들이 멸종했다. 혼자가면 방컨디션이 다운그레이드가 되서 걱정이 된다! 이제 나에게 남은 희망은 한명이다!</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-27/1.png" alt="1.png" /></p>
+
+<p>나를 실망시키지 말아라! 하지만, 우선 허락을 구하는게 1순위겠지?!</p>
+
+<h3 id="references">References</h3>
+
+<ul>
+  <li><a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Migration-Guide">SpringBoot 3.x 전환 가이드</a></li>
+  <li><a href="https://velog.io/@ililil9482/Spring-3.x-Security-%EC%84%A4%EC%A0%95">SpringBoot 3.x 전환 필요 이유</a></li>
+  <li><a href="https://mangkyu.tistory.com/302">GraalVM</a></li>
+  <li><a href="https://gyoogle.dev/blog/computer-language/Java/%EC%BB%B4%ED%8C%8C%EC%9D%BC%20%EA%B3%BC%EC%A0%95.html">Java 컴파일 동작원리</a></li>
+  <li><a href="https://hyeinisfree.tistory.com/26">컴파일러 vs 인터프리터</a></li>
+</ul>]]></content><author><name>lkhlkh23</name></author><category term="springboot" /><category term="springboot" /><summary type="html"><![CDATA[최근에 Sonarqube 를 도입하는 과정에서 SpringBoot 2.x 버전으로 사용하는 프로젝트를 다수 확인했다. 서비스의 시작 시점을 고려하면, SpringBoot 2.x 버전으로 개발한것에 대해서는 충분히 이해가 되었다. 하지만, 올해 생성한 프로젝트마저 SpringBoot 2.x 버전으로 개발되었다는 사실은 조금 혼란스러웠다.]]></summary></entry><entry><title type="html">K6 + InfluxDB + Prometheus + Grafana 를 이용한 성능테스트</title><link href="https://lkhlkh23.github.io/jekyll-theme-yat/test/2024/10/01/k6-load-test.html" rel="alternate" type="text/html" title="K6 + InfluxDB + Prometheus + Grafana 를 이용한 성능테스트" /><published>2024-10-01T00:00:00+00:00</published><updated>2024-10-01T00:00:00+00:00</updated><id>https://lkhlkh23.github.io/jekyll-theme-yat/test/2024/10/01/k6-load-test</id><content type="html" xml:base="https://lkhlkh23.github.io/jekyll-theme-yat/test/2024/10/01/k6-load-test.html"><![CDATA[<p>이번에는 K6 에 대해 알아보려고 한다! 처음에는 K3 로 검색을 했는데, 기아자동차가 나왔다. 그래서 K4, 5, 6 순차적으로 검색을 해보니, 내가 원하는 성능테스트 도구에 대한 결과가 나왔다.</p>
+
+<p>오늘은 K6 를 이용한 테스트 방법과 InfluxDB, Grafana, Prometheus 와 결합해서 사용하는 방법 중심으로 정리하겠다!</p>
+
+<h3 id="what-is-k6">What is K6..?</h3>
+
+<p>K6 는 <code class="language-plaintext highlighter-rouge">InfluxDB, Grafana, Prometheus</code> 등 다양한 도구 및 서비스와 쉽게 통합되어 모니터링이 가능하기 때문에 많이 사용되는 <code class="language-plaintext highlighter-rouge">부하 테스트 도구</code>이다. JS 로 작성된 스크립트를 사용하여 복잡한 테스트 시나리오를 생성할 수 있다.</p>
+
+<p>K6 는 HTTP 기반 테스트에서 뛰어난 성능을 발휘하지만, WebSocket, TCP 프로토콜에 대해서는 제한적인 기능만 제공하고 있다. 또한, 관련 서비스에 대한 러닝커브가 있다는 단점이 있다.</p>
+
+<h3 id="how-to-use-k6">How to use K6..?</h3>
+
+<p><strong>Step.1 Install K6</strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew <span class="nb">install </span>k6
+</code></pre></div></div>
+
+<p><strong>Step.2 Prepare script</strong></p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">http</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">k6/http</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">sleep</span><span class="p">,</span> <span class="nx">check</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">k6</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1">// 지속시간에 따른 사용자수 지정 가능</span>
+    <span class="na">stages</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span> <span class="na">duration</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2s</span><span class="dl">'</span><span class="p">,</span> <span class="na">target</span><span class="p">:</span> <span class="mi">5</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="na">duration</span><span class="p">:</span> <span class="dl">'</span><span class="s1">10s</span><span class="dl">'</span><span class="p">,</span> <span class="na">target</span><span class="p">:</span> <span class="mi">5</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="na">duration</span><span class="p">:</span> <span class="dl">'</span><span class="s1">3s</span><span class="dl">'</span><span class="p">,</span> <span class="na">target</span><span class="p">:</span> <span class="mi">10</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="na">duration</span><span class="p">:</span> <span class="dl">'</span><span class="s1">5ms</span><span class="dl">'</span><span class="p">,</span> <span class="na">target</span><span class="p">:</span> <span class="mi">10</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="na">duration</span><span class="p">:</span> <span class="dl">'</span><span class="s1">3s</span><span class="dl">'</span><span class="p">,</span> <span class="na">target</span><span class="p">:</span> <span class="mi">0</span> <span class="p">},</span>
+    <span class="p">],</span>
+
+    <span class="c1">// 응답 95번째 백분위수에 100ms 이하를 요구</span>
+    <span class="na">thresholds</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">http_req_duration</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">p(95)&lt;100</span><span class="dl">'</span><span class="p">],</span>
+    <span class="p">},</span>
+
+    <span class="na">ext</span><span class="p">:</span> <span class="p">{</span> 
+        <span class="na">loadimpact</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">projectID</span><span class="p">:</span> <span class="mi">1234</span><span class="p">,</span> 
+            <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Load Test</span><span class="dl">"</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">// 테스트 대상</span>
+<span class="kd">const</span> <span class="nx">urls</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="dl">"</span><span class="s2">http://localhost:8081/coupons/1</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">http://localhost:8081/coupons/2</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">http://localhost:8081/coupons/3</span><span class="dl">"</span><span class="p">,</span>
+<span class="p">];</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">urls</span><span class="p">[</span><span class="nb">Math</span><span class="p">.</span><span class="nf">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nf">random</span><span class="p">()</span> <span class="o">*</span> <span class="nx">urls</span><span class="p">.</span><span class="nx">length</span><span class="p">)];</span>
+    <span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
+    <span class="nf">check</span><span class="p">(</span><span class="nx">response</span><span class="p">,</span> <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">success</span><span class="dl">"</span><span class="p">:</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">200</span><span class="p">,</span>
+			  <span class="dl">"</span><span class="s2">fail</span><span class="dl">"</span><span class="p">:</span> <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">status</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Step.3 Execute load test</strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>k6 run k6-load-test.js
+</code></pre></div></div>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-01/0.png" alt="0.png" /></p>
+
+<p>터미널에서 결과를 확인할 수 있다. K6 를 사용하는 이유는 Grafana 와의 호환성이니, Grafana 와 연동해보자!</p>
+
+<h3 id="how-to-combine-k6-influxdb-and-grafana">How to combine K6, InfluxDB and Grafana</h3>
+
+<p><strong>Step.1 Run InfluxDB and Grafana</strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>version: <span class="s1">'3.4'</span>
+
+services:
+  influxdb:
+    image: influxdb:1.8
+    ports:
+      - <span class="s2">"8086:8086"</span>
+    environment:
+      - <span class="nv">INFLUXDB_HTTP_AUTH_ENABLED</span><span class="o">=</span><span class="nb">false</span>
+      - <span class="nv">INFLUXDB_DB</span><span class="o">=</span>k6
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - <span class="s2">"3000:3000"</span>
+    environment:
+      - <span class="nv">GF_AUTH_ANONYMOUS_ORG_ROLE</span><span class="o">=</span>Admin
+      - <span class="nv">GF_AUTH_ANONYMOUS_ENABLED</span><span class="o">=</span><span class="nb">true</span>
+      - <span class="nv">GF_AUTH_BASIC_ENABLED</span><span class="o">=</span><span class="nb">false
+    </span>volumes:
+      - ./grafana:/etc/grafana/provisioning/
+</code></pre></div></div>
+
+<p>docker-compose 를 이용해서, InfluxDB 와 Grafana 를 실행한다.</p>
+
+<p><strong>Step.2 Execute load test</strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>k6 run <span class="nt">--out</span> <span class="nv">influxdb</span><span class="o">=</span>http://localhost:8086/k6 k6-load-test.js
+</code></pre></div></div>
+
+<p><strong>Step.3 Access Grafana</strong></p>
+
+<ul>
+  <li>id : admin</li>
+  <li>password : admin</li>
+</ul>
+
+<p><strong>Step.4 Connect InfluxDB</strong></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-01/1.png" alt="1.png" /></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-01/2.png" alt="2.png" /></p>
+
+<p><strong>Step.5 Create Dashboard</strong></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-01/3.png" alt="3.png" /></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-01/4.png" alt="4.png" /></p>
+
+<p>미리 정의된 Dashboard 포맷이 많이 있으니, 아래 링크를 통해 필요한 포맷을 가져다 쓰자! (id : 2587)</p>
+
+<ul>
+  <li>https://grafana.com/grafana/dashboards/</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-01/5.png" alt="5.png" /></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-01/6.png" alt="6.png" /></p>
+
+<h3 id="how-to-combine-k6-prometheus-and-grafana">How to combine K6, Prometheus and Grafana</h3>
+
+<p><strong>Step.1 Run Prometheus</strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scrape_configs:
+  - job_name: <span class="s1">'spring-boot'</span>
+    metrics_path: <span class="s1">'/actuator/prometheus'</span>
+    scrape_interval: 5s
+    static_configs:
+      - targets: <span class="o">[</span><span class="s1">'host.docker.internal:8081'</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">targets</code> 에는 Prmetheus 에서 Metric 을 수집할 대상 서버 주소를 설정하면 된다! docker 를 사용하고 있다면, 127.0.0.1 이 아닌,  <code class="language-plaintext highlighter-rouge">host.docker.internal</code> 을 사용해라!</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>version: <span class="s1">'3.4'</span>
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - <span class="s2">"9090:9090"</span>
+    volumes:
+       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+  influxdb:
+    image: influxdb:1.8
+    ports:
+      - <span class="s2">"8086:8086"</span>
+    environment:
+      - <span class="nv">INFLUXDB_HTTP_AUTH_ENABLED</span><span class="o">=</span><span class="nb">false</span>
+      - <span class="nv">INFLUXDB_DB</span><span class="o">=</span>k6
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - <span class="s2">"3000:3000"</span>
+    environment:
+      - <span class="nv">GF_AUTH_ANONYMOUS_ORG_ROLE</span><span class="o">=</span>Admin
+      - <span class="nv">GF_AUTH_ANONYMOUS_ENABLED</span><span class="o">=</span><span class="nb">true</span>
+      - <span class="nv">GF_AUTH_BASIC_ENABLED</span><span class="o">=</span><span class="nb">false
+    </span>volumes:
+      - ./grafana:/etc/grafana/provisioning/
+</code></pre></div></div>
+
+<p><strong>Step.2 Configure prometheus settings in target project</strong></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">server</span><span class="pi">:</span>
+  <span class="na">port</span><span class="pi">:</span> <span class="m">8081</span>
+
+<span class="na">spring</span><span class="pi">:</span>
+  <span class="na">application</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">coupon</span>
+
+<span class="na">management</span><span class="pi">:</span>
+  <span class="na">endpoints</span><span class="pi">:</span>
+    <span class="na">web</span><span class="pi">:</span>
+      <span class="na">exposure</span><span class="pi">:</span>
+        <span class="na">include</span><span class="pi">:</span> <span class="s">health, prometheus</span>
+
+</code></pre></div></div>
+
+<div class="language-groovy highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">implementation</span> <span class="s1">'io.micrometer:micrometer-registry-prometheus'</span>
+<span class="n">implementation</span> <span class="s1">'org.springframework.boot:spring-boot-starter-actuator'</span>
+</code></pre></div></div>
+
+<p>위와 같이 설정하고 아래 API 를 실행해서 정상적으로 노출되는지 확인해보자!</p>
+
+<ul>
+  <li>http://localhost:8081/actuator/prometheus</li>
+  <li>http://localhost:8081/actuator/health</li>
+</ul>
+
+<p><strong>Step.3 Check the status of target servers in Prometheus</strong></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-01/7.png" alt="7.png" /></p>
+
+<p>Prometheus 에 접속해서 대상 서버의 상태를 확인해보자! Status 가 UP 이면 성공!</p>
+
+<ul>
+  <li>http://localhost:9090/targets?search=</li>
+</ul>
+
+<p><strong>Step.4 Connect Prometheus</strong></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-01/8.png" alt="8.png" /></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-01/9.png" alt="9.png" /></p>
+
+<p><strong>Step.5 Create Dashboard</strong></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-01/10.png" alt="10.png" /></p>
+
+<p>이번에도 미리 정의된 포맷을 사용하려고 한다. (id : 11378)</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-01/11.png" alt="11.png" /></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-01/2.png" alt="12.png" /></p>
+
+<p>K6 를 이용해서 API 를 성능테스트를 위한 스크립트 및 환경을 세팅해보았다! InfluxDB 와 Grafana 를 이용해서 성능 테스트 결과를 시각화했고, Prometheus 와 Grafana 를 이용해서 성능테스트를 진행하는 과정에서 인스턴스의 상태를 시각화했다!</p>
+
+<p>지금까지 vegeta, nGrinder, K6 를 사용했지만, 개인적으로 K6 가 성능테스트 결과와 대상 서버를 함께 시각화할 수 있어서 가장 좋았다!</p>
+
+<h3 id="and-i-am">And I am..?!</h3>
+
+<p>나는 서버 개발자인가?! 테스터인가?! 정체성 혼란이 왔다!</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-10-01/13.png" alt="13.png" /></p>
+
+<p>하지만, 개인적으로 코드의 품질과 성능을 고려하지 않고 기능만 개발하는 개발자는 IT 가 아닌, 제조업을 종사한다고 생각한다. 성능 테스트를 이해하고 인지하고 있다면, 적어도 성능을 조금이라도 고려할 수 있다고 생각한다.</p>
+
+<p>그래서 vegeta, nGrinder 그리고 K6 를 공부한것이 시간낭비는 아닐것이다.. 그렇지?!</p>]]></content><author><name>lkhlkh23</name></author><category term="test" /><category term="test" /><category term="performance" /><summary type="html"><![CDATA[이번에는 K6 에 대해 알아보려고 한다! 처음에는 K3 로 검색을 했는데, 기아자동차가 나왔다. 그래서 K4, 5, 6 순차적으로 검색을 해보니, 내가 원하는 성능테스트 도구에 대한 결과가 나왔다.]]></summary></entry><entry><title type="html">MDC, Servlet Container, ThreadPool</title><link href="https://lkhlkh23.github.io/jekyll-theme-yat/springboot/2024/09/30/mdc.html" rel="alternate" type="text/html" title="MDC, Servlet Container, ThreadPool" /><published>2024-09-30T00:00:00+00:00</published><updated>2024-09-30T00:00:00+00:00</updated><id>https://lkhlkh23.github.io/jekyll-theme-yat/springboot/2024/09/30/mdc</id><content type="html" xml:base="https://lkhlkh23.github.io/jekyll-theme-yat/springboot/2024/09/30/mdc.html"><![CDATA[<p>팀원이 외부 API 호출 이력을 남기는 개발을 진행을 하고있는데, MDC 를 이용한다고 들었다. 생소한 단어였다. MDC 활용에 대해 어떤 코멘트도 할 수 없었다. 그래서 정리하려고 한다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-30/banner.png" alt="banner.png" /></p>
+
+<h3 id="what-is-mdc">What is MDC..?</h3>
+
+<p>MDC (Mapped Diagnostic Context) 는 로깅 시스템에서 각 스레드에 대한 컨텍스트 정보 저장을 위해 사용한다. 주로 Apache Log4j 와 같은 로깅 프레임워크에서 사용된다.</p>
+
+<blockquote>
+  <p>Mapped Diagnostic Context</p>
+
+  <p>Mapped :  로그에 추가적인 정보를 제공위해 Key 와 Value 를 연결하여 저장<br />
+Diagnostic : 로그에 추가적인 정보를 포함시킴으로써 문제를 식별하고 분석하는 과정을 의미<br />
+Context : 스레드별로 독립적인 컨텍스트를 제공하여 로그가 어떤 상황에서 발생했는지를 명확하게 이해</p>
+
+</blockquote>
+
+<p>MDC  는 각 스레드에서 발생하는 로그에 대한 추가적인 진단 정보를 저장하고 이를 로그에 포함시킴으로써, 문제를 보다 쉽게 추적하고 진단할 수 있게 한다. MDC 는 <code class="language-plaintext highlighter-rouge">ThreadLocal</code> 을 사용하여 각 스레드별로 독립적인 Map 을 생성한다. Servlet Container 에서는 Thread Pool 에서 스레드를 미리 생성해서 재사용하고 있기 때문에 스레드 반납전에 MDC 를 반드시 클리어해야 한다. 각각의 스레드는 자신만의 MDC 를 가지고 있기 때문에 멀티스레드 환경에서도 <code class="language-plaintext highlighter-rouge">Thread-Safe</code> 하다.</p>
+
+<h3 id="mdc-development">MDC development</h3>
+
+<p>FeignTrace 커스텀 어노테이션이 붙은 메소드 호출에 대해서 AOP 를 설정한다. 호출 전에는 MDC 에 값을 저장하고, 호출 후에는 MDC 에 값을 출력하는 방식으로 간단하게 예제 코드를 작성했다!</p>
+
+<p>제일 중요한것은 API 호출 성공과 실패 모두 <code class="language-plaintext highlighter-rouge">MDC 를 clear</code> 해야한다!</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">client.coupon.config</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.lang.annotation.ElementType</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.annotation.Retention</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.annotation.RetentionPolicy</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.lang.annotation.Target</span><span class="o">;</span>
+
+<span class="nd">@Retention</span><span class="o">(</span><span class="nc">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="nd">@Target</span><span class="o">(</span><span class="nc">ElementType</span><span class="o">.</span><span class="na">METHOD</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="nc">FeignTrace</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">client.coupon.config</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.aspectj.lang.ProceedingJoinPoint</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.aspectj.lang.annotation.After</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.aspectj.lang.annotation.Around</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.aspectj.lang.annotation.Aspect</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.aspectj.lang.annotation.Before</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.slf4j.MDC</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.stereotype.Component</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">jakarta.servlet.http.HttpServletRequest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">lombok.RequiredArgsConstructor</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">lombok.extern.slf4j.Slf4j</span><span class="o">;</span>
+
+<span class="nd">@Aspect</span>
+<span class="nd">@Component</span>
+<span class="nd">@RequiredArgsConstructor</span>
+<span class="nd">@Slf4j</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">FeignTraceAspect</span> <span class="o">{</span>
+
+	<span class="kd">private</span> <span class="kd">final</span> <span class="nc">HttpServletRequest</span> <span class="n">request</span><span class="o">;</span>
+
+	<span class="nd">@Around</span><span class="o">(</span><span class="s">"@annotation(FeignTrace)"</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">Object</span> <span class="nf">trace</span><span class="o">(</span><span class="nc">ProceedingJoinPoint</span> <span class="n">joinPoint</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Throwable</span> <span class="o">{</span>
+		<span class="k">try</span> <span class="o">{</span>
+			<span class="no">MDC</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"parameters"</span><span class="o">,</span> <span class="n">extractParameters</span><span class="o">(</span><span class="n">joinPoint</span><span class="o">.</span><span class="na">getArgs</span><span class="o">()));</span>
+			<span class="no">MDC</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"path"</span><span class="o">,</span> <span class="n">request</span><span class="o">.</span><span class="na">getRequestURI</span><span class="o">());</span>
+			<span class="no">MDC</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"ip"</span><span class="o">,</span> <span class="n">request</span><span class="o">.</span><span class="na">getRemoteAddr</span><span class="o">());</span>
+			<span class="kd">final</span> <span class="nc">Object</span> <span class="n">result</span> <span class="o">=</span> <span class="n">joinPoint</span><span class="o">.</span><span class="na">proceed</span><span class="o">();</span>
+			<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"[success] ip : {}, path : {}, parameters : {}"</span><span class="o">,</span> <span class="no">MDC</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"ip"</span><span class="o">),</span> <span class="no">MDC</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"path"</span><span class="o">),</span> <span class="no">MDC</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"parameters"</span><span class="o">));</span>
+			<span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+		<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Throwable</span> <span class="n">throwable</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">"[fail] ip : {}, path : {}, parameters : {}"</span><span class="o">,</span> <span class="no">MDC</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"ip"</span><span class="o">),</span> <span class="no">MDC</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"path"</span><span class="o">),</span> <span class="no">MDC</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"parameters"</span><span class="o">));</span>
+			<span class="k">throw</span> <span class="n">throwable</span><span class="o">;</span>
+		<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+			<span class="no">MDC</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+
+	<span class="kd">private</span> <span class="nc">String</span> <span class="nf">extractParameters</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Object</span><span class="o">[]</span> <span class="n">arguments</span><span class="o">)</span> <span class="o">{</span>
+		<span class="kd">final</span> <span class="nc">StringBuilder</span> <span class="n">parameters</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringBuilder</span><span class="o">();</span>
+		<span class="k">for</span> <span class="o">(</span><span class="kd">final</span> <span class="nc">Object</span> <span class="n">arg</span> <span class="o">:</span> <span class="n">arguments</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">parameters</span><span class="o">.</span><span class="na">append</span><span class="o">((</span><span class="nc">String</span><span class="o">)</span> <span class="n">arg</span><span class="o">);</span>
+		<span class="o">}</span>
+
+		<span class="k">return</span> <span class="n">parameters</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Service</span>
+<span class="nd">@Slf4j</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">FeignService</span> <span class="o">{</span>
+
+	<span class="nd">@FeignTrace</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">validate</span><span class="o">(</span><span class="kd">final</span> <span class="nc">String</span> <span class="n">id</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="s">"1"</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">id</span><span class="o">))</span> <span class="o">{</span>
+			<span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">"error is occurred"</span><span class="o">);</span>
+			<span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="o">(</span><span class="s">"Invalid coupon id"</span><span class="o">);</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span>
+<span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"LOG_DIR"</span> <span class="na">value=</span><span class="s">"logs"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">"CONSOLE"</span> <span class="na">class=</span><span class="s">"ch.qos.logback.core.ConsoleAppender"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;encoder&gt;</span>
+            <span class="nt">&lt;pattern&gt;</span>%green(%d{yyyy-MM-dd HH:mm:ss.SSS}) %magenta([%thread]) %highlight(%5level) %cyan(%logger) - %yellow(%msg%n)<span class="nt">&lt;/pattern&gt;</span>
+        <span class="nt">&lt;/encoder&gt;</span>
+    <span class="nt">&lt;/appender&gt;</span>
+    <span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">"FILE"</span> <span class="na">class=</span><span class="s">"ch.qos.logback.core.rolling.RollingFileAppender"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;file&gt;</span>${LOG_DIR}/coupon.log<span class="nt">&lt;/file&gt;</span>
+        <span class="nt">&lt;encoder&gt;</span>
+            <span class="nt">&lt;pattern&gt;</span>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %5level %logger - %msg%n<span class="nt">&lt;/pattern&gt;</span>
+        <span class="nt">&lt;/encoder&gt;</span>
+        <span class="nt">&lt;rollingPolicy</span> <span class="na">class=</span><span class="s">"ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;fileNamePattern&gt;</span>${LOG_DIR}/coupon-%d{yyyy-MM-dd}.%i.log<span class="nt">&lt;/fileNamePattern&gt;</span>
+            <span class="nt">&lt;maxFileSize&gt;</span>30MB<span class="nt">&lt;/maxFileSize&gt;</span>
+            <span class="nt">&lt;maxHistory&gt;</span>30<span class="nt">&lt;/maxHistory&gt;</span>
+        <span class="nt">&lt;/rollingPolicy&gt;</span>
+    <span class="nt">&lt;/appender&gt;</span>
+
+    <span class="nt">&lt;logger</span> <span class="na">name=</span><span class="s">"client.coupon"</span> <span class="na">level=</span><span class="s">"DEBUG"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;root</span> <span class="na">level=</span><span class="s">"INFO"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">"CONSOLE"</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;appender-ref</span> <span class="na">ref=</span><span class="s">"FILE"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/root&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+
+</code></pre></div></div>
+
+<h3 id="mdc-verification">MDC verification</h3>
+
+<p>이제는 성능테스트 도구인 vegeta 를 이용해서 트래픽을 발생시켜서 MDC 가 정상적으로 동작하는지 검증하려고 한다!</p>
+
+<p><strong>검증방법</strong></p>
+
+<p>vegeta 로 300tps 를 5분동안 부하 생성</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET http://localhost:8081/coupons/1
+GET http://localhost:8081/coupons/2
+GET http://localhost:8081/coupons/3
+GET http://localhost:8081/coupons/4
+GET http://localhost:8081/coupons/5
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vegeta attack <span class="nt">-duration</span><span class="o">=</span>5m <span class="nt">-rate</span><span class="o">=</span>300 <span class="nt">-targets</span><span class="o">=</span>targets.txt | vegeta report
+</code></pre></div></div>
+
+<p>log 파일을 읽어서 API 호출에 대한 정보가 MDC 에 정상적으로 적재되었는지 확인</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">client.coupon.config</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">junit</span><span class="o">.</span><span class="na">jupiter</span><span class="o">.</span><span class="na">api</span><span class="o">.</span><span class="na">Assertions</span><span class="o">.*;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.BufferedReader</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.FileReader</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.junit.jupiter.api.Test</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">lombok.extern.slf4j.Slf4j</span><span class="o">;</span>
+
+<span class="nd">@Slf4j</span>
+<span class="kd">class</span> <span class="nc">FeignTraceTest</span> <span class="o">{</span>
+
+	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">PATH</span> <span class="o">=</span> <span class="s">"logs/coupon.log"</span><span class="o">;</span>
+
+	<span class="nd">@Test</span>
+	<span class="kt">void</span> <span class="nf">test_trace</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">try</span> <span class="o">(</span><span class="kd">final</span> <span class="nc">BufferedReader</span> <span class="n">br</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BufferedReader</span><span class="o">(</span><span class="k">new</span> <span class="nc">FileReader</span><span class="o">(</span><span class="no">PATH</span><span class="o">)))</span> <span class="o">{</span>
+			<span class="nc">String</span> <span class="n">line</span><span class="o">;</span>
+			<span class="k">while</span> <span class="o">((</span><span class="n">line</span> <span class="o">=</span> <span class="n">br</span><span class="o">.</span><span class="na">readLine</span><span class="o">())</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+				<span class="k">if</span> <span class="o">(!</span><span class="n">line</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="s">"[success]"</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">line</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="s">"[fail]"</span><span class="o">))</span> <span class="o">{</span>
+					<span class="k">continue</span><span class="o">;</span>
+				<span class="o">}</span>
+
+				<span class="kd">final</span> <span class="nc">String</span> <span class="n">parameter</span> <span class="o">=</span> <span class="n">extract</span><span class="o">(</span><span class="n">line</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">","</span><span class="o">)[</span><span class="mi">2</span><span class="o">]);</span>
+				<span class="kd">final</span> <span class="nc">String</span> <span class="n">path</span> <span class="o">=</span> <span class="n">extract</span><span class="o">(</span><span class="n">line</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">","</span><span class="o">)[</span><span class="mi">1</span><span class="o">]);</span>
+				<span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"parameter : {}, path : {}"</span><span class="o">,</span> <span class="n">parameter</span><span class="o">,</span> <span class="n">path</span><span class="o">);</span>
+				<span class="n">assertEquals</span><span class="o">(</span><span class="s">"/coupons/"</span> <span class="o">+</span> <span class="n">parameter</span><span class="o">,</span> <span class="n">path</span><span class="o">);</span>
+			<span class="o">}</span>
+		<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+
+	<span class="kd">private</span> <span class="nc">String</span> <span class="nf">extract</span><span class="o">(</span><span class="kd">final</span> <span class="nc">String</span> <span class="n">line</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">line</span><span class="o">.</span><span class="na">replaceAll</span><span class="o">(</span><span class="s">" "</span><span class="o">,</span> <span class="s">""</span><span class="o">).</span><span class="na">split</span><span class="o">(</span><span class="s">":"</span><span class="o">)[</span><span class="mi">1</span><span class="o">];</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>검증결과</strong></p>
+
+<p>성공과 실패에 대해서 MDC 를 잘 clear 하고 있으며, 동시성 이슈도 없어보인다! 성공!</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-30/0.png" alt="0.png" /></p>
+
+<p>MDC 에 대해서 간단하게 알아보면서 추가적으로 Servlet 에 대해서도 정리를 해봤다.</p>
+
+<h3 id="what-is-servlet-and-servlet-container">What is Servlet and Servlet Container..?</h3>
+
+<p>Servlet 은 Servlet 클래스의 구현 규칙을 바탕으로 사용자의 요청을 처리하는 웹 프로그래밍 기술이다. Java 에서 동적인 웹 페이지를 생성는데 사용하는 기술이다. (예 : PHP)</p>
+
+<p>Tomcat (Web Application Server, WAS) 은 Servlet Container 라고 불리며, Servlet 을 관리하고, <code class="language-plaintext highlighter-rouge">Servlet 생명주기 관리</code> , <code class="language-plaintext highlighter-rouge">통신 지원</code> 그리고 <code class="language-plaintext highlighter-rouge">멀티스레드 지원 역할</code>을 수행한다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-30/1.png" alt="1.png" /></p>
+
+<p><strong>Servlet 생명주기 관리</strong></p>
+
+<p>Servlet 은 Servlet Container 에 의해 싱글톤으로 관리된다. Servlet Container 가 시작되면 Servlet 클래스를 로딩하고, 인스턴스를 생성하여 <code class="language-plaintext highlighter-rouge">init()</code> 메서드를 호출해 초기화 작업을 수행한다. 그리고 클라이언트의 요청이 들어오면 <code class="language-plaintext highlighter-rouge">service()</code> 메서드를 통해 요청을 처리하며, 요청 방식에 따라 적절한 메서드(<code class="language-plaintext highlighter-rouge">doGet()</code>, <code class="language-plaintext highlighter-rouge">doPost()</code>)를 호출한다.  Container 가 종료될 때는 <code class="language-plaintext highlighter-rouge">destroy()</code> 메서드를 이용해서 자원을 해제하고, GC 를 통해 Servlet 객체가 메모리에서 제거된다.</p>
+
+<p><strong>통신 지원 (HttpServeletRequest 와 HttpServeletResponse 객체 생성)</strong></p>
+
+<p>Servlet 은 클라이언트와 서버 간의 통신을 쉽게 할 수 있도록 HttpServletRequest와 HttpServletResponse 객체를 제공한다. <code class="language-plaintext highlighter-rouge">HttpServletRequest</code> 는 HTTP 요청 정보를 Servlet 에 전달하며, 헤더, 파라미터, 쿠키, URI 등의 데이터를 읽거나 Body의 스트림을 처리할 수 있다. <code class="language-plaintext highlighter-rouge">HttpServletResponse</code> 는 클라이언트에게 응답 코드, 콘텐츠 타입, 메시지 등을 설정하고 전송할 수 있다. 이를 통해 개발자는 통신 관련 세부 사항에 신경 쓰지 않고 비즈니스 로직에 집중할 수 있습니다.</p>
+
+<p><strong>멀티스레드 지원</strong></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-30/2.png" alt="2.png" /></p>
+
+<p>Servlet 은 싱글톤으로 관리되며, 여러 요청이 들어와도 하나의 Servlet 인스턴스로 처리된다. Servlet Container 는 요청이 올때마다 새로운 스레드를 생성하고, 요청이 끝나면 스레드를 제거한다. 하지만 요청마다 스레드를 생성하는 것은 성능 저하를 일으킬 수 있기 때문에, <code class="language-plaintext highlighter-rouge">Thread Pool</code> 을 사용한다.</p>
+
+<p>Thrad Pool 은 필요한 스레드를 미리 생성해 두고 관리한다. 요청이 들어오면 Thrad Pool 에서 스레드를 꺼내 사용하고, 사용이 끝나면 다시 반납한다. 만약 Thrad Pool 이 모두 사용 중일 때는, 요청을 거절하거나 일정 수만큼 Queue 에서 대기하도록 설정할 수 있다.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">server</span><span class="pi">:</span>
+  <span class="na">tomcat</span><span class="pi">:</span>
+    <span class="na">accept-count</span><span class="pi">:</span> <span class="s">10</span> 
+    <span class="na">max-connections</span><span class="pi">:</span> <span class="m">150</span>
+    <span class="na">threads</span><span class="pi">:</span>
+      <span class="na">max</span><span class="pi">:</span> <span class="m">50</span> <span class="c1"># default : 200</span>
+      <span class="na">min-spare</span><span class="pi">:</span> <span class="m">20</span>
+</code></pre></div></div>
+
+<ul>
+  <li>server.tomcat.accept-count (default : 100)
+    <ul>
+      <li>서버가 처리할 수 있는 최대 thread 수 (server.tomcat.max) 를 초과할 경우, Queue 에 적재할 수 있는 Connection 수</li>
+    </ul>
+  </li>
+  <li>server.tomcat.max-connections (default : 8192)
+    <ul>
+      <li>서버와 클라이언트간의 Connection 수</li>
+    </ul>
+  </li>
+  <li>server.tomcat.thread.max (default : 200)
+    <ul>
+      <li>동시에 처리될 수 있는 최대 thread 수</li>
+    </ul>
+  </li>
+  <li>server.tomcat.min-spare (default : 10)
+    <ul>
+      <li>사용하지 않아도 최소로 유지해야하는 thread 수</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="how-is-servlet-used-in-springboot">How is Servlet used in SpringBoot..?</h3>
+
+<p>SpringBoot 는 Embedded Tomcat 사용하고 있기 때문에 복잡한 설정 없이 Servlet 을 쉽게 활용할 수 있다. Embedded Tomcat 을 이용해 MVC 패턴 기반의 애플리케이션 개발이 가능해집니다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-30/3.png" alt="3.png" /></p>
+
+<p>Servlet 은 SpringBoot 의 컨트롤러와 함께 작동하여 클라이언트 요청을 처리하고 비즈니스 로직을 수행한 후 .응답합니다. 또한, @ServletComponentScan 어노테이션을 통해 Servlet 을 등록하고 생명주기를 관리하여 개발자의 편의성을 지원한다.</p>
+
+<h3 id="and-i-am-">And I am …</h3>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-09-30/4.png" alt="4.png" /></p>
+
+<p>이제 4/4분기만 남았다. 어쩌다가 반칠순이 되었는데, 이러다가 곧 불혹되겠네 …</p>
+
+<p>관리 열심히 해야지 … 물리시간에도 이해못한 가속도의 법칙을 노화를 통해 배우고 있다 …</p>]]></content><author><name>lkhlkh23</name></author><category term="springboot" /><category term="mdc" /><category term="sevelet" /><category term="servlet-container" /><category term="thread-pool" /><summary type="html"><![CDATA[팀원이 외부 API 호출 이력을 남기는 개발을 진행을 하고있는데, MDC 를 이용한다고 들었다. 생소한 단어였다. MDC 활용에 대해 어떤 코멘트도 할 수 없었다. 그래서 정리하려고 한다.]]></summary></entry></feed>

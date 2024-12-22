@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>API 응답값 형에 대한 고민-1 | Code Chronicles</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="API 응답값 형에 대한 고민-1">
+<meta name="author" content="lkhlkh23">
+<meta property="og:locale" content="ko">
+<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+<meta property="og:description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+<link rel="canonical" href="https://lkhlkh23.github.io/jekyll-theme-yat/spring/2024/01/18/api-response-format.html">
+<meta property="og:url" content="https://lkhlkh23.github.io/jekyll-theme-yat/spring/2024/01/18/api-response-format.html">
+<meta property="og:site_name" content="Code Chronicles">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-01-18T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="API 응답값 형에 대한 고민-1">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"lkhlkh23"},"dateModified":"2024-01-18T00:00:00+00:00","datePublished":"2024-01-18T00:00:00+00:00","description":"Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","headline":"API 응답값 형에 대한 고민-1","mainEntityOfPage":{"@type":"WebPage","@id":"https://lkhlkh23.github.io/jekyll-theme-yat/spring/2024/01/18/api-response-format.html"},"url":"https://lkhlkh23.github.io/jekyll-theme-yat/spring/2024/01/18/api-response-format.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="">
+  <link rel="canonical" href="https://lkhlkh23.github.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://lkhlkh23.github.io/jekyll-theme-yat/feed.xml" title="Code Chronicles">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe-lightbox.umd.min.js" async></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/umd/photoswipe.umd.min.js" async></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/photoswipe/5.3.7/photoswipe.min.css" rel="stylesheet">
+<style>
+  .pswp .pswp__container .pswp__img {
+    background-color: white;
+  }
+</style>
+
+<script>
+  function initPhotoSwipe() {
+    let customOptions = {};
+
+    try {
+      const data = ``.replaceAll("=>", ":");
+      customOptions = JSON.parse(data);
+    } catch (e) {
+      console.info("Invalid custom photo previewer options! " + e.message);
+    }
+
+    // Define object and gallery options
+    const options = Object.assign(
+      {
+        gallery: "section.main",
+        children: "a.photo-swipe",
+        photo_scale: 2,
+        // dynamic import is not supported in UMD version
+        pswpModule: PhotoSwipe,
+      },
+      customOptions
+    );
+
+    const galleryEl = document.querySelector(options.gallery);
+    if (!galleryEl) {
+      return;
+    }
+
+    const imgEls = [];
+    const els = galleryEl.querySelectorAll("img:not(.emoji)");
+    els.forEach((el) => {
+      if (el.src.trim() == "") {
+        return;
+      }
+      if (!imgEls.includes(el)) {
+        imgEls.push(el);
+      }
+    });
+
+    if (imgEls.length === 0) {
+      return;
+    }
+
+    imgEls.forEach((imgEl) => {
+      imgEl.outerHTML = `
+      <a class="photo-swipe"
+        href="${imgEl.src}"
+        data-pswp-width="${
+          Math.max(imgEl.naturalWidth, imgEl.width) * options.photo_scale
+        }"
+        data-pswp-height="${
+          Math.max(imgEl.naturalHeight, imgEl.height) * options.photo_scale
+        }"
+        data-pswp-caption="${imgEl.getAttribute("caption") || imgEl.alt}"
+        target="_blank">
+        ${imgEl.outerHTML}
+      </a>`;
+    });
+
+    // Initialize PhotoSwipe 5
+    var lightbox = new PhotoSwipeLightbox(options);
+
+    lightbox.init();
+  }
+
+  window.addEventListener("load", initPhotoSwipe);
+</script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Code Chronicles" src="" onerror="this.style.display='none'">
+  Code Chronicles
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">CODE CHRONICLES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/about.html">ABOUT</a>
+
+
+
+
+
+
+
+
+
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">API 응답값 형에 대한 고민-1</h1>
+  <h2 class="post-subtitle">HttpStatus + JSON Body vs Only JSON Body (JSend)</h2>
+
+  <div class="post-meta">
+    <time class="dt-published" datetime="2024-01-18T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jan 18, 2024
+    </time>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 13 mins</span>
+  </div>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#spring">#spring</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#rest">#rest</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#jsend">#jsend</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-18/banner.png" alt="banner"></p>
+
+<h1 id="response">Response</h1>
+
+<p>신규로 진행하는 프로젝트에서 API 응답에 대한 표준을 정해야 하는 협의가 내일 예정되있다.</p>
+
+<p>API 응답에 대한 표준은 F/E 개발자와 B/E 개발자 간의 공통적인 약속을 정의함으로써 상호작용에 많은 도움을 줄 수 있다. 또한, API 호출은 F/E 뿐만 아니라, B/E 서버 간에서도 많은 호출이 있기 때문에 이 부분도 같이 고려를 해야한다.</p>
+
+<p>개인적으로 두가지 방식을 고민했고, 하나를 선택하려고 한다.</p>
+
+<h3 id="httpstatus--json-body">HttpStatus + JSON Body</h3>
+
+<p>API 호출 성공과 실패 관계없이, HttpStatus 와 JSON Body 를 함께 제공하는 방식이다.</p>
+
+<p>사용자의 잘못된 입력에 대해 400 Bad Request 코드와 함께 JSON message 에서 예외에 대한 메세지를 함께 제공하고 있다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-18/0.png" alt="0.png"></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-18/1.png" alt="0.png"></p>
+
+<p>ExceptionHandler 를 이용해서 위와 같은 결과를 받을 수 있도록 구현했다.</p>
+
+<p>@ResponseStatus 이용해서 HttpStatus 코드를 정의했고, @ResponseBody 이용해서 JSON Body 를 정의했다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RestControllerAdvice</span>
+<span class="nd">@Slf4j</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RestControllerExceptionHandler</span> <span class="o">{</span>
+
+	<span class="nd">@ExceptionHandler</span><span class="o">(</span><span class="nc">WordMatchException</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+	<span class="nd">@ResponseStatus</span><span class="o">(</span><span class="n">code</span> <span class="o">=</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">BAD_REQUEST</span><span class="o">)</span>
+	<span class="nd">@ResponseBody</span>
+	<span class="kd">public</span> <span class="nc">Response</span> <span class="nf">wordMatchException</span><span class="o">(</span><span class="kd">final</span> <span class="nc">WordMatchException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nf">Response</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">(),</span> <span class="nc">ResponseStatusCode</span><span class="o">.</span><span class="na">FAIL</span><span class="o">);</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>이 방식의 장점은 F/E 에서 예외처리가 굉장히 편하다는 장점이 있다.</p>
+
+<p><strong>2xx 성공에 대해서는 success 에서 처리하고 4xx 와 5xx 오류에 대해서는 error 에서 처리할 수 있기 때문에 성공과 실패에 대한 응답을 아주 편리하게 구분</strong>할 수 있다.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nf">ready</span><span class="p">(</span><span class="nf">function </span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">#btn</span><span class="dl">'</span><span class="p">).</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">click</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">$</span><span class="p">.</span><span class="nf">ajax</span><span class="p">({</span>
+            <span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">GET</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">url</span><span class="p">:</span> <span class="dl">'</span><span class="s1">/keyword?word=ex</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">contentType</span><span class="p">:</span> <span class="dl">"</span><span class="s2">application/json; charset=utf-8</span><span class="dl">"</span><span class="p">,</span>
+            <span class="na">success</span><span class="p">:</span> <span class="nf">function </span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">status</span><span class="p">);</span>
+            <span class="p">},</span>
+            <span class="na">error</span><span class="p">:</span> <span class="nf">function </span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">responseJSON</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">responseJSON</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">responseJSON</span><span class="p">.</span><span class="nx">status</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>하지만, API 의 호출은 F/E 뿐만 아니라, B/E 서버에서도 빈번하게 발생한다. B/E 서버에서는 Feign, Retrofit 과 같은 라이브러리를 이용해서 다른 API 를 많이 호출한다. 그런데 <strong>예외를 응답하게 되면 호출한 서버는 try-catch 를 이용해서 예외처리가 필요</strong>하다.</p>
+
+<h3 id="only-json-body-를-제공하는-방식">Only JSON Body 를 제공하는 방식</h3>
+
+<p>이 방식의 가장 많이 등장하는 방식은 JSend 이다. 이 방식은 성공과 실패 모두 HttpStatus.OK 로 응답한다.
+대신 성공과 실패는 JSON Body 에서 구분을 해야한다.</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-18/3.png" alt="3.png"></p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-18/4.png" alt="4.png"></p>
+
+<p>JSend 는 세가지 유형의 응답이 존재한다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">success</code> 는 단어 그대로 작업이 성공적으로 종료된 유형을 의미한다. <code class="language-plaintext highlighter-rouge">fail</code> 은 사용자가 유효하지 않는 입력값을 전달했거나, 입력값에 따른 데이터가 없을 때와 같은 상황에 쓰이는 유형을 의미한다. <code class="language-plaintext highlighter-rouge">error</code> 는 비지니스 로직을 처리하는 과정에서 서버에서 발생한 오류를 의미한다.</p>
+
+<p>JSend 에서 가장 좋은점은 사용자 이슈와 비지니스 로직의 이슈를 명확하게 구분한다는 점이다.</p>
+
+<p><strong>success response</strong></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">##</span><span class="w"> </span><span class="err">GET</span><span class="w"> </span><span class="err">/posts</span><span class="w">
+
+</span><span class="p">{</span><span class="w">
+    </span><span class="err">status</span><span class="w"> </span><span class="err">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="err">data</span><span class="w"> </span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"posts"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w"> </span><span class="nl">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nl">"title"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"A blog post"</span><span class="p">,</span><span class="w"> </span><span class="nl">"body"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Some useful content"</span><span class="w"> </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w"> </span><span class="nl">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="nl">"title"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Another blog post"</span><span class="p">,</span><span class="w"> </span><span class="nl">"body"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"More content"</span><span class="w"> </span><span class="p">},</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+     </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><strong>fail response</strong></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">##</span><span class="w"> </span><span class="err">POST</span><span class="w"> </span><span class="err">/posts.json</span><span class="w"> </span><span class="err">(with</span><span class="w"> </span><span class="err">data</span><span class="w"> </span><span class="err">body:</span><span class="w"> 
+
+</span><span class="p">{</span><span class="w">
+    </span><span class="nl">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"fail"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"message"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"A title is required"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p><strong>error response</strong></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">##</span><span class="w"> </span><span class="err">GET</span><span class="w"> </span><span class="err">/posts</span><span class="w">
+
+</span><span class="p">{</span><span class="w">
+    </span><span class="nl">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"error"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"message"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Unable to communicate with database"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>이 방식의 장점과 단점은 앞서 소개한 방식의 반대인것 같다.</p>
+
+<p>이 방식은 <strong>succes, fail, error 모두 2xx 상태를 응답하기 때문에 JSON Body 의 status 를 이용해서 성공과 실패를 구분해야 하는 단점</strong>이 있다.</p>
+
+<p>하지만, B/E 서버 사이의 호출에서는 fail, error 에서 빈 데이터를 전달할 뿐, 2xx 로 응답하기 때문에 호출에 대한 try-catch 예외처리는 하지 않아도 된다.</p>
+
+<h3 id="결론">결론</h3>
+
+<p><code class="language-plaintext highlighter-rouge">HttpStatus + JSON Body</code> 와 <code class="language-plaintext highlighter-rouge">Only JSON Body</code> 중에서 어떤 것을 선택해야 할까?!</p>
+
+<p>내가 선택한 방식은 error 와 fail 에 대해서 다르게 처리하는 방식이다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RestControllerAdvice</span>
+<span class="nd">@Slf4j</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RestControllerExceptionHandler</span> <span class="o">{</span>
+
+	<span class="nd">@ExceptionHandler</span><span class="o">(</span><span class="nc">WordMatchException</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+	<span class="kd">public</span> <span class="nc">Response</span> <span class="nf">wordMatchException</span><span class="o">(</span><span class="kd">final</span> <span class="nc">WordMatchException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nf">Response</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">(),</span> <span class="nc">ResponseStatusCode</span><span class="o">.</span><span class="na">FAIL</span><span class="o">);</span>
+	<span class="o">}</span>
+
+	<span class="nd">@ExceptionHandler</span><span class="o">(</span><span class="nc">Exception</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+	<span class="nd">@ResponseStatus</span><span class="o">(</span><span class="n">code</span> <span class="o">=</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">INTERNAL_SERVER_ERROR</span><span class="o">)</span>
+	<span class="nd">@ResponseBody</span>
+	<span class="kd">public</span> <span class="nc">Response</span> <span class="nf">exception</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nf">Response</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">(),</span> <span class="nc">ResponseStatusCode</span><span class="o">.</span><span class="na">ERROR</span><span class="o">);</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">error</code> 에 대해서는 5xx HttpStatus 와 오류 메세지에 대한 JSON Body 를 함께 제공한다. 그리고 log.error 를 통해 예외 이유를 남긴다. (<code class="language-plaintext highlighter-rouge">HttpStatus + JSON Body</code>)</p>
+
+<p><code class="language-plaintext highlighter-rouge">fail</code> 에 대해서는 오류 메세지에 대한 JSON Body 만을 제공하고, log.warn 를 통해 예외 이유를 남긴다. (<code class="language-plaintext highlighter-rouge">Only JSON Body</code>)</p>
+
+<p>이렇게 선택한 이유는 발생한 예외가 비지니스 로직 문제가 발생했고, 이 문제로 인해 수정이 필요한지 필요하지 않는지를 구분하기 위해서다. 결국은 <code class="language-plaintext highlighter-rouge">운영의 편의성</code> 때문이다.
+내가 B/E 개발자라서, B/E 에서 예외처리가 싫어서가 아니다! 그러하다!</p>
+
+<p><img src="https://raw.githubusercontent.com/lkhlkh23/lkhlkh23.github.io/master/images/2024-01-18/5.png" alt="5.png"></p>
+
+
+    </div>
+
+</article>
+</section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --></section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Unpublished Work <span class="copyleft">©</span> 2017-2024 lkhlkh23</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
