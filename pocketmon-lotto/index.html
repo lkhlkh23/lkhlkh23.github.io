@@ -84,11 +84,12 @@
     -webkit-appearance: none; appearance: none;
     display: block; box-sizing: border-box;
     font-family: var(--font); font-size: 15px; line-height: 20px;
-    height: 44px; margin: 0; padding: 0 10px; border: 3px solid var(--line); background-color: #fffdf2;
+    /* 높이를 고정하면 iOS Safari는 날짜·시각 값을 위쪽에 붙여 그리므로 padding으로 44px를 만든다 (20 + 9×2 + 3×2) */
+    height: auto; margin: 0; padding: 9px 10px; border: 3px solid var(--line); background-color: #fffdf2;
     border-radius: 0; color: var(--ink); width: 100%; min-width: 0;
   }
   /* iOS Safari: 날짜/시각 값 영역이 자체 높이·가운데 정렬을 가지므로 맞춰 준다 */
-  input[type=date]::-webkit-date-and-time-value, input[type=time]::-webkit-date-and-time-value { text-align: left; margin: 0; }
+  input[type=date]::-webkit-date-and-time-value, input[type=time]::-webkit-date-and-time-value { text-align: left; margin: 0; min-height: 20px; line-height: 20px; }
   input[type=date]::-webkit-datetime-edit, input[type=time]::-webkit-datetime-edit { padding: 0; line-height: 20px; }
   select {
     padding-right: 28px;
@@ -140,13 +141,13 @@
   .ball-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
   @media (max-width: 480px) {
     .ball-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-    .reveal img { width: 72px; height: 72px; }
     .panel { padding: 16px 14px; }
   }
   .slot {
     position: relative; aspect-ratio: 1 / 1.15; min-width: 0;
     border: 3px solid var(--line); background: var(--panel-2);
     display: grid; place-items: center; padding: 8px;
+    min-height: 0; overflow: hidden;   /* 포켓몬이 나와도 칸 크기가 변하지 않도록 */
   }
   .slot .ball {
     width: 72%; max-width: 110px; cursor: pointer; background: none; border: 0; padding: 0;
@@ -169,9 +170,14 @@
   .reveal { display: grid; justify-items: center; gap: 2px; text-align: center; animation: pop .3s ease-out both; }
   @keyframes pop { from { transform: scale(.2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   .reveal img { width: 96px; height: 96px; }
-  .reveal .pname { font-size: 13px; font-weight: bold; word-break: keep-all; }
+  .reveal { max-width: 100%; }
+  .reveal .pname { font-size: 13px; font-weight: bold; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .reveal .pid { font-size: 10px; color: var(--muted); }
   .reveal .el-chip { min-width: 22px; height: 22px; font-size: 12px; border-width: 2px; }
+  @media (max-width: 480px) {
+    .reveal img { width: 64px; height: 64px; }
+    .reveal .lotto { width: 32px; height: 32px; font-size: 14px; border-width: 2px; }
+  }
 
   .lotto {
     display: inline-grid; place-items: center;
